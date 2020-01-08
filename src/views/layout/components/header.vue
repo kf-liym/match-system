@@ -1,8 +1,14 @@
 <template>
   <div>
     <div class="appHeader">
-      新兴县太极拳精英大赛报名系统 <el-button>首页</el-button>
-      <el-button>常用报名人设置</el-button>
+      <div class="header-item">新兴县太极拳精英大赛报名系统 </div>
+      <div class="header-item">
+        <el-button type="text">首页</el-button>
+      </div>
+      <div class="header-item">
+         <el-button type="text">常用报名人设置</el-button>
+      </div>
+<div class="username">{{username}}</div>
     </div>
   </div>
 </template>
@@ -11,7 +17,9 @@
 export default {
   props: {},
   data () {
-    return {}
+    return {
+      username: '用户名'
+    }
   },
   computed: {},
   created () {},
@@ -24,11 +32,27 @@ export default {
 
 <style scoped lang="scss">
 .appHeader {
-  height: 80px;
+  height: 65px;
+  line-height: 65px;
   width: 100%;
   background: rgb(48, 4, 167);
   font-size:24px;
+  font-weight: bold;
   color: #fff;
-  padding: 10px;
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+position: relative;
+
+}
+.header-item{
+    margin-right: 16px;
+    align-self: stretch;
+}
+.username{
+  padding: 0 10px;
+position: absolute;
+    right: 35px;
+    font-size: 20px
 }
 </style>
