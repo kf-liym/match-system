@@ -54,6 +54,15 @@
 export default {
   name: 'signup',
   data () {
+    var validatePass2 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'))
+      } else if (value !== this.dataForm.password) {
+        callback(new Error('两次输入密码不一致!'))
+      } else {
+        callback()
+      }
+    }
     return {
       dataForm: {
         username: '',
@@ -64,20 +73,20 @@ export default {
       },
       rules: {
         username: [
-          { required: true, message: '请输入活动名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { required: true, message: '请输入注册用户名', trigger: 'blur' }
+
         ],
         password: [
-          { required: true, message: '请输入活动名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { required: true, message: '请输入密码', trigger: 'blur' }
+
         ],
         repassword: [
-          { required: true, message: '请输入活动名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { validator: validatePass2, message: '请再次输入密码', trigger: 'blur' }
+
         ],
         email: [
-          { required: true, message: '请输入活动名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { required: true, message: '请输入邮箱', trigger: 'blur' }
+
         ]
       }
 
@@ -88,7 +97,16 @@ export default {
   mounted () {},
   watch: {},
   methods: {
-    register () {}
+    register () {
+      this.$refs.register.validate((valid) => {
+        if (valid) {
+          alert('submit!')
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    }
   },
   components: {}
 }

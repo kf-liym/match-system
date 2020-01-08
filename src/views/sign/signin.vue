@@ -29,11 +29,19 @@ export default {
   data () {
     return {
       dataForm: {
-        username: 'admin',
-        password: 'admin1234565',
+        username: '',
+        password: '',
         isRemember: false
       },
-      rules: {}
+      rules: {
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' }
+        ]
+
+      }
     }
   },
   computed: {
@@ -50,7 +58,14 @@ export default {
   },
   methods: {
     login () {
-
+      this.$refs.login.validate((valid) => {
+        if (valid) {
+          alert('submit!')
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
     }
 
   },

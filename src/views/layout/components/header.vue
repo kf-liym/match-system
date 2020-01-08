@@ -54,6 +54,6 @@ position: relative;
   padding: 0 10px;
 position: absolute;
     right: 35px;
-    font-size: 20px
+    font-size: 15px
 }
 </style>
