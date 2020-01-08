@@ -16,6 +16,6 @@ html,body{
   padding: 0;
   border: 0;
   font-size: 100%;
-  vertical-align: baseline
+  vertical-align: baseline;
 }
 </style>
