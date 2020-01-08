@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="">
+    <div class="appHeader">
       新兴县太极拳精英大赛报名系统 <el-button>首页</el-button>
       <el-button>常用报名人设置</el-button>
     </div>
@@ -10,16 +10,25 @@
 <script>
 export default {
   props: {},
-  data() {
-    return {};
+  data () {
+    return {}
   },
   computed: {},
-  created() {},
-  mounted() {},
+  created () {},
+  mounted () {},
   watch: {},
   methods: {},
   components: {}
-};
+}
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.appHeader {
+  height: 80px;
+  width: 100%;
+  background: rgb(48, 4, 167);
+  font-size:24px;
+  color: #fff;
+  padding: 10px;
+}
+</style>
