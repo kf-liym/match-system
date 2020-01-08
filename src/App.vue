@@ -5,17 +5,18 @@
 </template>
 
 <style lang="scss">
-html,body{
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
-#app{
+#app {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   margin: 0;
   padding: 0;
   border: 0;
   font-size: 100%;
   vertical-align: baseline;
+  background: $main-bg;
+  overflow: hidden;
 }
 </style>
