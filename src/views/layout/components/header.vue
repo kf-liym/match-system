@@ -37,6 +37,7 @@ export default {
   width: 100%;
   background: rgb(48, 4, 167);
   font-size:24px;
+  padding:0 20px;
   font-weight: bold;
   color: #fff;
   display: flex;

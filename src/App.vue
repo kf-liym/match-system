@@ -8,8 +8,10 @@
 html,body{
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 #app{
+  overflow: hidden;
   margin: 0;
   padding: 0;
   border: 0;
