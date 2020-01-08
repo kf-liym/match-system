@@ -6,7 +6,14 @@ const routes = [
   {
     path: '/',
     name: 'layout',
-    component: () => import('../views/layout/index.vue')
+    component: () => import('../views/layout/index.vue'),
+    children: [
+      {
+        path: '/sign/signin',
+        name: 'signin',
+        component: () => import('../views/sign/signin.vue')
+      }
+    ]
   }
 ]
 

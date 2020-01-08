@@ -6,21 +6,21 @@
 </template>
 
 <script>
-import appHeader from "./components/header.vue";
+import appHeader from './components/header.vue'
 export default {
   props: {},
-  data() {
-    return {};
+  data () {
+    return {}
   },
   computed: {},
-  created() {},
-  mounted() {},
+  created () {},
+  mounted () {},
   watch: {},
   methods: {},
   components: {
     appHeader
   }
-};
+}
 </script>
 
 <style scoped lang="scss"></style>
