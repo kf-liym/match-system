@@ -17,10 +17,13 @@
       >
     </el-dialog>
     <div class="btn-group">
-      <el-button type="primary">
+      <!-- <el-button type="primary">
         上一步
-      </el-button>
-      <el-button type="primary">
+      </el-button> -->
+      <el-button
+        type="primary"
+        @click="nextStep()"
+      >
         下一步
       </el-button>
     </div>
@@ -55,6 +58,9 @@ export default {
 
   },
   methods: {
+    nextStep(){
+
+    },
     handleRemove(file, fileList) {
         console.log(file, fileList);
       },
@@ -68,7 +74,7 @@ export default {
 
 <style scoped lang="scss">
 .step-1{
-
+margin-bottom: 20px;
 }
 .upload-wrap{
   border:1px solid rgb(133, 132, 132);
