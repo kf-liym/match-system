@@ -8,7 +8,7 @@
         @click.native="handleStep(index)"
       />
     </el-steps>
-    <el-alert class="alert" title="操作注意事项" type="warning" show-icon />
+    <el-alert class="alert" title="操作注意事项" type="warning" show-icon :closable="false" />
     <ul class="description">
       <li>1、出质前盖坐着的著作权是否授权及授权情况说明：若未授权他人使用，填写“否”；若有授权情况，请在授权情况说明栏中填写著作权授权许可（包括专有）</li>
       <li>2、出质前盖坐着的著作权是否授权及授权情况说明：若未授权他人使用，填写“否”；若有授权情况，请在授权情况说明栏中填写著作权授权许可（包括专有）</li>
@@ -35,7 +35,7 @@ export default {
       stepComponent: [
         step1, step2, step3, step4, step5, step6
       ],
-      active: 0,
+      active: 1,
       step: [
         {
           title: '上传责任书'
