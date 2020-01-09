@@ -1,20 +1,27 @@
 <template>
-  <div>
-    <div class="appHeader">
-      <div class="header-item">新兴县太极拳精英大赛报名系统 </div>
-      <div class="header-item">
-        <el-button type="text">首页</el-button>
-      </div>
-      <div class="header-item">
-         <el-button type="text">常用报名人设置</el-button>
-      </div>
-<div class="username">{{username}}</div>
+  <div class="appHeader">
+    <div class="header-item">
+      新兴县太极拳精英大赛报名系统
+    </div>
+    <div class="header-item">
+      <el-button type="text">
+        首页
+      </el-button>
+    </div>
+    <div class="header-item">
+      <el-button type="text">
+        常用报名人设置
+      </el-button>
+    </div>
+    <div class="username">
+      {{ username }}
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  components: {},
   props: {},
   data () {
     return {
@@ -22,11 +29,10 @@ export default {
     }
   },
   computed: {},
-  created () {},
-  mounted () {},
   watch: {},
-  methods: {},
-  components: {}
+  created () { },
+  mounted () { },
+  methods: {}
 }
 </script>
 
@@ -36,24 +42,23 @@ export default {
   line-height: 65px;
   width: 100%;
   background: rgb(48, 4, 167);
-  font-size:24px;
-  padding:0 20px;
+  font-size: 24px;
+  padding: 0 20px;
   font-weight: bold;
   color: #fff;
   display: flex;
   align-items: center;
   flex-wrap: nowrap;
-position: relative;
-
+  position: relative;
 }
-.header-item{
-    margin-right: 16px;
-    align-self: stretch;
+.header-item {
+  margin-right: 16px;
+  align-self: stretch;
 }
-.username{
+.username {
   padding: 0 10px;
-position: absolute;
-    right: 35px;
-    font-size: 20px
+  position: absolute;
+  right: 35px;
+  font-size: 20px;
 }
 </style>

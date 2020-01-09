@@ -6,16 +6,18 @@ const routes = [
   {
     path: '/',
     name: 'layout',
+    redirect: '/home',
     component: () => import('../views/layout/index.vue'),
-    children: [
-      {
-        path: '/sign/signin',
-        name: 'signin',
-        component: () => import('../views/sign/signin.vue')
-      }
-    ]
-  }
-]
+    children: [{
+      path: 'home',
+      name: 'home',
+      component: () => import('../views/home/index.vue')
+    }, {
+      path: '/sign/signin',
+      name: 'signin',
+      component: () => import('../views/sign/signin.vue')
+    }]
+  }]
 
 const router = new VueRouter({
   mode: 'history',
