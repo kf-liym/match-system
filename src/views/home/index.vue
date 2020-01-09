@@ -1,9 +1,6 @@
 <template>
   <div class="home">
-    <el-steps
-      class="step"
-      :active="active"
-    >
+    <el-steps class="step" :active="active">
       <el-step
         v-for="(item, index) in step"
         :key="index"
@@ -11,29 +8,33 @@
         @click.native="handleStep(index)"
       />
     </el-steps>
-    <el-alert
-      class="alert"
-      title="操作注意事项"
-      type="warning"
-      show-icon
-    />
+    <el-alert class="alert" title="操作注意事项" type="warning" show-icon />
     <ul class="description">
       <li>1、出质前盖坐着的著作权是否授权及授权情况说明：若未授权他人使用，填写“否”；若有授权情况，请在授权情况说明栏中填写著作权授权许可（包括专有）</li>
       <li>2、出质前盖坐着的著作权是否授权及授权情况说明：若未授权他人使用，填写“否”；若有授权情况，请在授权情况说明栏中填写著作权授权许可（包括专有）</li>
     </ul>
+    <component :is="componentId" />
   </div>
 </template>
 
 <script>
+import step1 from './components/step-1'
+import step2 from './components/step-2'
+import step3 from './components/step-3'
+import step4 from './components/step-4'
+import step5 from './components/step-5'
+import step6 from './components/step-6'
 export default {
   components: {
-
   },
   props: {
 
   },
   data () {
     return {
+      stepComponent: [
+        step1, step2, step3, step4, step5, step6
+      ],
       active: 0,
       step: [
         {
@@ -58,7 +59,9 @@ export default {
     }
   },
   computed: {
-
+    componentId () {
+      return this.stepComponent[this.active]
+    }
   },
   watch: {
 
@@ -79,7 +82,7 @@ export default {
 
 <style scoped lang="scss">
 .home {
- padding: 40px 30px 0;
+  padding: 40px 30px 0;
 }
 .step {
 }
@@ -90,7 +93,7 @@ export default {
   font-size: 14px;
   padding: 15px 10px;
   li {
-    margin-bottom: 5px
+    margin-bottom: 5px;
   }
 }
 </style>
