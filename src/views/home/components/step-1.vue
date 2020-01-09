@@ -13,8 +13,10 @@
       <img width="100%" :src="dialogImageUrl" alt />
     </el-dialog>
     <div class="btn-group">
-      <el-button type="primary">上一步</el-button>
-      <el-button type="primary">下一步</el-button>
+      <!-- <el-button type="primary">
+        上一步
+      </el-button>-->
+      <el-button type="primary" @click="nextStep()">下一步</el-button>
     </div>
   </div>
 </template>
@@ -60,6 +62,7 @@ export default {
 
 <style scoped lang="scss">
 .step-1 {
+  margin-bottom: 20px;
 }
 .upload-wrap {
   border: 1px solid rgb(133, 132, 132);
