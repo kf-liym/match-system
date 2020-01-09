@@ -1,7 +1,6 @@
 <template>
-     <div shadow="hover" class="box-card" id="account-box">
-        <h2>登录</h2>
-        <p>要继续操作，请输入账号密码</p>
+     <div  class="box-card" id="account-box">
+        <div class="page-title">登录</div>
         <div>
             <el-form class="input-box" ref="login" :rules="rules" :model="dataForm">
                 <el-form-item prop="username">
@@ -12,11 +11,11 @@
                 </el-form-item>
             </el-form>
             <div>
-                <br>
+
                 <el-checkbox v-model="dataForm.isRemember">记住我</el-checkbox>
             </div>
             <div>
-                <router-link class="login-button" :to="{name: 'register'}"><el-button>注册</el-button></router-link>
+                <router-link class="login-button" :to="{name: 'signup'}"><el-button>注册</el-button></router-link>
 
                 <el-button class="login-button" type="primary" v-on:click="login">登录</el-button>
             </div>
@@ -30,9 +29,18 @@ export default {
   data () {
     return {
       dataForm: {
-        username: 'admin',
-        password: 'admin1234565',
+        username: '',
+        password: '',
         isRemember: false
+      },
+      rules: {
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' }
+        ]
+
       }
     }
   },
@@ -50,8 +58,16 @@ export default {
   },
   methods: {
     login () {
-
+      this.$refs.login.validate((valid) => {
+        if (valid) {
+          alert('submit!')
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
     }
+
   },
   components: {
 
@@ -60,8 +76,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.page-title {
+  font-size: 24px;
+  font-weight: bold;
+  color:#333;
+  padding: 25px 0px;
+}
     .input-box {
-        width: 61.8%;
+        width: 400px;
         /* margin-top: 10px; */
         margin: auto;
     }
