@@ -7,3 +7,66 @@
   display: flex;
   justify-content: center;
 }
+
+.el-step__title {
+  line-height: 1.5;
+  margin-top: 5px;
+}
+
+.el-table td,
+.el-table th.is-leaf {
+  border-bottom-color: $table-border-color;
+}
+
+.el-table--border td,
+.el-table--border th,
+.el-table__body-wrapper .el-table--border.is-scrolling-left~.el-table__fixed {
+  border-right-color: $table-border-color;
+}
+
+.el-table--border::after,
+.el-table--group::after,
+.el-table::before {
+  background-color: $table-border-color;
+}
+
+.el-table--border,
+.el-table--group {
+  border-color: $table-border-color;
+}
+
+.el-table thead {
+  color: #333;
+}
+
+
+.report-item {
+  margin-top: 20px;
+
+  +.report-item {
+    margin-top: 40px;
+  }
+
+  .report-item__header {
+    border: 1px solid $table-border-color;
+    border-bottom: 0;
+    padding: 12px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .cost-box {
+    padding: 12px;
+    text-align: center;
+  }
+}
+
+.team-info {
+  font-size: 14px;
+
+  li {
+    display: inline-block;
+    margin-right: 15px;
+  }
+}

@@ -13,7 +13,7 @@
       <li>1、出质前盖坐着的著作权是否授权及授权情况说明：若未授权他人使用，填写“否”；若有授权情况，请在授权情况说明栏中填写著作权授权许可（包括专有）</li>
       <li>2、出质前盖坐着的著作权是否授权及授权情况说明：若未授权他人使用，填写“否”；若有授权情况，请在授权情况说明栏中填写著作权授权许可（包括专有）</li>
     </ul>
-    <component :is="componentId" />
+    <component v-model="info" :is="componentId" />
   </div>
 </template>
 
@@ -35,7 +35,7 @@ export default {
       stepComponent: [
         step1, step2, step3, step4, step5, step6
       ],
-      active: 1,
+      active: 3,
       step: [
         {
           title: '上传责任书'
@@ -55,7 +55,117 @@ export default {
         {
           title: '提交并等待审核'
         }
-      ]
+      ],
+      info: {
+        // 0 未提交， 1 待审核， 2 审核通过
+        status: 2,
+        teamInfo: {
+          teamName: '队伍名', // 队伍名称
+          leaderName: '张小马', // 领队姓名
+          tel: '123658252152', // 联系电话
+          coachName: '刘小华' // 教练姓名
+        },
+        // 个人项目
+        personalProject: [
+          {
+            index: '1',
+            name: '张小明',
+            IDNumber: '440671199725145421',
+            birth: '1997-02-12',
+            sex: '男',
+            group: '男子少年组',
+            projectName: '传统拳术-蔡李佛拳-杠力拳',
+            cost: 50
+          },
+          {
+            index: '2',
+            name: '张小明',
+            IDNumber: '440671199725145421',
+            birth: '1997-02-12',
+            sex: '男',
+            group: '男子少年组',
+            projectName: '传统拳术-蔡李佛拳-杠力拳',
+            cost: 50
+          },
+          {
+            index: '3',
+            name: '张小明',
+            IDNumber: '440671199725145421',
+            birth: '1997-02-12',
+            sex: '男',
+            group: '男子少年组',
+            projectName: '传统拳术-蔡李佛拳-杠力拳',
+            cost: 50
+          }
+        ],
+        // 对练项目
+        duelExercises: [
+
+          {
+            index: '1-1',
+            name: '张小明',
+            IDNumber: '440671199725145421',
+            birth: '1997-02-12',
+            sex: '男',
+            group: '男子少年组',
+            projectName: '传统拳术-蔡李佛拳-杠力拳',
+            cost: 50
+          },
+          {
+            index: '1-2',
+            name: '张小明',
+            IDNumber: '440671199725145421',
+            birth: '1997-02-12',
+            sex: '男',
+            group: '男子少年组',
+            projectName: '传统拳术-蔡李佛拳-杠力拳',
+            cost: 50
+          },
+          {
+            index: '2-1',
+            name: '张小明',
+            IDNumber: '440671199725145421',
+            birth: '1997-02-12',
+            sex: '男',
+            group: '男子少年组',
+            projectName: '传统拳术-蔡李佛拳-杠力拳',
+            cost: 50
+          },
+          {
+            index: '2-2',
+            name: '张小明',
+            IDNumber: '440671199725145421',
+            birth: '1997-02-12',
+            sex: '男',
+            group: '男子少年组',
+            projectName: '传统拳术-蔡李佛拳-杠力拳',
+            cost: 50
+          }
+        ],
+        // 集体项目
+        collectiveProject: [
+          {
+            index: '1-1',
+            name: '张小明',
+            IDNumber: '440671199725145421',
+            birth: '1997-02-12',
+            sex: '男',
+            group: '男子少年组',
+            projectName: '传统拳术-蔡李佛拳-杠力拳',
+            cost: 50
+          },
+          {
+            index: '1-2',
+            name: '张小明',
+            IDNumber: '440671199725145421',
+            birth: '1997-02-12',
+            sex: '男',
+            group: '男子少年组',
+            projectName: '传统拳术-蔡李佛拳-杠力拳',
+            cost: 50
+          }
+        ]
+      }
     }
   },
   computed: {
@@ -73,6 +183,7 @@ export default {
   },
   methods: {
     handleStep (index) {
+      if (this.info.status !== 0) return
       this.active = index
     }
 
