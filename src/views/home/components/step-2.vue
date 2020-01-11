@@ -15,8 +15,8 @@
       </el-form-item>
     </el-form>
     <div class="step-btn-group">
-      <el-button type="primary">上一步</el-button>
-      <el-button type="primary">下一步</el-button>
+      <el-button type="primary" @click="prevStep()">上一步</el-button>
+      <el-button type="primary" @click="nextStep()">下一步</el-button>
     </div>
   </div>
 </template>
@@ -67,7 +67,12 @@ export default {
 
   },
   methods: {
-
+    prevStep () {
+      this.$emit('stepChange', 0)
+    },
+    nextStep () {
+      this.$emit('stepChange', 2)
+    }
   }
 }
 </script>

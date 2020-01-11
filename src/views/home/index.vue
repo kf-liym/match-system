@@ -13,7 +13,7 @@
       <li>1、出质前盖坐着的著作权是否授权及授权情况说明：若未授权他人使用，填写“否”；若有授权情况，请在授权情况说明栏中填写著作权授权许可（包括专有）</li>
       <li>2、出质前盖坐着的著作权是否授权及授权情况说明：若未授权他人使用，填写“否”；若有授权情况，请在授权情况说明栏中填写著作权授权许可（包括专有）</li>
     </ul>
-    <component v-model="info" :is="componentId" />
+    <component v-model="info" :is="componentId" @stepChange="setStep" />
   </div>
 </template>
 
@@ -184,6 +184,9 @@ export default {
   methods: {
     handleStep (index) {
       if (this.info.status !== 0) { return }
+      this.active = index
+    },
+    setStep (index) {
       this.active = index
     }
 

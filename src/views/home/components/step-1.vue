@@ -55,7 +55,11 @@ export default {
     handlePictureCardPreview (file) {
       this.dialogImageUrl = file.url
       this.dialogVisible = true
+    },
+    nextStep () {
+      this.$emit('stepChange', 1)
     }
+
   }
 }
 </script>

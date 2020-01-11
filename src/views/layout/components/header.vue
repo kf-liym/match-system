@@ -2,10 +2,10 @@
   <div class="appHeader">
     <div class="header-item">新兴县太极拳精英大赛报名系统</div>
     <div class="header-item">
-      <el-button type="text">首页</el-button>
+      <el-button type="text" @click="backHome()">首页</el-button>
     </div>
     <div class="header-item">
-      <el-button type="text">常用报名人设置</el-button>
+      <el-button type="text" @click="showCommonInfo()">常用报名人设置</el-button>
     </div>
     <div class="username">{{ username }}</div>
   </div>
@@ -17,13 +17,23 @@ export default {
   props: {},
   data () {
     return {
+      username: ''
     }
   },
   computed: {},
   watch: {},
   created () { },
   mounted () { },
-  methods: {}
+  methods: {
+    showCommonInfo () {
+      this.$router.push({
+        name: ''
+      })
+    },
+    backHome () {
+      this.$router.push('/home')
+    }
+  }
 }
 </script>
 

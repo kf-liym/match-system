@@ -571,6 +571,10 @@
         <el-button @click="dialogVisible = false">取 消</el-button>
       </span>
     </el-dialog>
+        <div class="step-btn-group">
+      <el-button type="primary" @click="prevStep()">上一步</el-button>
+      <el-button type="primary" @click="nextStep()">下一步</el-button>
+    </div>
   </div>
 </template>
 
@@ -991,7 +995,14 @@ export default {
     },
     handleChange (val) {
       console.log(val)
+    },
+    prevStep () {
+      this.$emit('stepChange', 1)
+    },
+    nextStep () {
+      this.$emit('stepChange', 3)
     }
+
   }
 }
 </script>

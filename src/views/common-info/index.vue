@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <app-header class="app-header" />
-    <div class="common app-container">
+    <div class="common">
       <el-alert class="alert" title="注意事项" type="warning" show-icon :closable="false" />
       <ul class="description">
         <li>1、出质前盖坐着的著作权是否授权及授权情况说明：若未授权他人使用，填写“否”；若有授权情况，请在授权情况说明栏中填写著作权授权许可（包括专有）</li>
@@ -67,11 +65,10 @@
         </div>
       </div>
     </div>
-  </div>
+
 </template>
 
 <script>
-import appHeader from '../layout/components/header'
 
 export default {
   name: 'setCommonInfo',
@@ -150,10 +147,8 @@ export default {
       this.applicantList.push(info)
       console.log(this.applicantList)
     }
-  },
-  components: {
-    appHeader
   }
+
 };
 </script>
 
