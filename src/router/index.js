@@ -22,6 +22,11 @@ const routes = [
       path: 'home',
       name: 'home',
       component: () => import('@/views/home/index.vue')
+    },
+    {
+      path: 'commonInfo',
+      name: 'commonInfo',
+      component: () => import('@/views/common-info/index.vue')
     }
     ]
   },

@@ -1,11 +1,4 @@
 <template>
-  <!-- <div class="admin-wrap">
-       <el-tabs tab-position="left" style="height: 100%;" >
-        <el-tab-pane label="用户管理">首页</el-tab-pane>
-        <el-tab-pane label="配置管理">审核管理</el-tab-pane>
-      </el-tabs>
-      <router-view></router-view>
-    </div> -->
   <div class="app-wrap">
     <app-header class="app-header" />
     <div class="app-container">
@@ -20,7 +13,7 @@
         </el-menu-item>
       </el-menu>
       <div class="app-inner">
-        <router-view class="" />
+        <router-view class />
       </div>
     </div>
   </div>

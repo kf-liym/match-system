@@ -1,21 +1,13 @@
 <template>
   <div class="appHeader">
+    <div class="header-item">新兴县太极拳精英大赛报名系统</div>
     <div class="header-item">
-      新兴县太极拳精英大赛报名系统
-    </div>
-    <div class="header-item">
-      <el-button type="text">
-        首页
-      </el-button>
+      <el-button type="text">首页</el-button>
     </div>
     <div class="header-item">
-      <el-button type="text">
-        常用报名人设置
-      </el-button>
+      <el-button type="text">常用报名人设置</el-button>
     </div>
-    <div class="username">
-      {{ username }}
-    </div>
+    <div class="username">{{ username }}</div>
   </div>
 </template>
 
@@ -51,7 +43,6 @@ export default {
   display: flex;
   align-items: center;
   flex-wrap: nowrap;
-  // position: relative;
 }
 .header-item {
   margin-right: 16px;
