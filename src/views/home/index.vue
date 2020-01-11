@@ -35,7 +35,7 @@ export default {
       stepComponent: [
         step1, step2, step3, step4, step5, step6
       ],
-      active: 2,
+      active: 0,
       step: [
         {
           title: '上传责任书'
@@ -57,7 +57,7 @@ export default {
         }
       ],
       info: {
-        status: '已审核',
+        status: '未提交',
 
         teamInfo: {
           teamName: '队伍名', // 队伍名称
