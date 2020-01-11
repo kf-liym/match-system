@@ -1,6 +1,6 @@
 <template>
   <div class="step-4">
-    <ul class="team-info">
+    <ul class="report-team-info">
       <li>队伍名称：{{values.teamInfo.teamName}}</li>
       <li>领队：{{values.teamInfo.leaderName}}</li>
       <li>联系电话：{{values.teamInfo.tel}}</li>
@@ -9,13 +9,7 @@
 
     <div class="report-item">
       <div class="report-item__header">个人项目</div>
-      <el-table
-        class="report-item__body"
-        :data="values.personalProject"
-        border
-        fit
-        style="width: 100%;"
-      >
+      <el-table class="report-item__body" :data="values.personalProject" border fit style="width: 100%;">
         <el-table-column prop="index" label="序号" width="50"></el-table-column>
         <el-table-column prop="name" label="姓名" width="100"></el-table-column>
         <el-table-column prop="IDNumber" label="证件号码" width="180"></el-table-column>
@@ -24,19 +18,13 @@
         <el-table-column prop="group" label="组别" width="110"></el-table-column>
         <el-table-column prop="projectName" label="项目名称" min-width="280"></el-table-column>
         <el-table-column prop="cost" label="费用"></el-table-column>
-        <div class="cost-box" slot="append">合计：{{personalCost}} 元</div>
       </el-table>
+      <div class="cost-box">合计：{{personalCost}} 元</div>
     </div>
 
     <div class="report-item">
       <div class="report-item__header">对练项目</div>
-      <el-table
-        class="report-item__body"
-        :data="values.duelExercises"
-        border
-        fit
-        style="width: 100%;"
-      >
+      <el-table class="report-item__body" :data="values.duelExercises" border fit style="width: 100%;">
         <el-table-column prop="index" label="序号" width="50"></el-table-column>
         <el-table-column prop="name" label="姓名" width="100"></el-table-column>
         <el-table-column prop="IDNumber" label="证件号码" width="180"></el-table-column>
@@ -45,19 +33,13 @@
         <el-table-column prop="group" label="组别" width="110"></el-table-column>
         <el-table-column prop="projectName" label="项目名称" min-width="280"></el-table-column>
         <el-table-column prop="cost" label="费用"></el-table-column>
-        <div class="cost-box" slot="append">合计：{{duelCost}} 元</div>
       </el-table>
+      <div class="cost-box">合计：{{duelCost}} 元</div>
     </div>
 
     <div class="report-item">
       <div class="report-item__header">集体项目</div>
-      <el-table
-        class="report-item__body"
-        :data="values.collectiveProject"
-        border
-        fit
-        style="width: 100%;"
-      >
+      <el-table class="report-item__body" :data="values.collectiveProject" border fit style="width: 100%;">
         <el-table-column prop="index" label="序号" width="50"></el-table-column>
         <el-table-column prop="name" label="姓名" width="100"></el-table-column>
         <el-table-column prop="IDNumber" label="证件号码" width="180"></el-table-column>
@@ -65,8 +47,8 @@
         <el-table-column prop="sex" label="性别" width="60"></el-table-column>
         <el-table-column prop="group" label="组别" width="110"></el-table-column>
         <el-table-column prop="projectName" label="项目名称" min-width="280"></el-table-column>
-        <div class="cost-box" slot="append">合计：{{collectiveCost}} 元</div>
       </el-table>
+      <div class="cost-box">合计：{{collectiveCost}} 元</div>
     </div>
     <div class="report-item">
       <el-table class="report-item__body" :data="aggregateCost" border fit style="width: 100%;">

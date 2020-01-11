@@ -1,26 +1,27 @@
 <template>
-     <div  class="box-card" id="account-box">
-        <div class="page-title">登录</div>
-        <div>
-            <el-form class="input-box" ref="login" :rules="rules" :model="dataForm">
-                <el-form-item prop="username">
-                    <el-input v-model="dataForm.username" placeholder="用户名"></el-input>
-                </el-form-item>
-                <el-form-item prop="password">
-                    <el-input v-model="dataForm.password" placeholder="密码" show-password></el-input>
-                </el-form-item>
-            </el-form>
-            <div>
+  <div class="box-card" id="account-box">
+    <div class="page-title">登录</div>
+    <div>
+      <el-form class="input-box" ref="login" :rules="rules" :model="dataForm">
+        <el-form-item prop="username">
+          <el-input v-model="dataForm.username" placeholder="用户名"></el-input>
+        </el-form-item>
+        <el-form-item prop="password">
+          <el-input v-model="dataForm.password" placeholder="密码" show-password></el-input>
+        </el-form-item>
+      </el-form>
+      <div>
+        <el-checkbox v-model="dataForm.isRemember">记住我</el-checkbox>
+      </div>
+      <div>
+        <router-link class="login-button" :to="{name: 'signup'}">
+          <el-button>注册</el-button>
+        </router-link>
 
-                <el-checkbox v-model="dataForm.isRemember">记住我</el-checkbox>
-            </div>
-            <div>
-                <router-link class="login-button" :to="{name: 'signup'}"><el-button>注册</el-button></router-link>
-
-                <el-button class="login-button" type="primary" v-on:click="login">登录</el-button>
-            </div>
-        </div>
+        <el-button class="login-button" type="primary" v-on:click="login">登录</el-button>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -60,6 +61,7 @@ export default {
     login () {
       this.$refs.login.validate((valid) => {
         if (valid) {
+          // eslint-disable-next-line no-alert
           alert('submit!')
         } else {
           console.log('error submit!!')
@@ -70,7 +72,6 @@ export default {
 
   },
   components: {
-
   }
 }
 </script>
@@ -79,19 +80,19 @@ export default {
 .page-title {
   font-size: 24px;
   font-weight: bold;
-  color:#333;
+  color: #333;
   padding: 25px 0px;
 }
-    .input-box {
-        width: 400px;
-        /* margin-top: 10px; */
-        margin: auto;
-    }
-    #account-box {
-        text-align: center;
-    }
-    .login-button {
-        margin-top: 10px;
-        margin-left: 10px;
-    }
+.input-box {
+  width: 400px;
+  /* margin-top: 10px; */
+  margin: auto;
+}
+#account-box {
+  text-align: center;
+}
+.login-button {
+  margin-top: 10px;
+  margin-left: 10px;
+}
 </style>

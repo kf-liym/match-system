@@ -1,27 +1,30 @@
 <template>
-  <div class="step-6">
-    <div class="unsubmitted" v-if="values.status === '未提交'">
-      <el-button style="width: 200px;" type="primary" @click="handleConfirm">提交</el-button>
-    </div>
-    <div class="pending" v-else-if="values.status === '已提交' || values.status === '未审核'">
-      <div class="title">
-        <i class="pending-success el-icon-success"></i>提交成功
+  <el-dialog title="提示" :visible.sync="visibles" width="80%" :before-close="handleClose" class="check-wrap">
+    <div class="body">
+      <ul class="report-team-info">
+        <li>责任书：{{ value.responsibility.length > 0 ? '' : '无' }}</li>
+      </ul>
+      <div class="image-preview" v-if="value.responsibility">
+        <el-image v-for="(item, index) in value.responsibility" :key="index" style="width: 100px; height: 100px; margin-right: 10px;" :src="item" :preview-src-list="value.responsibility" fit="cover ">
+        </el-image>
       </div>
-      <div class="info">管理员审核中，请耐心等待。</div>
-    </div>
-    <div class="pass" v-else-if="values.status === '已审核'">
-      <div class="title">你已经通过审核</div>
 
       <ul class="report-team-info">
-        <li>队伍名称：{{values.teamInfo.teamName}}</li>
-        <li>领队：{{values.teamInfo.leaderName}}</li>
-        <li>联系电话：{{values.teamInfo.tel}}</li>
-        <li>教练：{{values.teamInfo.coachName}}</li>
+        <li>汇款证明：{{ value.remittance.length > 0 ? '' : '无' }}</li>
       </ul>
-
+      <div class="image-preview">
+        <el-image  v-for="(item, index) in value.remittance" :key="index" style="width: 100px; height: 100px; margin-right: 10px;" :src="item" :preview-src-list="value.remittance" fit="cover">
+        </el-image>
+      </div>
+      <ul class="report-team-info">
+        <li>队伍名称：{{value.teamName}}</li>
+        <li>领队：{{value.leaderName}}</li>
+        <li>联系电话：{{value.tel}}</li>
+        <li>教练：{{value.coachName}}</li>
+      </ul>
       <div class="report-item">
         <div class="report-item__header">个人项目</div>
-        <el-table class="report-item__body" :data="values.personalProject" border fit style="width: 100%;">
+        <el-table class="report-item__body" :data="value.personalProject" border fit style="width: 100%;">
           <el-table-column prop="index" label="序号" width="50"></el-table-column>
           <el-table-column prop="name" label="姓名" width="100"></el-table-column>
           <el-table-column prop="IDNumber" label="证件号码" width="180"></el-table-column>
@@ -33,10 +36,9 @@
         </el-table>
         <div class="cost-box">合计：{{personalCost}} 元</div>
       </div>
-
       <div class="report-item">
         <div class="report-item__header">对练项目</div>
-        <el-table class="report-item__body" :data="values.duelExercises" border fit style="width: 100%;">
+        <el-table class="report-item__body" :data="value.duelExercises" border fit style="width: 100%;">
           <el-table-column prop="index" label="序号" width="50"></el-table-column>
           <el-table-column prop="name" label="姓名" width="100"></el-table-column>
           <el-table-column prop="IDNumber" label="证件号码" width="180"></el-table-column>
@@ -51,7 +53,7 @@
 
       <div class="report-item">
         <div class="report-item__header">集体项目</div>
-        <el-table class="report-item__body" :data="values.collectiveProject" border fit style="width: 100%;">
+        <el-table class="report-item__body" :data="value.collectiveProject" border fit style="width: 100%;">
           <el-table-column prop="index" label="序号" width="50"></el-table-column>
           <el-table-column prop="name" label="姓名" width="100"></el-table-column>
           <el-table-column prop="IDNumber" label="证件号码" width="180"></el-table-column>
@@ -72,39 +74,51 @@
         </el-table>
       </div>
     </div>
-  </div>
+    <span slot="footer" class="dialog-footer">
+      <el-button type="primary" @click="handleReview">审核通过</el-button>
+    </span>
+  </el-dialog>
 </template>
 
 <script>
 export default {
-  name: 'Step6',
-  components: {
-
-  },
+  name: 'checkDialog',
   props: {
+    visible: {
+      type: Boolean
+    },
     value: {
-      type: Object
+      default () {
+        return {
+        }
+      }
     }
   },
   data () {
     return {
+      // visible: false
 
+      cover: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+      cover1: 'https://fuss10.elemecdn.com/1/8e/aeffeb4de74e2fde4bd74fc7b4486jpeg.jpeg',
+      srcList: [
+        'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+        'https://fuss10.elemecdn.com/1/8e/aeffeb4de74e2fde4bd74fc7b4486jpeg.jpeg'
+      ]
     }
   },
   computed: {
-    values: {
+    visibles: {
       get () {
-        return this.value
+        return this.visible
       },
       set (val) {
-        this.$emit('input', val)
+        this.$emit('update:visible', val)
       }
     },
-
     // 个人项目费用汇总
     personalCost () {
       let cost = 0
-      this.values.personalProject.forEach(element => {
+      this.value.personalProject.forEach(element => {
         cost += parseInt(element.cost)
       })
       return cost
@@ -112,7 +126,7 @@ export default {
     // 对练项目费用汇总
     duelCost () {
       let cost = 0
-      this.values.duelExercises.forEach(element => {
+      this.value.duelExercises.forEach(element => {
         cost += parseInt(element.cost)
       })
       return cost
@@ -120,7 +134,7 @@ export default {
     // 集体项目费用汇总
     collectiveCost () {
       let cost = 0
-      this.values.collectiveProject.forEach(element => {
+      this.value.collectiveProject.forEach(element => {
         cost += parseInt(element.cost)
       })
       return cost
@@ -138,57 +152,55 @@ export default {
       ]
     }
   },
-  watch: {
-
-  },
   created () {
-
+    console.log(this.value)
   },
   mounted () {
 
   },
+  watch: {
+
+  },
   methods: {
-    handleConfirm () {
-      this.$set(this.values, 'status', 1)
+    handleClose () {
+      this.visibles = false
+    },
+    handleReview (done) {
+      this.$confirm('点击确定通过审核', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      }).then(() => {
+        this.visibles = false
+        // this.$message({
+        //   type: 'success',
+        //   message: '删除成功!'
+        // })
+      }).catch(() => {
+        // this.$message({
+        //   type: 'info',
+        //   message: '已取消删除'
+        // })
+      });
     }
+  },
+  components: {
+
   }
-}
+};
 </script>
 
 <style scoped lang="scss">
-.unsubmitted {
-  text-align: center;
-  padding: 60px 0 0;
+.body {
+  flex: 1;
+  border: 1px solid #ddd;
+  padding: 30px;
+  border-radius: 5px;
+  overflow: auto;
 }
-.pending {
-  text-align: center;
-  margin-top: 50px;
-  .title {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 30px;
-    line-height: 1;
-  }
-  .info {
-    color: #969696;
-    margin-top: 10px;
-  }
-  .pending-success {
-    color: green;
-    font-size: 46px;
-    margin-right: 10px;
-  }
+.report-team-info {
+  margin-top: 15px;
 }
-
-.pass {
-  padding: 20px 0 30px;
-  .title {
-    color: green;
-    font-size: 20px;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 30px;
-  }
+.image-preview {
+  padding: 10px;
 }
 </style>

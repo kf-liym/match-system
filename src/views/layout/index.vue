@@ -27,11 +27,14 @@ export default {
 .app-wrap {
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
+  // display: flex;
+  // flex-direction: column;
+  padding-top: 65px;
 }
 .app-container {
-  flex: 1;
+  // flex: 1;
+  width: 100%;
+  height: 100%;
   overflow: auto;
 }
 </style>

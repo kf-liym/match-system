@@ -1,12 +1,7 @@
 <template>
   <div class="home">
     <el-steps class="step" :active="active">
-      <el-step
-        v-for="(item, index) in step"
-        :key="index"
-        :title="item.title"
-        @click.native="handleStep(index)"
-      />
+      <el-step v-for="(item, index) in step" :key="index" :title="item.title" @click.native="handleStep(index)" />
     </el-steps>
     <el-alert class="alert" title="操作注意事项" type="warning" show-icon :closable="false" />
     <ul class="description">
@@ -35,7 +30,7 @@ export default {
       stepComponent: [
         step1, step2, step3, step4, step5, step6
       ],
-      active: 3,
+      active: 5,
       step: [
         {
           title: '上传责任书'
@@ -57,8 +52,8 @@ export default {
         }
       ],
       info: {
-        // 0 未提交， 1 待审核， 2 审核通过
-        status: 2,
+        status: '已审核',
+
         teamInfo: {
           teamName: '队伍名', // 队伍名称
           leaderName: '张小马', // 领队姓名
@@ -183,7 +178,7 @@ export default {
   },
   methods: {
     handleStep (index) {
-      if (this.info.status !== 0) return
+      if (this.info.status !== 0) { return }
       this.active = index
     }
 
@@ -194,8 +189,6 @@ export default {
 <style scoped lang="scss">
 .home {
   padding: 40px 30px 0;
-}
-.step {
 }
 .alert {
   margin-top: 20px;
