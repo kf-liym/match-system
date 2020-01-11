@@ -155,3 +155,8 @@ export const teamsList = Mock.mock({
     ]
   }]
 })
+
+// 打回
+export const teamReject = {
+  message: 'ok'
+}

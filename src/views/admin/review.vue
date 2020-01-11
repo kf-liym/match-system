@@ -45,7 +45,7 @@
 
 <script>
 import checkDialog from './components/check'
-import { getList } from '@/api'
+import { getList, teamReject } from '@/api'
 export default {
   props: {},
   data () {
@@ -220,11 +220,18 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(() => {
+        teamReject(row.id).then(res => {
+          console.log(res)
+          if (res.data.message === 'ok') {
+            this.$message({
+              type: 'success',
+              message: '已成功打回该申请!'
+            })
+          }
+        }).catch(err => {
+          console.log(err)
+        })
 
-        // this.$message({
-        //   type: 'success',
-        //   message: '删除成功!'
-        // })
       }).catch(() => {
         // this.$message({
         //   type: 'info',

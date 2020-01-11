@@ -19,5 +19,6 @@ Mock.mock('/api/sign/signin', 'post', (options) => {
 
 // 获取所有数据汇总信息
 Mock.mock('/api/teams/count', 'get', data.teamsCount)
-Mock.mock('/api/teams/list', 'get', data.teamsList)
+Mock.mock(RegExp('/api/teams/list.*'), 'get', data.teamsList)
+Mock.mock(RegExp('/api/team/reject.*'), 'get', data.teamReject)
 // Mock.mock(RegExp('/api/teams/.*'), 'get', data.adminIndex)
