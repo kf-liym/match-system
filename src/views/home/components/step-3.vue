@@ -734,7 +734,7 @@ export default {
   methods: {
     selectOption1 (val) {
       console.log(val)
-      if(val.type)
+      // if(val.type)
       console.log('项目1：', this.personalProjects)
     },
     selectOption2 (val) {
@@ -800,8 +800,6 @@ export default {
     deleteduelObj (index) {
       if (this.duelExercisesObj.length > 1) {
         this.duelExercisesObj.splice(index, 1)
-      } else {
-
       }
     },
     // 添加对练报项信息
@@ -862,8 +860,6 @@ export default {
     deleteGroupObj (index) {
       if (this.groupExercisesObj.length > 1) {
         this.groupExercisesObj.splice(index, 1)
-      } else {
-
       }
     },
     // 新增团体报项信息

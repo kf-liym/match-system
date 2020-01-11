@@ -57,8 +57,8 @@ export default {
         }
       ],
       info: {
-        // 0 未提交， 1 待审核， 2 审核通过
-        status: 2,
+        status: '已审核',
+
         teamInfo: {
           teamName: '队伍名', // 队伍名称
           leaderName: '张小马', // 领队姓名
@@ -183,7 +183,7 @@ export default {
   },
   methods: {
     handleStep (index) {
-      if (this.info.status !== 0) return
+      if (this.info.status !== 0) { return }
       this.active = index
     }
 
@@ -194,8 +194,6 @@ export default {
 <style scoped lang="scss">
 .home {
   padding: 40px 30px 0;
-}
-.step {
 }
 .alert {
   margin-top: 20px;

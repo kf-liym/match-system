@@ -59,8 +59,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.step-1 {
-}
 .upload-wrap {
   border: 1px solid rgb(133, 132, 132);
   border-radius: 5px;
