@@ -11,7 +11,6 @@ export default {
   props: {},
   data () {
     return {
-      username: '用户名'
     }
   },
   computed: {},

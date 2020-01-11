@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import { signin } from '@/api'
 export default {
   name: 'signin',
   data () {
@@ -61,8 +62,18 @@ export default {
     login () {
       this.$refs.login.validate((valid) => {
         if (valid) {
-          // eslint-disable-next-line no-alert
-          alert('submit!')
+          signin(this.dataForm).then(res => {
+            if (res.data.message === 'ok') {
+              if (res.data.is_admin) {
+                this.$router.push('/admin')
+              } else {
+                this.$router.push('/home')
+              }
+            }
+
+          }).catch(err => {
+            console.log(err)
+          })
         } else {
           console.log('error submit!!')
           return false

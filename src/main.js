@@ -7,8 +7,10 @@ import elementui from 'element-ui'
 import vuex from 'vuex'
 import 'element-ui/lib/theme-chalk/index.css'
 import '@/styles/main.scss'
+import './mock'
 
 Vue.use(vuex)
+
 Vue.use(elementui)
 Vue.config.productionTip = false
 
