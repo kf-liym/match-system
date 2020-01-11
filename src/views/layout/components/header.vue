@@ -14,7 +14,7 @@
       </el-button>
     </div>
     <div class="username">
-      {{ username }}
+      {{ $store.state.user.username }}
     </div>
   </div>
 </template>
@@ -25,7 +25,6 @@ export default {
   props: {},
   data () {
     return {
-      username: '用户名'
     }
   },
   computed: {},

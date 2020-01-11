@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="提示" :visible.sync="visibles" width="80%" :before-close="handleClose" class="check-wrap">
+  <el-dialog title="查看信息" :visible.sync="visibles" width="80%" :before-close="handleClose" class="check-wrap">
     <div class="body">
       <ul class="report-team-info">
         <li>责任书：{{ value.responsibility.length > 0 ? '' : '无' }}</li>

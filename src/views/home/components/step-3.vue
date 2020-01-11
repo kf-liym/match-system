@@ -743,7 +743,7 @@ export default {
     },
     confirm (index) {
       console.log(this.personalProjects)
-      let formName = 'form' + index
+      let formName = `form${index}`
       console.log(formName, this.$refs)
       console.log(this.$refs[formName])
       this.$refs[formName][0].validate((valid) => {
@@ -786,7 +786,7 @@ export default {
     },
     // 保存对练报项信息
     confirmduelObj (index) {
-      let duelform = 'duelform' + index
+      let duelform = `duelform${index}`
       this.$refs[duelform][0].validate((valid) => {
         if (valid) {
           alert('submit!')

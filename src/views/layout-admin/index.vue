@@ -38,6 +38,7 @@ export default {
   created () {
     const route = this.$route.path.split('/')
     this.active = route[route.length - 1]
+
   },
   mounted () {
   },
