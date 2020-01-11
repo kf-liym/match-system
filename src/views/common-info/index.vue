@@ -31,33 +31,30 @@
               <tr v-for="(item,index) in applicantList" :key="index">
                 <td>{{index}}</td>
                 <td>
-                  <el-form-item :prop="`applicantList[${index}].name`" :rules="rules.name">
-
-                    <el-input v-model="item.name" ></el-input>
+                  <el-form-item :prop="`applicantList[${index}].name`" >
+                    <el-input v-model="item.name" :readonly="item.readonly" ></el-input>
                   </el-form-item>
                 </td>
                 <td>
-                  <el-form-item :prop="`applicantList[${index}].certificate`" :rules="rules.certificate">
-
-                    <el-input v-model="item.certificate"></el-input>
+                  <el-form-item :prop="`applicantList[${index}].certificate`" >
+                    <el-input v-model="item.certificate" :readonly="item.readonly"></el-input>
                   </el-form-item>
                 </td>
                 <td>
-                  <el-form-item :prop="`applicantList[${index}].IDNumber`" :rules="rules.IDNumber">
-                    <el-input v-model="item.IDNumber"></el-input>
+                  <el-form-item :prop="`applicantList[${index}].IDNumber`" >
+                    <el-input v-model="item.IDNumber" :readonly="item.readonly"></el-input>
                   </el-form-item>
                 </td>
                     <td>
-                  <el-form-item :prop="`applicantList[${index}].sex`" :rules="rules.sex">
-                    <el-input v-model="item.group"></el-input>
+                  <el-form-item :prop="`applicantList[${index}].sex`" >
+                    <el-input v-model="item.sex" :readonly="item.readonly"></el-input>
                   </el-form-item>
                 </td>
                 <td>
-                  <el-form-item :prop="`applicantList[${index}].birth`" :rules="rules.birth">
-                    <el-input v-model="item.birth"></el-input>
+                  <el-form-item :prop="`applicantList[${index}].birth`" >
+                    <el-input v-model="item.birth" :readonly="item.readonly"></el-input>
                   </el-form-item>
                 </td>
-
                 <td>
                   <el-button type="primary" @click="save(index)">保存</el-button> <el-button type="primary" @click="deleteInfo(index)">删除</el-button></td>
               </tr>
@@ -88,26 +85,27 @@ export default {
         certificate: '', // 证件类型
         IDNumber: '',
         birth: '',
-        sex: ''
+        sex: '',
+        readonly: false
       }
-      ],
-      rules: {
-        name: [
-          { required: true, message: '请输入报名人姓名', trigger: 'blur' }
-        ],
-        certificate: [
-          { required: true, message: '请选择证件类型', trigger: 'blur' }
-        ],
-        IDNumber: [
-          { required: true, message: '请输入证件号码', trigger: 'blur' }
-        ],
-        birth: [
-          { required: true, message: '请输入出生年月', trigger: 'blur' }
-        ],
-        sex: [
-          { required: true, message: '请输入性别', trigger: 'blur' }
-        ]
-      }
+      ]
+      // rules: {
+      //   name: [
+      //     { required: true, message: '请输入报名人姓名', trigger: 'blur' }
+      //   ],
+      //   certificate: [
+      //     { required: true, message: '请选择证件类型', trigger: 'blur' }
+      //   ],
+      //   IDNumber: [
+      //     { required: true, message: '请输入证件号码', trigger: 'blur' }
+      //   ],
+      //   birth: [
+      //     { required: true, message: '请输入出生年月', trigger: 'blur' }
+      //   ],
+      //   sex: [
+      //     { required: true, message: '请输入性别', trigger: 'blur' }
+      //   ]
+      // }
     };
   },
   computed: {
@@ -123,12 +121,22 @@ export default {
 
   },
   methods: {
+    //保存常用人信息
     save (index) {
       console.log('保存信息')
+      if (this.applicantList[index].readonly === false) {
+        this.applicantList[index].readonly = true
+        this.$store.commit('setApplicantListArray', this.applicantList[index])
+        console.log(this.applicantList[index])
+        console.log(this.$store.state)
+
+      }
     },
     deleteInfo (index) {
       console.log('删除信息')
       this.applicantList.splice(index, 1)
+      this.$store.commit('removeApplicant', index)
+
     },
     addInfo () {
       let info = {
@@ -136,7 +144,8 @@ export default {
         certificate: '', // 证件类型
         IDNumber: '',
         birth: '',
-        sex: ''
+        sex: '',
+        readonly: false
       }
       this.applicantList.push(info)
       console.log(this.applicantList)

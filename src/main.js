@@ -4,9 +4,11 @@ import './registerServiceWorker'
 import router from './router'
 import store from './store'
 import elementui from 'element-ui'
+import vuex from 'vuex'
 import 'element-ui/lib/theme-chalk/index.css'
 import '@/styles/main.scss'
 
+Vue.use(vuex)
 Vue.use(elementui)
 Vue.config.productionTip = false
 

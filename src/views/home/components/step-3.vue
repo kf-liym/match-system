@@ -27,7 +27,11 @@
                   <el-col :span="12" class="grid-content">
                     <div>
                       <el-form-item label="姓名" prop="name">
-                        <el-input v-model="person.name" />
+                        <el-input v-model="person.name">
+                          <template slot="append">
+                            <i class="el-icon-user" @click="showImportApplicantDailog()"></i>
+                          </template>
+                        </el-input>
                       </el-form-item>
                     </div>
                   </el-col>
@@ -69,7 +73,7 @@
                 <el-row>
                   <el-col :span="12">
                     <div class="grid-content">
-                      <el-form-item label="出生日期" prop="birth" >
+                      <el-form-item label="出生日期" prop="birth">
                         <el-date-picker v-model="person.birth" type="date" placeholder="选择日期"></el-date-picker>
                       </el-form-item>
                     </div>
@@ -162,7 +166,6 @@
                 class="header-icon el-icon-delete"
                 @click="deleteduelObj.stop(duelIndex)"
               ></i>
-              <i class="header-icon1 el-icon-s-custom" @click.stop="choosePerson()"></i>
             </template>
             <div class="personal-info-item">
               <el-form
@@ -203,7 +206,11 @@
                   <el-col :span="12" class="grid-content">
                     <div>
                       <el-form-item label="姓名" prop="name">
-                        <el-input v-model="duelObj.participants[0].name" />
+                        <el-input v-model="duelObj.participants[0].name">
+                          <template slot="append">
+                            <i class="el-icon-user" @click="showImportApplicantDailog()"></i>
+                          </template>
+                        </el-input>
                       </el-form-item>
                     </div>
                   </el-col>
@@ -267,7 +274,11 @@
                   <el-col :span="12" class="grid-content">
                     <div>
                       <el-form-item label="姓名" prop="name">
-                        <el-input v-model="duelObj.participants[1].name" />
+                        <el-input v-model="duelObj.participants[1].name">
+                          <template slot="append">
+                            <i class="el-icon-user" @click="showImportApplicantDailog()"></i>
+                          </template>
+                        </el-input>
                       </el-form-item>
                     </div>
                   </el-col>
@@ -350,7 +361,6 @@
                 class="header-icon el-icon-delete"
                 @click.stop="deleteGroupObj(groupIndex)"
               ></i>
-              <i class="header-icon1 el-icon-s-custom" @click.stop="choosePerson()"></i>
             </template>
             <div class="personal-info-item">
               <el-form
@@ -434,7 +444,11 @@
                     <el-col :span="12" class="grid-content">
                       <div>
                         <el-form-item label="姓名" prop="name">
-                          <el-input v-model="groupObj.team[index].name" />
+                          <el-input v-model="groupObj.team[index].name">
+                            <template slot="append">
+                              <i class="el-icon-user" @click="showImportApplicantDailog()"></i>
+                            </template>
+                          </el-input>
                         </el-form-item>
                       </div>
                     </el-col>
@@ -507,6 +521,56 @@
         <div class="add-personal-info" @click="addTeamObj()">新增团体报项</div>
       </el-tab-pane>
     </el-tabs>
+    <el-dialog title="选择导入报名人信息" :visible.sync="dialogVisible" width="75%" :before-close="handleClose">
+          <div class="common-info">
+          <table
+            class="common-info-table"
+            border="1"
+            cellspacing="0"
+            cellpadding="10"
+            align="center"
+          >
+            <thead>
+              <tr>
+                <th width="150">序号</th>
+                <th width="250">姓名</th>
+                <th width="300">证件类型</th>
+                <th width="300">证件号码</th>
+                <th width="150">性别</th>
+                <th width="250">出生日期</th>
+                <th width="300">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item,index) in $store.state.applicants.applicantList" :key="index">
+                <td>{{index}}</td>
+                <td>
+                  {{item.name}}
+                </td>
+                <td>
+                   {{item.certificate}}
+                </td>
+                <td>
+                   {{item.IDNumber}}
+                </td>
+                    <td>
+                       {{item.group}}
+                </td>
+                <td>
+                   {{item.birth}}
+                </td>
+                <td>
+                  <el-button type="primary" @click="importInfo(index)">导入</el-button> </td>
+              </tr>
+            </tbody>
+          </table>
+
+
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -521,6 +585,7 @@ export default {
   },
   data () {
     return {
+      dialogVisible: false, //导入常用联系人弹框
       activeName: 'third',
       activeNames: ['1'],
       // 个人报项信息数组
@@ -905,8 +970,21 @@ export default {
         })
       }
     },
-    choosePerson () {
+    //显示导入常用联系人信息面板
+    showImportApplicantDailog () {
       console.log('选择常用报名人')
+      this.dialogVisible = true
+    },
+    //导入报名人信息
+    importInfo () {
+
+    },
+    handleClose (done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          done();
+        })
+        .catch(_ => {});
     },
     handleClick (tab, event) {
       console.log(tab, event)
