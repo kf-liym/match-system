@@ -149,7 +149,7 @@ export default {
   },
   methods: {
     handleConfirm () {
-      this.$set(this.values, 'status', 1)
+      this.$set(this.values, 'status', '已提交')
     }
   }
 }
