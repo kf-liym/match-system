@@ -65,6 +65,7 @@ export default {
       this.dialogVisible = true
     },
     nextStep () {
+      this.$store.commit('SET_STEP', 1)
       this.$router.push('/home/step2')
     }
 

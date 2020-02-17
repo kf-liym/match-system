@@ -3,7 +3,7 @@
  * @Author: liym
  * @Date: 2020-02-14 17:57:29
  * @Last Modified by: liym
- * @Last Modified time: 2020-02-17 02:19:41
+ * @Last Modified time: 2020-02-17 20:57:00
  */
 
 <template>
@@ -20,7 +20,7 @@
         </template>
         <div class="personal-info-item">
           <el-form class="form-wrap" label-width="140px">
-            <el-form-item label="项目名称：" prop="duelType">
+            <el-form-item label="项目名称：" prop="itemType">
               <el-input style="width: 100%;" v-model="duel[index]" readonly />
             </el-form-item>
             <el-form-item label="姓名：" prop="name">
@@ -81,8 +81,8 @@ export default {
       active: [],
       // 对练项目选项
       duelOptions: [
-        '双人太极拳对练',
-        '双人太极器械对练'
+        { label: '双人太极拳对练', type: 1 },
+        { label: '双人太极器械对练', type: 1 }
       ]
     };
   },
@@ -98,7 +98,7 @@ export default {
     duel () {
       let arr = []
       this.list.forEach((item, index) => {
-        arr[index] = item.duelName ? `${item.duelType}（${item.duelName}）` : item.duelType
+        arr[index] = item.itemName ? `${item.itemType.label}（${item.itemName}）` : item.itemType.label
       })
       return arr
     },

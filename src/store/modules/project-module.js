@@ -1,49 +1,10 @@
 export default {
   state: {
-    person: [
-      {
-        id: '',
-        name: 'dddd',
-        certificate: '', // 证件类型
-        idcard: '',
-        birth: '',
-        sex: '',
-        size: '',
-        group: '',
-        project: {
-          boxing: {
-            label: 'ddd',
-            type: 0
-          }, // 拳术项目
-          boxingRoutine: '', // 拳术套路名称
-          instrument: {
-            label: 'eee',
-            type: 0
-          }, // 器械项目
-          instrumentRoutine: 'ee' // 器械套路名称
-        }
-
-      },
-      {
-        id: '',
-        name: 'dddd',
-        certificate: '', // 证件类型
-        idcard: '',
-        birth: '',
-        sex: '',
-        size: '',
-        group: '',
-        project: {
-          boxing: {
-            label: 'ddd',
-            type: 0
-          }, // 拳术项目
-          boxingRoutine: 'cc', // 拳术套路名称
-          instrument: {}, // 器械项目
-          instrumentRoutine: 'ee' // 器械套路名称
-        }
-      }
-    ],
+    step: 0,
+    status: '未提交',
+    responsibility: [],
+    remittance: [],
+    person: [],
     duel: [],
     collective: [],
     team: {
@@ -54,6 +15,18 @@ export default {
     }
   },
   mutations: {
+    SET_STEP: (state, step) => {
+      state.step = step
+    },
+    SET_STATUS: (state, status) => {
+      state.status = status
+    },
+    SET_RESPONSIBILITY: (state, responsibility) => {
+      state.responsibility = responsibility
+    },
+    SET_REMITTANCE: (state, remittance) => {
+      state.remittance = remittance
+    },
     SET_PERSON: (state, person) => {
       state.person = person;
     },

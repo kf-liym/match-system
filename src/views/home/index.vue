@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import { getProject } from '@/api'
 export default {
   components: {
   },
@@ -27,7 +28,6 @@ export default {
   },
   data () {
     return {
-      active: 0,
       step: [
         {
           title: '上传责任书'
@@ -164,6 +164,22 @@ export default {
     // componentId () {
     //   return this.stepComponent[this.active]
     // }
+    active: {
+      get () {
+        return this.$store.state.project.step
+      },
+      set (val) {
+        this.$store.commit('SET_STEP', val)
+      }
+    },
+    status: {
+      get () {
+        return this.$store.state.project.status
+      },
+      set (val) {
+        this.$store.commit('SET_STATUS', val)
+      }
+    }
   },
   watch: {
 
@@ -172,11 +188,29 @@ export default {
 
   },
   mounted () {
-    this.active = parseInt(this.$route.name.substr(-1)) - 1
+    // this.active = parseInt(this.$route.name.substr(-1)) - 1
+    getProject().then(res => {
+      console.log(res.data)
+      this.$store.commit('SET_STATUS', res.data.status)
+      this.$store.commit('SET_RESPONSIBILITY', res.data.responsibility)
+      this.$store.commit('SET_REMITTANCE', res.data.remittance)
+      this.$store.commit('SET_TEAM', res.data.team)
+      this.$store.commit('SET_PERSON', res.data.person)
+      this.$store.commit('SET_DULE', res.data.duel)
+      this.$store.commit('SET_COLLECTIVE', res.data.collective)
+      if (res.data.status !== '未提交') {
+        this.active = 5
+        if (parseInt(this.$route.name.substr(-1)) !== 6) {
+          this.$router.push('/home/step6')
+        }
+      }
+    }).catch(err => {
+      console.log(err)
+    })
   },
   methods: {
     handleStep (index) {
-      if (this.active === index) {return}
+      if (this.active === index || this.status !== '未提交') {return}
       // if (this.info.status !== 0) { return }
       this.active = index
       this.$router.push(`/home/step${index + 1}`)

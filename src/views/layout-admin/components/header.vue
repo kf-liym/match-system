@@ -11,6 +11,7 @@ export default {
   props: {},
   data () {
     return {
+      username: ''
     }
   },
   computed: {},

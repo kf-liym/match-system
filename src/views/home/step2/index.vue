@@ -72,6 +72,7 @@ export default {
       teamInfo(this.teamInfo).then(res => {
         if (res.data.message === 'ok') {
           this.$store.commit('SET_TEAM', this.teamInfo)
+          this.$store.commit('SET_STEP', 0)
           this.$router.push('/home/step1')
         }
       }).catch(err => {
@@ -83,6 +84,7 @@ export default {
       teamInfo(this.teamInfo).then(res => {
         if (res.data.message === 'ok') {
           this.$store.commit('SET_TEAM', this.teamInfo)
+          this.$store.commit('SET_STEP', 2)
           this.$router.push('/home/step3')
         }
 

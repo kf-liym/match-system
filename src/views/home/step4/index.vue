@@ -10,17 +10,13 @@
     <div class="report-item">
       <div class="report-item__header">个人项目</div>
       <el-table class="report-item__body" :data="person" border fit style="width: 100%;">
-        <el-table-column prop="index" label="序号" width="50"></el-table-column>
+        <el-table-column type="index" label="序号" width="50"></el-table-column>
         <el-table-column prop="name" label="姓名" width="100"></el-table-column>
         <el-table-column prop="idcard" label="证件号码" width="180"></el-table-column>
         <el-table-column prop="birth" label="出生日期" width="110"></el-table-column>
         <el-table-column prop="sex" label="性别" width="60"></el-table-column>
-        <el-table-column prop="group" label="组别" width="110"></el-table-column>
-        <el-table-column label="项目名称" min-width="280">
-          <template slot-scope="scope">
-            {{scope.row.item}}
-          </template>
-        </el-table-column>
+        <el-table-column prop="group" label="组别" width="115"></el-table-column>
+        <el-table-column prop="item" label="项目名称" min-width="280"></el-table-column>
         <el-table-column prop="cost" label="费用"></el-table-column>
       </el-table>
       <div class="cost-box">合计：{{personalCost}} 元</div>
@@ -30,21 +26,12 @@
       <div class="report-item__header">对练项目</div>
       <el-table class="report-item__body" :data="duel" border fit style="width: 100%;">
         <el-table-column prop="index" label="序号" width="50"></el-table-column>
-        <el-table-column prop="name" label="姓名" width="100">
-          <template slot-scope="scope">
-            {{scope.row.duelType}}
-          </template>
-        </el-table-column>
+        <el-table-column prop="name" label="姓名" width="100"></el-table-column>
         <el-table-column prop="idcard" label="证件号码" width="180"></el-table-column>
         <el-table-column prop="birth" label="出生日期" width="110"></el-table-column>
         <el-table-column prop="sex" label="性别" width="60"></el-table-column>
-        <el-table-column prop="group" label="组别" width="110"></el-table-column>
-        <el-table-column prop="projectName" label="项目名称" min-width="280">
-           <template slot-scope="scope">
-            {{scope.row.duelType ? scope.row.duelType : ''}}
-            {{scope.row.duelName ? '-'+scope.row.duelName : ''}}
-          </template>
-        </el-table-column>
+        <el-table-column prop="group" label="组别" width="80"></el-table-column>
+        <el-table-column prop="item" label="项目名称" min-width="280"></el-table-column>
         <el-table-column prop="cost" label="费用"></el-table-column>
       </el-table>
       <div class="cost-box">合计：{{duelCost}} 元</div>
@@ -59,7 +46,7 @@
         <el-table-column prop="birth" label="出生日期" width="110"></el-table-column>
         <el-table-column prop="sex" label="性别" width="60"></el-table-column>
         <el-table-column prop="group" label="组别" width="110"></el-table-column>
-        <el-table-column prop="projectName" label="项目名称" min-width="280"></el-table-column>
+        <el-table-column prop="item" label="项目名称" min-width="280"></el-table-column>
       </el-table>
       <div class="cost-box">合计：{{collectiveCost}} 元</div>
     </div>
@@ -81,7 +68,7 @@
 </template>
 
 <script>
-import { peojectList } from '@/api'
+import { getProject } from '@/api'
 export default {
   name: 'Step4',
   components: {
@@ -125,28 +112,39 @@ export default {
       return arr
     },
     duel () {
-      return this.$store.state.project.duel
-      // let arr = []
-      // this.$store.state.project.duel.forEach((item, index) => {
-      //   if (item.project.boxing && item.project.boxing.label) {
-      //     arr.push({
-      //       ...item,
-      //       item: `${item.project.boxing.label}${item.project.boxingRoutine ? '-' : ''}${item.project.boxingRoutine}`,
-      //       cost: 50
-      //     })
-      //   }
-      //   if (item.project.instrument && item.project.instrument.label) {
-      //     arr.push({
-      //       ...item,
-      //       item: `${item.project.instrument.label}${item.project.instrumentRoutine ? '-' : ''}${item.project.instrumentRoutine}`,
-      //       cost: 50
-      //     })
-      //   }
-      // })
-      // return arr
+      // return this.$store.state.project.duel
+      let arr = []
+      this.$store.state.project.duel.forEach((item, index) => {
+        item.contestants.forEach((contestant, contestantsIndex) => {
+          arr.push({
+            index: `${index + 1}-${contestantsIndex + 1}`,
+            ...contestant,
+            itemType: item.itemType,
+            itemName: item.itemName,
+            item: `${item.itemType.label}${item.itemName ? '-' : ''}${item.itemName}`,
+            cost: 50
+          })
+        })
+      })
+      return arr
     },
     collective () {
-      return this.$store.state.project.collective
+      // return this.$store.state.project.collective
+      let arr = []
+      this.$store.state.project.collective.forEach((item, index) => {
+        item.contestants.forEach((contestant, contestantsIndex) => {
+          console.log(contestant)
+          arr.push({
+            index: `${index + 1}-${contestantsIndex + 1}`,
+            ...contestant,
+            itemType: item.itemType,
+            itemName: item.itemName,
+            item: `${item.itemType.label}${item.itemName ? '-' : ''}${item.itemName}`,
+            cost: 50
+          })
+        })
+      })
+      return arr
     },
     personalCost () {
       let cost = 0
@@ -186,10 +184,14 @@ export default {
 
   },
   created () {
-    peojectList().then(res => {
-      this.$store.commit('SET_PERSON', this.res.data.person)
-      this.$store.commit('SET_DULE', this.res.data.duel)
-      this.$store.commit('SET_COLLECTIVE', this.res.data.collective)
+    getProject().then(res => {
+      this.$store.commit('SET_STATUS', res.data.status)
+      this.$store.commit('SET_RESPONSIBILITY', res.data.responsibility)
+      this.$store.commit('SET_REMITTANCE', res.data.remittance)
+      this.$store.commit('SET_TEAM', res.data.team)
+      this.$store.commit('SET_PERSON', res.data.person)
+      this.$store.commit('SET_DULE', res.data.duel)
+      this.$store.commit('SET_COLLECTIVE', res.data.collective)
     }).catch(err => {
       console.log(err)
     })
@@ -199,9 +201,11 @@ export default {
   },
   methods: {
     prevStep () {
+      this.$store.commit('SET_STEP', 2)
       this.$router.push('/home/step3')
     },
     nextStep () {
+      this.$store.commit('SET_STEP', 4)
       this.$router.push('/home/step5')
     }
   }

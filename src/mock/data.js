@@ -53,106 +53,204 @@ export const teamsList = Mock.mock({
     coachName: '@cname',
     // 责任书
     responsibility: [
-      'http://img0.imgtn.bdimg.com/it/u=189938348,3034038280&fm=26&gp=0.jpg',
-      'http://img5.imgtn.bdimg.com/it/u=2559439006,2478746735&fm=26&gp=0.jpg'
+      'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2844401865,2654823704&fm=26&gp=0.jpg',
+      'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1305353222,2352820043&fm=26&gp=0.jpg'
     ],
     // 汇款证明
     remittance: [
-      'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3040939732,336847597&fm=26&gp=0.jpg',
-      'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=107997246,254265976&fm=26&gp=0.jpg'
+      'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1207178343,294634082&fm=26&gp=0.jpg',
+      'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1282658402,332009284&fm=26&gp=0.jpg'
     ],
-    personalProject: [{
-      index: '1',
-      name: '@cname',
-      idcard: '440671199725145421',
-      birth: '1997-02-12',
-      sex: '男',
-      group: '男子少年组',
-      projectName: '传统拳术-蔡李佛拳-杠力拳',
-      cost: 50
+    person: [{
+      id: '001',
+      name: 'dddd',
+      certificate: '身份证', // 证件类型
+      idcard: '445221199312254545',
+      birth: '1993-12-25',
+      sex: '女',
+      size: '大码',
+      group: '少年组（A组）',
+      project: {
+        boxing: {
+          label: 'ddd',
+          type: 1
+        }, // 拳术项目
+        boxingRoutine: '', // 拳术套路名称
+        instrument: {
+          label: 'eee',
+          type: 0
+        }, // 器械项目
+        instrumentRoutine: 'ee' // 器械套路名称
+      }
+
     }, {
-      index: '2',
-      name: '@cname',
-      idcard: '440671199725145421',
-      birth: '1997-02-12',
-      sex: '男',
-      group: '男子少年组',
-      projectName: '传统拳术-蔡李佛拳-杠力拳',
-      cost: 50
-    }, {
-      index: '3',
-      name: '@cname',
-      idcard: '440671199725145421',
-      birth: '1997-02-12',
-      sex: '男',
-      group: '男子少年组',
-      projectName: '传统拳术-蔡李佛拳-杠力拳',
-      cost: 50
+      id: '001',
+      name: 'dddd',
+      certificate: '身份证', // 证件类型
+      idcard: '445221199312254545',
+      birth: '1993-12-25',
+      sex: '女',
+      size: '大码',
+      group: '少年组（A组）',
+      project: {
+        boxing: {
+          label: 'ddd',
+          type: 0
+        }, // 拳术项目
+        boxingRoutine: '', // 拳术套路名称
+        instrument: {}, // 器械项目
+        instrumentRoutine: '' // 器械套路名称
+      }
+
     }],
-    // 对练项目
-    duelExercises: [{
-      index: '1-1',
-      name: '@cname',
-      idcard: '440671199725145421',
-      birth: '1997-02-12',
-      sex: '男',
-      group: '男子少年组',
-      projectName: '传统拳术-蔡李佛拳-杠力拳',
-      cost: 50
+    duel: [{
+      contestants: [{
+        id: '001',
+        name: 'dddd',
+        certificate: '身份证', // 证件类型
+        idcard: '445221199312254545',
+        birth: '1993-12-25',
+        sex: '女',
+        size: '大码',
+        group: '少年组'
+      },
+      {
+        id: '001',
+        name: 'dddd',
+        certificate: '身份证', // 证件类型
+        idcard: '445221199312254545',
+        birth: '1993-12-25',
+        sex: '女',
+        size: '大码',
+        group: '少年组'
+      }
+      ],
+      itemType: {
+        label: '双人太极拳对练',
+        type: 0
+      },
+      itemName: 'dddddd'
     },
     {
-      index: '1-2',
-      name: '@cname',
-      idcard: '440671199725145421',
-      birth: '1997-02-12',
-      sex: '男',
-      group: '男子少年组',
-      projectName: '传统拳术-蔡李佛拳-杠力拳',
-      cost: 50
-    },
-    {
-      index: '2-1',
-      name: '@cname',
-      idcard: '440671199725145421',
-      birth: '1997-02-12',
-      sex: '男',
-      group: '男子少年组',
-      projectName: '传统拳术-蔡李佛拳-杠力拳',
-      cost: 50
-    },
-    {
-      index: '2-2',
-      name: '@cname',
-      idcard: '440671199725145421',
-      birth: '1997-02-12',
-      sex: '男',
-      group: '男子少年组',
-      projectName: '传统拳术-蔡李佛拳-杠力拳',
-      cost: 50
+      contestants: [{
+        id: '001',
+        name: 'dddd',
+        certificate: '身份证', // 证件类型
+        idcard: '445221199312254545',
+        birth: '1993-12-25',
+        sex: '女',
+        size: '大码',
+        group: '少年组'
+      },
+      {
+        id: '001',
+        name: 'dddd',
+        certificate: '身份证', // 证件类型
+        idcard: '445221199312254545',
+        birth: '1993-12-25',
+        sex: '女',
+        size: '大码',
+        group: '少年组'
+      }
+      ],
+      itemType: {
+        label: '双人太极器械对练',
+        type: 0
+      },
+      itemName: ''
     }
     ],
-    // 集体项目
-    collectiveProject: [{
-      index: '1-1',
-      name: '@cname',
-      idcard: '440671199725145421',
-      birth: '1997-02-12',
-      sex: '男',
-      group: '男子少年组',
-      projectName: '传统拳术-蔡李佛拳-杠力拳',
-      cost: 50
-    },
-    {
-      index: '1-2',
-      name: '@cname',
-      idcard: '440671199725145421',
-      birth: '1997-02-12',
-      sex: '男',
-      group: '男子少年组',
-      projectName: '传统拳术-蔡李佛拳-杠力拳',
-      cost: 50
-    }
-    ]
+    collective: [{
+      contestants: [{
+        id: '001',
+        name: 'dddd',
+        certificate: '身份证', // 证件类型
+        idcard: '445221199312254545',
+        birth: '1993-12-25',
+        sex: '女',
+        size: '大码',
+        group: '少年组'
+      }, {
+        id: '001',
+        name: 'dddd',
+        certificate: '身份证', // 证件类型
+        idcard: '445221199312254545',
+        birth: '1993-12-25',
+        sex: '女',
+        size: '大码',
+        group: '少年组'
+      }, {
+        id: '001',
+        name: 'dddd',
+        certificate: '身份证', // 证件类型
+        idcard: '445221199312254545',
+        birth: '1993-12-25',
+        sex: '女',
+        size: '大码',
+        group: '少年组'
+      }],
+      itemType: {
+        label: '集体太极器械',
+        type: 1
+      },
+      itemName: 'dddddd'
+    }, {
+      contestants: [{
+        id: '001',
+        name: 'dddd',
+        certificate: '身份证', // 证件类型
+        idcard: '445221199312254545',
+        birth: '1993-12-25',
+        sex: '女',
+        size: '大码',
+        group: '少年组'
+      },
+      {
+        id: '001',
+        name: 'dddd',
+        certificate: '身份证', // 证件类型
+        idcard: '445221199312254545',
+        birth: '1993-12-25',
+        sex: '女',
+        size: '大码',
+        group: '少年组'
+      },
+      {
+        id: '001',
+        name: 'dddd',
+        certificate: '身份证', // 证件类型
+        idcard: '445221199312254545',
+        birth: '1993-12-25',
+        sex: '女',
+        size: '大码',
+        group: '少年组'
+      },
+      {
+        id: '001',
+        name: 'dddd',
+        certificate: '身份证', // 证件类型
+        idcard: '445221199312254545',
+        birth: '1993-12-25',
+        sex: '女',
+        size: '大码',
+        group: '少年组'
+      }, {
+        id: '001',
+        name: 'dddd',
+        certificate: '身份证', // 证件类型
+        idcard: '445221199312254545',
+        birth: '1993-12-25',
+        sex: '女',
+        size: '大码',
+        group: '少年组'
+      }
+      ],
+      itemType: {
+        label: '集体太极八法五步',
+        type: 0
+      },
+      itemName: ''
+    }]
   }]
 })
 

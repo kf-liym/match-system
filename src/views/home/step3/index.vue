@@ -42,7 +42,7 @@
 
 <script>
 
-import { peojectList } from '@/api'
+import { getProject } from '@/api'
 import commonApplicants from '../components/common-applicants'
 import Person from './components/person'
 import Duel from './components/duel'
@@ -87,10 +87,14 @@ export default {
 
   },
   mounted () {
-    peojectList().then(res => {
-      this.$store.commit('SET_PERSON', this.res.data.person)
-      this.$store.commit('SET_DULE', this.res.data.duel)
-      this.$store.commit('SET_COLLECTIVE', this.res.data.collective)
+    getProject().then(res => {
+      this.$store.commit('SET_STATUS', res.data.status)
+      this.$store.commit('SET_RESPONSIBILITY', res.data.responsibility)
+      this.$store.commit('SET_REMITTANCE', res.data.remittance)
+      this.$store.commit('SET_TEAM', res.data.team)
+      this.$store.commit('SET_PERSON', res.data.person)
+      this.$store.commit('SET_DULE', res.data.duel)
+      this.$store.commit('SET_COLLECTIVE', res.data.collective)
       this.$router.push('/home/step1')
     }).catch(err => {
       console.log(err)
@@ -112,9 +116,11 @@ export default {
     },
 
     prevStep () {
+      this.$store.commit('SET_STEP', 1)
       this.$router.push('/home/step2')
     },
     nextStep () {
+      this.$store.commit('SET_STEP', 3)
       this.$router.push('/home/step4')
     }
   },

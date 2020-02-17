@@ -24,28 +24,29 @@
       </ul>
       <div class="report-item">
         <div class="report-item__header">个人项目</div>
-        <el-table class="report-item__body" :data="value.personalProject" border fit style="width: 100%;">
-          <el-table-column prop="index" label="序号" width="50"></el-table-column>
+        <el-table class="report-item__body" :data="person" border fit style="width: 100%;">
+          <el-table-column type="index" label="序号" width="50"></el-table-column>
           <el-table-column prop="name" label="姓名" width="100"></el-table-column>
           <el-table-column prop="idcard" label="证件号码" width="180"></el-table-column>
           <el-table-column prop="birth" label="出生日期" width="110"></el-table-column>
           <el-table-column prop="sex" label="性别" width="60"></el-table-column>
-          <el-table-column prop="group" label="组别" width="110"></el-table-column>
-          <el-table-column prop="projectName" label="项目名称" min-width="280"></el-table-column>
+          <el-table-column prop="group" label="组别" width="115"></el-table-column>
+          <el-table-column prop="item" label="项目名称" min-width="280"></el-table-column>
           <el-table-column prop="cost" label="费用"></el-table-column>
         </el-table>
         <div class="cost-box">合计：{{personalCost}} 元</div>
       </div>
+
       <div class="report-item">
         <div class="report-item__header">对练项目</div>
-        <el-table class="report-item__body" :data="value.duelExercises" border fit style="width: 100%;">
+        <el-table class="report-item__body" :data="duel" border fit style="width: 100%;">
           <el-table-column prop="index" label="序号" width="50"></el-table-column>
           <el-table-column prop="name" label="姓名" width="100"></el-table-column>
           <el-table-column prop="idcard" label="证件号码" width="180"></el-table-column>
           <el-table-column prop="birth" label="出生日期" width="110"></el-table-column>
           <el-table-column prop="sex" label="性别" width="60"></el-table-column>
-          <el-table-column prop="group" label="组别" width="110"></el-table-column>
-          <el-table-column prop="projectName" label="项目名称" min-width="280"></el-table-column>
+          <el-table-column prop="group" label="组别" width="80"></el-table-column>
+          <el-table-column prop="item" label="项目名称" min-width="280"></el-table-column>
           <el-table-column prop="cost" label="费用"></el-table-column>
         </el-table>
         <div class="cost-box">合计：{{duelCost}} 元</div>
@@ -53,14 +54,14 @@
 
       <div class="report-item">
         <div class="report-item__header">集体项目</div>
-        <el-table class="report-item__body" :data="value.collectiveProject" border fit style="width: 100%;">
+        <el-table class="report-item__body" :data="collective" border fit style="width: 100%;">
           <el-table-column prop="index" label="序号" width="50"></el-table-column>
           <el-table-column prop="name" label="姓名" width="100"></el-table-column>
           <el-table-column prop="idcard" label="证件号码" width="180"></el-table-column>
           <el-table-column prop="birth" label="出生日期" width="110"></el-table-column>
           <el-table-column prop="sex" label="性别" width="60"></el-table-column>
           <el-table-column prop="group" label="组别" width="110"></el-table-column>
-          <el-table-column prop="projectName" label="项目名称" min-width="280"></el-table-column>
+          <el-table-column prop="item" label="项目名称" min-width="280"></el-table-column>
         </el-table>
         <div class="cost-box">合计：{{collectiveCost}} 元</div>
       </div>
@@ -96,13 +97,12 @@ export default {
   },
   data () {
     return {
-      // visible: false
-
-      cover: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-      cover1: 'https://fuss10.elemecdn.com/1/8e/aeffeb4de74e2fde4bd74fc7b4486jpeg.jpeg',
+      // visible: false,
+      cover: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2844401865,2654823704&fm=26&gp=0.jpg',
+      cover1: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1305353222,2352820043&fm=26&gp=0.jpg',
       srcList: [
-        'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-        'https://fuss10.elemecdn.com/1/8e/aeffeb4de74e2fde4bd74fc7b4486jpeg.jpeg'
+        'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1207178343,294634082&fm=26&gp=0.jpg',
+        'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1282658402,332009284&fm=26&gp=0.jpg'
       ]
     }
   },
@@ -115,27 +115,96 @@ export default {
         this.$emit('update:visible', val)
       }
     },
-    // 个人项目费用汇总
+    responsibility: {
+      get () {
+        return this.value.responsibility
+      },
+      set (val) {
+        this.$store.commit('SET_RESPONSIBILITY', val)
+      }
+    },
+    remittance: {
+      get () {
+        return this.value.remittance
+      },
+      set (val) {
+        this.$store.commit('SET_REMITTANCE', val)
+      }
+    },
+    person () {
+      let arr = []
+      this.value.person.forEach(item => {
+        if (item.project.boxing && item.project.boxing.label) {
+          arr.push({
+            ...item,
+            item: `${item.project.boxing.label}${item.project.boxingRoutine ? '-' : ''}${item.project.boxingRoutine}`,
+            cost: 50
+          })
+        }
+        if (item.project.instrument && item.project.instrument.label) {
+          arr.push({
+            ...item,
+            item: `${item.project.instrument.label}${item.project.instrumentRoutine ? '-' : ''}${item.project.instrumentRoutine}`,
+            cost: 50
+          })
+        }
+      })
+      return arr
+    },
+    duel () {
+      // return this.$store.state.project.duel
+      let arr = []
+      // console.log(this.$store.state.project.duel)
+      this.value.duel.forEach((item, index) => {
+        item.contestants.forEach((contestant, contestantsIndex) => {
+          arr.push({
+            index: `${index + 1}-${contestantsIndex + 1}`,
+            ...contestant,
+            itemType: item.itemType,
+            itemName: item.itemName,
+            item: `${item.itemType.label}${item.itemName ? '-' : ''}${item.itemName}`,
+            cost: 50
+          })
+        })
+      })
+      return arr
+    },
+    collective () {
+      // return this.$store.state.project.collective
+      let arr = []
+      this.value.collective.forEach((item, index) => {
+        item.contestants.forEach((contestant, contestantsIndex) => {
+          // console.log(contestant)
+          arr.push({
+            index: `${index + 1}-${contestantsIndex + 1}`,
+            ...contestant,
+            itemType: item.itemType,
+            itemName: item.itemName,
+            item: `${item.itemType.label}${item.itemName ? '-' : ''}${item.itemName}`,
+            cost: 50
+          })
+        })
+      })
+      return arr
+    },
     personalCost () {
       let cost = 0
-      this.value.personalProject.forEach(element => {
-        cost += parseInt(element.cost)
+      this.person.forEach(element => {
+        cost += element.cost
       })
       return cost
     },
-    // 对练项目费用汇总
     duelCost () {
       let cost = 0
-      this.value.duelExercises.forEach(element => {
-        cost += parseInt(element.cost)
+      this.duel.forEach(element => {
+        cost += element.cost
       })
       return cost
     },
-    // 集体项目费用汇总
     collectiveCost () {
       let cost = 0
-      this.value.collectiveProject.forEach(element => {
-        cost += parseInt(element.cost)
+      this.collective.forEach(element => {
+        cost += element.cost
       })
       return cost
     },

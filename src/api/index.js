@@ -73,9 +73,9 @@ export function teamInfo (data) {
 /**
  * 获取报项列表
  */
-export function peojectList () {
+export function getProject () {
   return request({
-    url: '/api/project/list',
+    url: '/api/project/info',
     method: 'get'
   })
 }
@@ -134,5 +134,15 @@ export function collectiveDel (id) {
   return request({
     url: `/api/collective/${id}`,
     method: 'delete'
+  })
+}
+/**
+ * 获取表单状态
+ */
+export function getStatus (data) {
+  return request({
+    url: '/api/project/status',
+    method: 'get',
+    params: data
   })
 }

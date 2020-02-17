@@ -3,7 +3,7 @@
  * @Author: liym
  * @Date: 2020-02-14 16:40:41
  * @Last Modified by: liym
- * @Last Modified time: 2020-02-16 23:31:38
+ * @Last Modified time: 2020-02-17 21:02:01
  */
 
 <template>
@@ -17,21 +17,21 @@
     :close-on-press-escape="false"
   >
     <el-form class="form-wrap" ref="formEdit" :hide-required-asterisk="true" :model="edit" :rules="rules" label-width="140px">
-      <el-form-item prop="duelType">
+      <el-form-item prop="itemType">
         <template slot="label">
           <span style="color: #F56C6C; margin-right: 4px;">*</span>
           项目类型：
         </template>
-        <el-select v-model="edit.duelType" placeholder="请选择报名项目" clearable style="width: 100%">
-          <el-option v-for="(item,index)  in duelOptions" :key="index" :label="item" :value="item"></el-option>
+        <el-select v-model="edit.itemType" placeholder="请选择报名项目" clearable value-key="label" style="width: 100%">
+          <el-option v-for="(item,index)  in duelOptions" :key="index" :label="item.label" :value="item"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item prop="duelName">
+      <el-form-item prop="itemName">
         <template slot="label">
           <span style="color: #F56C6C;  margin-right: 4px;">*</span>
           项目名称：
         </template>
-        <el-input style="width: 100%;" v-model="edit.duelName" placeholder="请补充项目名称" />
+        <el-input style="width: 100%;" v-model="edit.itemName" placeholder="请补充项目名称" />
       </el-form-item>
       <el-form-item prop="0" :rules="rules.contestants">
         <template slot="label">
@@ -96,22 +96,22 @@ export default {
       },
       template: {
         contestants: [],
-        duelType: '',
-        duelName: ''
+        itemType: '',
+        itemName: ''
       },
       edit: {
         contestants: [],
-        duelType: '',
-        duelName: ''
+        itemType: '',
+        itemName: ''
       },
       rules: {
         contestants: [
           { validator: this.validateContestants, trigger: 'change' }
         ],
-        duelType: [
+        itemType: [
           { required: true, message: '请选择项目类型', trigger: 'change' }
         ],
-        duelName: [
+        itemName: [
           { required: true, message: '请填写项目名称', trigger: 'blur' }
         ]
       },
