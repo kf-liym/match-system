@@ -27,7 +27,7 @@
         <el-table class="report-item__body" :data="value.personalProject" border fit style="width: 100%;">
           <el-table-column prop="index" label="序号" width="50"></el-table-column>
           <el-table-column prop="name" label="姓名" width="100"></el-table-column>
-          <el-table-column prop="IDNumber" label="证件号码" width="180"></el-table-column>
+          <el-table-column prop="idcard" label="证件号码" width="180"></el-table-column>
           <el-table-column prop="birth" label="出生日期" width="110"></el-table-column>
           <el-table-column prop="sex" label="性别" width="60"></el-table-column>
           <el-table-column prop="group" label="组别" width="110"></el-table-column>
@@ -41,7 +41,7 @@
         <el-table class="report-item__body" :data="value.duelExercises" border fit style="width: 100%;">
           <el-table-column prop="index" label="序号" width="50"></el-table-column>
           <el-table-column prop="name" label="姓名" width="100"></el-table-column>
-          <el-table-column prop="IDNumber" label="证件号码" width="180"></el-table-column>
+          <el-table-column prop="idcard" label="证件号码" width="180"></el-table-column>
           <el-table-column prop="birth" label="出生日期" width="110"></el-table-column>
           <el-table-column prop="sex" label="性别" width="60"></el-table-column>
           <el-table-column prop="group" label="组别" width="110"></el-table-column>
@@ -56,7 +56,7 @@
         <el-table class="report-item__body" :data="value.collectiveProject" border fit style="width: 100%;">
           <el-table-column prop="index" label="序号" width="50"></el-table-column>
           <el-table-column prop="name" label="姓名" width="100"></el-table-column>
-          <el-table-column prop="IDNumber" label="证件号码" width="180"></el-table-column>
+          <el-table-column prop="idcard" label="证件号码" width="180"></el-table-column>
           <el-table-column prop="birth" label="出生日期" width="110"></el-table-column>
           <el-table-column prop="sex" label="性别" width="60"></el-table-column>
           <el-table-column prop="group" label="组别" width="110"></el-table-column>

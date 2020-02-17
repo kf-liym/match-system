@@ -5,7 +5,9 @@
       <el-button type="text" @click="backHome()">首页</el-button>
     </div>
     <div class="header-item">
-      <el-button type="text" @click="showCommonInfo()">常用报名人设置</el-button>
+      <el-button type="text" @click="showCommonInfo()"
+        >常用报名人设置</el-button
+      >
     </div>
     <div class="username">{{ username }}</div>
   </div>
@@ -18,23 +20,21 @@ export default {
   data () {
     return {
       username: ''
-    }
+    };
   },
   computed: {},
   watch: {},
-  created () { },
-  mounted () { },
+  created () {},
+  mounted () {},
   methods: {
     showCommonInfo () {
-      this.$router.push({
-        name: ''
-      })
+      this.$router.push('/commonInfo');
     },
     backHome () {
-      this.$router.push('/home')
+      this.$router.push('/home');
     }
   }
-}
+};
 </script>
 
 <style scoped lang="scss">

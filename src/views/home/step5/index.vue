@@ -1,21 +1,5 @@
 <template>
   <div class="step-1">
-    <editor
-      api-key="123"
-      :init="{
-         height: 500,
-         menubar: false,
-         plugins: [
-           'advlist autolink lists link image charmap print preview anchor',
-           'searchreplace visualblocks code fullscreen',
-           'insertdatetime media table paste code help wordcount'
-         ],
-         toolbar:
-           'undo redo | formatselect | bold italic backcolor | \
-           alignleft aligncenter alignright alignjustify | \
-           bullist numlist outdent indent | removeformat | help'
-       }"
-    ></editor>123
     <el-upload
       action="https://jsonplaceholder.typicode.com/posts/"
       list-type="picture-card"
@@ -28,22 +12,17 @@
     <el-dialog :visible.sync="dialogVisible">
       <img width="100%" :src="dialogImageUrl" alt />
     </el-dialog>
-    <div class="btn-group">
-      <!-- <el-button type="primary">
-        上一步
-      </el-button>-->
+    <div class="step-btn-group">
+      <el-button type="primary" @click="prevStep()">上一步</el-button>
       <el-button type="primary" @click="nextStep()">下一步</el-button>
     </div>
   </div>
 </template>
 
 <script>
-// import tinymce from 'tinymce/tinymce'
-// import Editor from '@tinymce/tinymce-vue'
 export default {
   name: 'Step1',
   components: {
-    // Editor
 
   },
   props: {
@@ -75,18 +54,17 @@ export default {
       this.dialogImageUrl = file.url
       this.dialogVisible = true
     },
+    prevStep () {
+      this.$router.push('/home/step4')
+    },
     nextStep () {
-      this.$emit('stepChange', 1)
+      this.$router.push('/home/step6')
     }
-
   }
 }
 </script>
 
 <style scoped lang="scss">
-.step-1 {
-  margin-bottom: 20px;
-}
 .upload-wrap {
   border: 1px solid rgb(133, 132, 132);
   border-radius: 5px;

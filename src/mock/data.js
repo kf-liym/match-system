@@ -64,7 +64,7 @@ export const teamsList = Mock.mock({
     personalProject: [{
       index: '1',
       name: '@cname',
-      IDNumber: '440671199725145421',
+      idcard: '440671199725145421',
       birth: '1997-02-12',
       sex: '男',
       group: '男子少年组',
@@ -73,7 +73,7 @@ export const teamsList = Mock.mock({
     }, {
       index: '2',
       name: '@cname',
-      IDNumber: '440671199725145421',
+      idcard: '440671199725145421',
       birth: '1997-02-12',
       sex: '男',
       group: '男子少年组',
@@ -82,7 +82,7 @@ export const teamsList = Mock.mock({
     }, {
       index: '3',
       name: '@cname',
-      IDNumber: '440671199725145421',
+      idcard: '440671199725145421',
       birth: '1997-02-12',
       sex: '男',
       group: '男子少年组',
@@ -93,7 +93,7 @@ export const teamsList = Mock.mock({
     duelExercises: [{
       index: '1-1',
       name: '@cname',
-      IDNumber: '440671199725145421',
+      idcard: '440671199725145421',
       birth: '1997-02-12',
       sex: '男',
       group: '男子少年组',
@@ -103,7 +103,7 @@ export const teamsList = Mock.mock({
     {
       index: '1-2',
       name: '@cname',
-      IDNumber: '440671199725145421',
+      idcard: '440671199725145421',
       birth: '1997-02-12',
       sex: '男',
       group: '男子少年组',
@@ -113,7 +113,7 @@ export const teamsList = Mock.mock({
     {
       index: '2-1',
       name: '@cname',
-      IDNumber: '440671199725145421',
+      idcard: '440671199725145421',
       birth: '1997-02-12',
       sex: '男',
       group: '男子少年组',
@@ -123,7 +123,7 @@ export const teamsList = Mock.mock({
     {
       index: '2-2',
       name: '@cname',
-      IDNumber: '440671199725145421',
+      idcard: '440671199725145421',
       birth: '1997-02-12',
       sex: '男',
       group: '男子少年组',
@@ -135,7 +135,7 @@ export const teamsList = Mock.mock({
     collectiveProject: [{
       index: '1-1',
       name: '@cname',
-      IDNumber: '440671199725145421',
+      idcard: '440671199725145421',
       birth: '1997-02-12',
       sex: '男',
       group: '男子少年组',
@@ -145,7 +145,7 @@ export const teamsList = Mock.mock({
     {
       index: '1-2',
       name: '@cname',
-      IDNumber: '440671199725145421',
+      idcard: '440671199725145421',
       birth: '1997-02-12',
       sex: '男',
       group: '男子少年组',
@@ -159,4 +159,9 @@ export const teamsList = Mock.mock({
 // 打回
 export const teamReject = {
   message: 'ok'
+}
+
+// 团队详情
+export const TeamInfo = {
+
 }

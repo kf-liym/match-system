@@ -22,3 +22,37 @@ Mock.mock('/api/teams/count', 'get', data.teamsCount)
 Mock.mock(RegExp('/api/teams/list.*'), 'get', data.teamsList)
 Mock.mock(RegExp('/api/team/reject.*'), 'get', data.teamReject)
 // Mock.mock(RegExp('/api/teams/.*'), 'get', data.adminIndex)
+
+// 团队详情
+Mock.mock('/api/team/info', 'post', (options) => {
+  return {
+    message: 'ok'
+  }
+})
+// 获取报项列表
+Mock.mock('/api/project/list', 'get', (options) => {
+  return {
+    person: [],
+    duel: [],
+    collective: []
+  }
+})
+// 个人报项-添加
+Mock.mock('/api/person/add', 'post', (options) => {
+  return {
+    message: 'ok'
+  }
+})
+
+// 对练报项-添加
+Mock.mock('/api/duel/add', 'post', (options) => {
+  return {
+    message: 'ok'
+  }
+})
+// 集体报项-添加
+Mock.mock('/api/collective/add', 'post', (options) => {
+  return {
+    message: 'ok'
+  }
+})

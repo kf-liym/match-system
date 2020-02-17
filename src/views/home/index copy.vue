@@ -1,5 +1,5 @@
 <template>
-  <div class="home-wrap">
+  <div class="home">
     <el-steps class="step" :active="active">
       <el-step
         v-for="(item, index) in step"
@@ -13,12 +13,17 @@
       <li>1、出质前盖坐着的著作权是否授权及授权情况说明：若未授权他人使用，填写“否”；若有授权情况，请在授权情况说明栏中填写著作权授权许可（包括专有和非专有）他人使用的有关情。</li>
       <li>2、软件为升级版本的，应在申请表软件基本信息栏中的软件作品说明中，选择“修改”并填写修改说明，前期版本已登记的应填写原登记号并提交原证件复印件。</li>
     </ul>
-    <router-view class="home-container" />
-    <!-- <component v-model="info" :is="componentId" @stepChange="setStep" /> -->
+    <component v-model="info" :is="componentId" @stepChange="setStep" />
   </div>
 </template>
 
 <script>
+import step1 from './components/step-1'
+import step2 from './components/step-2'
+import step3 from './step3'
+import step4 from './components/step-4'
+import step5 from './components/step-5'
+import step6 from './components/step-6'
 export default {
   components: {
   },
@@ -27,6 +32,9 @@ export default {
   },
   data () {
     return {
+      stepComponent: [
+        step1, step2, step3, step4, step5, step6
+      ],
       active: 0,
       step: [
         {
@@ -161,9 +169,9 @@ export default {
     }
   },
   computed: {
-    // componentId () {
-    //   return this.stepComponent[this.active]
-    // }
+    componentId () {
+      return this.stepComponent[this.active]
+    }
   },
   watch: {
 
@@ -172,14 +180,11 @@ export default {
 
   },
   mounted () {
-    this.active = parseInt(this.$route.name.substr(-1)) - 1
   },
   methods: {
     handleStep (index) {
-      if (this.active === index) {return}
-      // if (this.info.status !== 0) { return }
+      if (this.info.status !== 0) { return }
       this.active = index
-      this.$router.push(`/home/step${index + 1}`)
     },
     setStep (index) {
       this.active = index
@@ -190,7 +195,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.home-wrap {
+.home {
   padding: 40px 30px 0;
 }
 .alert {

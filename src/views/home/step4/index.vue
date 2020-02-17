@@ -1,22 +1,26 @@
 <template>
   <div class="step-4">
     <ul class="report-team-info">
-      <li>队伍名称：{{values.teamInfo.teamName}}</li>
-      <li>领队：{{values.teamInfo.leaderName}}</li>
-      <li>联系电话：{{values.teamInfo.tel}}</li>
-      <li>教练：{{values.teamInfo.coachName}}</li>
+      <li>队伍名称：{{$store.state.project.team.teamName}}</li>
+      <li>领队：{{$store.state.project.team.leaderName}}</li>
+      <li>联系电话：{{$store.state.project.team.tel}}</li>
+      <li>教练：{{$store.state.project.team.coachName}}</li>
     </ul>
 
     <div class="report-item">
       <div class="report-item__header">个人项目</div>
-      <el-table class="report-item__body" :data="values.personalProject" border fit style="width: 100%;">
+      <el-table class="report-item__body" :data="person" border fit style="width: 100%;">
         <el-table-column prop="index" label="序号" width="50"></el-table-column>
         <el-table-column prop="name" label="姓名" width="100"></el-table-column>
         <el-table-column prop="idcard" label="证件号码" width="180"></el-table-column>
         <el-table-column prop="birth" label="出生日期" width="110"></el-table-column>
         <el-table-column prop="sex" label="性别" width="60"></el-table-column>
         <el-table-column prop="group" label="组别" width="110"></el-table-column>
-        <el-table-column prop="projectName" label="项目名称" min-width="280"></el-table-column>
+        <el-table-column label="项目名称" min-width="280">
+          <template slot-scope="scope">
+            {{scope.row.item}}
+          </template>
+        </el-table-column>
         <el-table-column prop="cost" label="费用"></el-table-column>
       </el-table>
       <div class="cost-box">合计：{{personalCost}} 元</div>
@@ -24,14 +28,23 @@
 
     <div class="report-item">
       <div class="report-item__header">对练项目</div>
-      <el-table class="report-item__body" :data="values.duelExercises" border fit style="width: 100%;">
+      <el-table class="report-item__body" :data="duel" border fit style="width: 100%;">
         <el-table-column prop="index" label="序号" width="50"></el-table-column>
-        <el-table-column prop="name" label="姓名" width="100"></el-table-column>
+        <el-table-column prop="name" label="姓名" width="100">
+          <template slot-scope="scope">
+            {{scope.row.duelType}}
+          </template>
+        </el-table-column>
         <el-table-column prop="idcard" label="证件号码" width="180"></el-table-column>
         <el-table-column prop="birth" label="出生日期" width="110"></el-table-column>
         <el-table-column prop="sex" label="性别" width="60"></el-table-column>
         <el-table-column prop="group" label="组别" width="110"></el-table-column>
-        <el-table-column prop="projectName" label="项目名称" min-width="280"></el-table-column>
+        <el-table-column prop="projectName" label="项目名称" min-width="280">
+           <template slot-scope="scope">
+            {{scope.row.duelType ? scope.row.duelType : ''}}
+            {{scope.row.duelName ? '-'+scope.row.duelName : ''}}
+          </template>
+        </el-table-column>
         <el-table-column prop="cost" label="费用"></el-table-column>
       </el-table>
       <div class="cost-box">合计：{{duelCost}} 元</div>
@@ -39,7 +52,7 @@
 
     <div class="report-item">
       <div class="report-item__header">集体项目</div>
-      <el-table class="report-item__body" :data="values.collectiveProject" border fit style="width: 100%;">
+      <el-table class="report-item__body" :data="collective" border fit style="width: 100%;">
         <el-table-column prop="index" label="序号" width="50"></el-table-column>
         <el-table-column prop="name" label="姓名" width="100"></el-table-column>
         <el-table-column prop="idcard" label="证件号码" width="180"></el-table-column>
@@ -68,6 +81,7 @@
 </template>
 
 <script>
+import { peojectList } from '@/api'
 export default {
   name: 'Step4',
   components: {
@@ -90,24 +104,68 @@ export default {
         this.$emit('input', val)
       }
     },
+    person () {
+      let arr = []
+      this.$store.state.project.person.forEach(item => {
+        if (item.project.boxing && item.project.boxing.label) {
+          arr.push({
+            ...item,
+            item: `${item.project.boxing.label}${item.project.boxingRoutine ? '-' : ''}${item.project.boxingRoutine}`,
+            cost: 50
+          })
+        }
+        if (item.project.instrument && item.project.instrument.label) {
+          arr.push({
+            ...item,
+            item: `${item.project.instrument.label}${item.project.instrumentRoutine ? '-' : ''}${item.project.instrumentRoutine}`,
+            cost: 50
+          })
+        }
+      })
+      return arr
+    },
+    duel () {
+      return this.$store.state.project.duel
+      // let arr = []
+      // this.$store.state.project.duel.forEach((item, index) => {
+      //   if (item.project.boxing && item.project.boxing.label) {
+      //     arr.push({
+      //       ...item,
+      //       item: `${item.project.boxing.label}${item.project.boxingRoutine ? '-' : ''}${item.project.boxingRoutine}`,
+      //       cost: 50
+      //     })
+      //   }
+      //   if (item.project.instrument && item.project.instrument.label) {
+      //     arr.push({
+      //       ...item,
+      //       item: `${item.project.instrument.label}${item.project.instrumentRoutine ? '-' : ''}${item.project.instrumentRoutine}`,
+      //       cost: 50
+      //     })
+      //   }
+      // })
+      // return arr
+    },
+    collective () {
+      return this.$store.state.project.collective
+    },
     personalCost () {
       let cost = 0
-      this.values.personalProject.forEach(element => {
-        cost += parseInt(element.cost)
+      this.person.forEach(element => {
+        cost += 50
       })
       return cost
     },
     duelCost () {
       let cost = 0
-      this.values.duelExercises.forEach(element => {
-        cost += parseInt(element.cost)
+      this.duel.forEach(element => {
+        cost += 50
       })
       return cost
     },
     collectiveCost () {
       let cost = 0
-      this.values.collectiveProject.forEach(element => {
-        cost += parseInt(element.cost)
+      this.collective.forEach(element => {
+        cost += 50
       })
       return cost
     },
@@ -128,17 +186,23 @@ export default {
 
   },
   created () {
-
+    peojectList().then(res => {
+      this.$store.commit('SET_PERSON', this.res.data.person)
+      this.$store.commit('SET_DULE', this.res.data.duel)
+      this.$store.commit('SET_COLLECTIVE', this.res.data.collective)
+    }).catch(err => {
+      console.log(err)
+    })
   },
   mounted () {
 
   },
   methods: {
     prevStep () {
-      this.$emit('stepChange', 2)
+      this.$router.push('/home/step3')
     },
     nextStep () {
-      this.$emit('stepChange', 4)
+      this.$router.push('/home/step5')
     }
   }
 }

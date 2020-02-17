@@ -2,576 +2,58 @@
   <div class="step-3">
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="个人项目" name="first">
-        <el-collapse v-model="activeNames" class="match-item" @change="handleChange">
-          <el-collapse-item
-            name="1"
-            v-for="(person,personIndex) in personalProjects"
-            :key="personIndex"
-          >
-            <template slot="title">
-              {{person.name}}
-              <i
-                class="header-icon el-icon-delete"
-                @click="deletePersonalInfo.stop(personIndex)"
-              ></i>
-            </template>
-            <div class="personal-info-item">
-              <el-form
-                class="step-3"
-                :ref="'form'+personIndex"
-                :model="person"
-                :rules="rules"
-                label-width="80px"
-              >
-                <el-row>
-                  <el-col :span="12" class="grid-content">
-                    <div>
-                      <el-form-item label="姓名" prop="name">
-                        <el-input v-model="person.name">
-                          <template slot="append">
-                            <i class="el-icon-user" @click="showImportApplicantDailog()"></i>
-                          </template>
-                        </el-input>
-                      </el-form-item>
-                    </div>
-                  </el-col>
-                  <el-col :span="12" class="grid-content">
-                    <div class="sex-form-item">
-                      <el-form-item label="性别" prop="sex">
-                        <el-radio v-model="person.sex" label="1">男</el-radio>
-                        <el-radio v-model="person.sex" label="2">女</el-radio>
-                      </el-form-item>
-                    </div>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="24">
-                    <div class="grid-content">
-                      <el-form-item label="证件类型" prop="certificate">
-                        <el-input
-                          placeholder="请输入证件号码"
-                          v-model="person.IDNumber"
-                          class="input-with-select"
-                        >
-                          <el-select
-                            class="ddd"
-                            v-model="person.certificate"
-                            slot="prepend"
-                            placeholder="请选择"
-                          >
-                            <el-option label="身份证" value="1"></el-option>
-                            <el-option label="护照" value="2"></el-option>
-                            <el-option label="港澳回乡证" value="3"></el-option>
-                            <el-option label="台湾回乡证" value="4"></el-option>
-                            <el-option label="出生证" value="5"></el-option>
-                          </el-select>
-                        </el-input>
-                      </el-form-item>
-                    </div>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="12">
-                    <div class="grid-content">
-                      <el-form-item label="出生日期" prop="birth">
-                        <el-date-picker v-model="person.birth" type="date" placeholder="选择日期"></el-date-picker>
-                      </el-form-item>
-                    </div>
-                  </el-col>
-                  <el-col :span="12">
-                    <div class="grid-content">
-                      <el-form-item label="组别" prop="group">
-                        <el-input v-model="person.group" />
-                      </el-form-item>
-                    </div>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="12">
-                    <div class="grid-content">
-                      <el-form-item label="报名项目1" prop="selectProjectObj[0].label">
-                        <el-select
-                          v-model="person.selectProjectObj[0]"
-                          placeholder="请选择报名项目"
-                          @change="selectOption1"
-                        >
-                          <el-option
-                            v-for="option in projectOptions"
-                            :key="option.value"
-                            :label="option.label"
-                            :value="option"
-                            :disabled="option.disabled"
-                          ></el-option>
-                        </el-select>
-                      </el-form-item>
-                    </div>
-                  </el-col>
-                  <el-col :span="12">
-                    <div class="grid-content" v-show="person.selectProjectObj[0].category ===1">
-                      <el-form-item label="项目名称" prop="setProjectObj[0]">
-                        <el-input v-model="person.setProjectObj[0]" />
-                      </el-form-item>
-                    </div>
-                  </el-col>
-                </el-row>
-
-                <el-row>
-                  <el-col :span="12">
-                    <div class="grid-content">
-                      <el-form-item label="报名项目2">
-                        <el-select
-                          v-model="person.selectProjectObj[1]"
-                          placeholder="请选择报名项目"
-                          @change="selectOption2"
-                        >
-                          <el-option
-                            v-for="option in projectOptions"
-                            :key="option.value"
-                            :label="option.label"
-                            :value="option"
-                            :disabled="option.disabled"
-                          ></el-option>
-                        </el-select>
-                      </el-form-item>
-                    </div>
-                  </el-col>
-                  <el-col :span="12">
-                    <div class="grid-content" v-show="person.selectProjectObj[1].category ===1">
-                      <el-form-item label="项目名称">
-                        <el-input v-model="person.setProjectObj[1]" />
-                      </el-form-item>
-                    </div>
-                  </el-col>
-                </el-row>
-              </el-form>
-              <div class="personal-info-btn">
-                <el-button type="primary" @click="confirm(personIndex)">保存</el-button>
-                <el-button type="primary" @click="deletePersonalInfo(personIndex)">删除</el-button>
-              </div>
-            </div>
-          </el-collapse-item>
-        </el-collapse>
-        <div class="add-personal-info" @click="addPersonalInfo()">新增个人报项</div>
+        <step3-person class="match-item"></step3-person>
+        <!-- <div class="add-personal-info" @click="addPersonalInfo()">新增个人报项</div> -->
       </el-tab-pane>
       <el-tab-pane label="对练项目" name="second">
-        <el-collapse v-model="activeNames" class="match-item" @change="handleChange">
-          <el-collapse-item
-            name="1"
-            v-for="(duelObj,duelIndex) in duelExercisesObj"
-            :key="duelIndex"
-          >
-            <template slot="title">
-              {{duelObj.participants[0].name}} {{duelObj.participants[1].name}}
-              <i
-                class="header-icon el-icon-delete"
-                @click="deleteduelObj.stop(duelIndex)"
-              ></i>
-            </template>
-            <div class="personal-info-item">
-              <el-form
-                class="step-3"
-                :ref="'duelform'+duelIndex"
-                :model="duelObj"
-                :rules="rules"
-                label-width="80px"
-              >
-                <el-row>
-                  <el-col :span="12">
-                    <div class="grid-content">
-                      <el-form-item label="对练项目" prop="duelExercise">
-                        <el-select
-                          v-model="duelObj.duelExercise"
-                          placeholder="请选择对练项目"
-                          @change="selectOption1"
-                        >
-                          <el-option
-                            v-for="duelItem in duelOptions"
-                            :key="duelItem.value"
-                            :label="duelItem.label"
-                            :value="duelItem"
-                          ></el-option>
-                        </el-select>
-                      </el-form-item>
-                    </div>
-                  </el-col>
-                  <el-col :span="12">
-                    <div class="grid-content" v-show="duelObj.duelExercise.category ===1">
-                      <el-form-item label="项目名称" prop="setDuelExercise">
-                        <el-input v-model="duelObj.setDuelExercise" />
-                      </el-form-item>
-                    </div>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="12" class="grid-content">
-                    <div>
-                      <el-form-item label="姓名" prop="name">
-                        <el-input v-model="duelObj.participants[0].name">
-                          <template slot="append">
-                            <i class="el-icon-user" @click="showImportApplicantDailog()"></i>
-                          </template>
-                        </el-input>
-                      </el-form-item>
-                    </div>
-                  </el-col>
-                  <el-col :span="12" class="grid-content">
-                    <div class="sex-form-item">
-                      <el-form-item label="性别" prop="sex">
-                        <el-radio v-model="duelObj.participants[0].sex" label="1">男</el-radio>
-                        <el-radio v-model="duelObj.participants[0].sex" label="2">女</el-radio>
-                      </el-form-item>
-                    </div>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="24">
-                    <div class="grid-content">
-                      <el-form-item label="证件类型" prop="certificate">
-                        <el-input
-                          placeholder="请输入证件号码"
-                          v-model="duelObj.participants[0].IDNumber"
-                          class="input-with-select"
-                        >
-                          <el-select
-                            class="ddd"
-                            v-model="duelObj.participants[0].certificate"
-                            slot="prepend"
-                            placeholder="请选择"
-                          >
-                            <el-option label="身份证" value="1"></el-option>
-                            <el-option label="护照" value="2"></el-option>
-                            <el-option label="港澳回乡证" value="3"></el-option>
-                            <el-option label="台湾回乡证" value="4"></el-option>
-                            <el-option label="出生证" value="5"></el-option>
-                          </el-select>
-                        </el-input>
-                      </el-form-item>
-                    </div>
-                  </el-col>
-                </el-row>
-
-                <el-row>
-                  <el-col :span="12">
-                    <div class="grid-content">
-                      <el-form-item label="出生日期" prop="birth">
-                        <el-date-picker
-                          v-model="duelObj.participants[0].birth"
-                          type="date"
-                          placeholder="选择日期"
-                        ></el-date-picker>
-                      </el-form-item>
-                    </div>
-                  </el-col>
-                  <el-col :span="12">
-                    <div class="grid-content">
-                      <el-form-item label="组别" prop="group">
-                        <el-input v-model="duelObj.participants[0].group" />
-                      </el-form-item>
-                    </div>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="12" class="grid-content">
-                    <div>
-                      <el-form-item label="姓名" prop="name">
-                        <el-input v-model="duelObj.participants[1].name">
-                          <template slot="append">
-                            <i class="el-icon-user" @click="showImportApplicantDailog()"></i>
-                          </template>
-                        </el-input>
-                      </el-form-item>
-                    </div>
-                  </el-col>
-                  <el-col :span="12" class="grid-content">
-                    <div class="sex-form-item">
-                      <el-form-item label="性别" prop="sex">
-                        <el-radio v-model="duelObj.participants[1].sex" label="1">男</el-radio>
-                        <el-radio v-model="duelObj.participants[1].sex" label="2">女</el-radio>
-                      </el-form-item>
-                    </div>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="24">
-                    <div class="grid-content">
-                      <el-form-item label="证件类型" prop="certificate">
-                        <el-input
-                          placeholder="请输入证件号码"
-                          v-model="duelObj.participants[1].IDNumber"
-                          class="input-with-select"
-                        >
-                          <el-select
-                            class="ddd"
-                            v-model="duelObj.participants[1].certificate"
-                            slot="prepend"
-                            placeholder="请选择"
-                          >
-                            <el-option label="身份证" value="1"></el-option>
-                            <el-option label="护照" value="2"></el-option>
-                            <el-option label="港澳回乡证" value="3"></el-option>
-                            <el-option label="台湾回乡证" value="4"></el-option>
-                            <el-option label="出生证" value="5"></el-option>
-                          </el-select>
-                        </el-input>
-                      </el-form-item>
-                    </div>
-                  </el-col>
-                </el-row>
-
-                <el-row>
-                  <el-col :span="12">
-                    <div class="grid-content">
-                      <el-form-item label="出生日期" prop="birth">
-                        <el-date-picker
-                          v-model="duelObj.participants[1].birth"
-                          type="date"
-                          placeholder="选择日期"
-                        ></el-date-picker>
-                      </el-form-item>
-                    </div>
-                  </el-col>
-                  <el-col :span="12">
-                    <div class="grid-content">
-                      <el-form-item label="组别" prop="group">
-                        <el-input v-model="duelObj.participants[1].group" />
-                      </el-form-item>
-                    </div>
-                  </el-col>
-                </el-row>
-              </el-form>
-              <div class="personal-info-btn">
-                <el-button type="primary" @click="confirmduelObj(duelIndex)">保存</el-button>
-                <el-button type="primary" @click="deleteduelObj(duelIndex)">删除</el-button>
-              </div>
-            </div>
-          </el-collapse-item>
-        </el-collapse>
-        <div class="add-personal-info" @click="addDuelObj()">新增对练报项</div>
+        <!-- <step3-duel class="match-item"></step3-duel> -->
+        <!-- <div class="add-personal-info" @click="addDuelObj()">新增对练报项</div> -->
       </el-tab-pane>
       <el-tab-pane label="集体项目" name="third">
-        <el-collapse v-model="activeNames" class="match-item" @change="handleChange">
-          <el-collapse-item
-            name="1"
-            v-for="(groupObj,groupIndex) in groupExercisesObj"
-            :key="groupIndex"
-          >
-            <template slot="title">
-              {{groupObj.team[0].name}}
-              <i
-                class="header-icon el-icon-delete"
-                @click.stop="deleteGroupObj(groupIndex)"
-              ></i>
-            </template>
-            <div class="personal-info-item">
-              <el-form
-                class="step-3"
-                :ref="'groupform'+groupIndex"
-                :model="groupObj"
-                :rules="rules"
-                label-width="80px"
-              >
-                <el-row>
-                  <el-col :span="12">
-                    <div class="grid-content">
-                      <el-form-item label="报名项目1" prop="groupExerciseSelections[0].label">
-                        <el-select
-                          v-model="groupObj.groupExerciseSelections[0]"
-                          placeholder="请选择报名项目"
-                          @change="selectOption1"
-                        >
-                          <el-option
-                            v-for="groupExceciseItem in groupExceciseOptions"
-                            :key="groupExceciseItem.value"
-                            :label="groupExceciseItem.label"
-                            :value="groupExceciseItem"
-                            :disabled="groupExceciseItem.disabled"
-                          ></el-option>
-                        </el-select>
-                      </el-form-item>
-                    </div>
-                  </el-col>
-                  <el-col :span="12">
-                    <div
-                      class="grid-content"
-                      v-show="groupObj.groupExerciseSelections[0].category ===1"
-                    >
-                      <el-form-item label="项目名称" prop="setGroupExerciseObj[0]">
-                        <el-input v-model="groupObj.setGroupExerciseObj[0]" />
-                      </el-form-item>
-                    </div>
-                  </el-col>
-                </el-row>
+        <!-- <step3-collective class="match-item"></step3-collective> -->
 
-                <el-row>
-                  <el-col :span="12">
-                    <div class="grid-content">
-                      <el-form-item label="报名项目2">
-                        <el-select
-                          v-model="groupObj.groupExerciseSelections[1]"
-                          placeholder="请选择报名项目"
-                          @change="selectOption2"
-                        >
-                          <el-option
-                            v-for="groupExceciseItem in groupExceciseOptions"
-                            :key="groupExceciseItem.value"
-                            :label="groupExceciseItem.label"
-                            :value="groupExceciseItem"
-                            :disabled="groupExceciseItem.disabled"
-                          ></el-option>
-                        </el-select>
-                      </el-form-item>
-                    </div>
-                  </el-col>
-                  <el-col :span="12">
-                    <div
-                      class="grid-content"
-                      v-show="groupObj.groupExerciseSelections[1].category ===1"
-                    >
-                      <el-form-item label="项目名称">
-                        <el-input v-model="groupObj.setGroupExerciseObj[1]" />
-                      </el-form-item>
-                    </div>
-                  </el-col>
-                </el-row>
-
-                <div v-for="(teamMember,index) in  groupObj.team" :key="index" class="team">
-                  <div class="team-icon" @click="deleteTeamMember(groupIndex,index)">
-                    删除该成员
-                    <i class="el-icon-delete"></i>
-                  </div>
-
-                  <el-row>
-                    <el-col :span="12" class="grid-content">
-                      <div>
-                        <el-form-item label="姓名" prop="name">
-                          <el-input v-model="groupObj.team[index].name">
-                            <template slot="append">
-                              <i class="el-icon-user" @click="showImportApplicantDailog()"></i>
-                            </template>
-                          </el-input>
-                        </el-form-item>
-                      </div>
-                    </el-col>
-                    <el-col :span="12" class="grid-content">
-                      <div class="sex-form-item">
-                        <el-form-item label="性别" prop="sex">
-                          <el-radio v-model="groupObj.team[index].sex" label="1">男</el-radio>
-                          <el-radio v-model="groupObj.team[index].sex" label="2">女</el-radio>
-                        </el-form-item>
-                      </div>
-                    </el-col>
-                  </el-row>
-                  <el-row>
-                    <el-col :span="24">
-                      <div class="grid-content">
-                        <el-form-item label="证件类型" prop="certificate">
-                          <el-input
-                            placeholder="请输入证件号码"
-                            v-model="groupObj.team[index].IDNumber"
-                            class="input-with-select"
-                          >
-                            <el-select
-                              class="ddd"
-                              v-model="groupObj.team[index].certificate"
-                              slot="prepend"
-                              placeholder="请选择"
-                            >
-                              <el-option label="身份证" value="1"></el-option>
-                              <el-option label="护照" value="2"></el-option>
-                              <el-option label="港澳回乡证" value="3"></el-option>
-                              <el-option label="台湾回乡证" value="4"></el-option>
-                              <el-option label="出生证" value="5"></el-option>
-                            </el-select>
-                          </el-input>
-                        </el-form-item>
-                      </div>
-                    </el-col>
-                  </el-row>
-
-                  <el-row style="border-bottom:1px solid rgb(170, 167, 167);margin-bottom:20px">
-                    <el-col :span="12">
-                      <div class="grid-content">
-                        <el-form-item label="出生日期" prop="birth">
-                          <el-date-picker
-                            v-model="groupObj.team[index].birth"
-                            type="date"
-                            placeholder="选择日期"
-                          ></el-date-picker>
-                        </el-form-item>
-                      </div>
-                    </el-col>
-                    <el-col :span="12">
-                      <div class="grid-content">
-                        <el-form-item label="组别" prop="group">
-                          <el-input v-model="groupObj.team[index].group" />
-                        </el-form-item>
-                      </div>
-                    </el-col>
-                  </el-row>
-                </div>
-              </el-form>
-              <div class="personal-info-btn">
-                <el-button type="primary" @click="addTeamMember(groupIndex)">添加报名人</el-button>
-                <el-button type="primary" @click="confirmduelObj(groupIndex)">保存</el-button>
-                <el-button type="primary" @click="deleteduelObj(groupIndex)">删除</el-button>
-              </div>
-            </div>
-          </el-collapse-item>
-        </el-collapse>
-        <div class="add-personal-info" @click="addTeamObj()">新增团体报项</div>
+        <!-- <div class="add-personal-info" @click="addTeamObj()">新增团体报项</div> -->
       </el-tab-pane>
     </el-tabs>
-    <el-dialog title="选择导入报名人信息" :visible.sync="dialogVisible" width="75%" :before-close="handleClose">
-          <div class="common-info">
-          <table
-            class="common-info-table"
-            border="1"
-            cellspacing="0"
-            cellpadding="10"
-            align="center"
-          >
-            <thead>
-              <tr>
-                <th width="150">序号</th>
-                <th width="250">姓名</th>
-                <th width="300">证件类型</th>
-                <th width="300">证件号码</th>
-                <th width="150">性别</th>
-                <th width="250">出生日期</th>
-                <th width="300">操作</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item,index) in $store.state.applicants.applicantList" :key="index">
-                <td>{{index}}</td>
-                <td>
-                  {{item.name}}
-                </td>
-                <td>
-                   {{item.certificate}}
-                </td>
-                <td>
-                   {{item.IDNumber}}
-                </td>
-                    <td>
-                       {{item.group}}
-                </td>
-                <td>
-                   {{item.birth}}
-                </td>
-                <td>
-                  <el-button type="primary" @click="importInfo(index)">导入</el-button> </td>
-              </tr>
-            </tbody>
-          </table>
-
-
+    <el-dialog
+      title="选择导入报名人信息"
+      :visible.sync="dialogVisible"
+      width="75%"
+      :before-close="handleClose"
+    >
+      <div class="common-info">
+        <table class="common-info-table" border="1" cellspacing="0" cellpadding="10" align="center">
+          <thead>
+            <tr>
+              <th width="150">序号</th>
+              <th width="250">姓名</th>
+              <th width="300">证件类型</th>
+              <th width="300">证件号码</th>
+              <th width="150">性别</th>
+              <th width="250">出生日期</th>
+              <th width="300">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item,index) in $store.state.applicants.applicantList" :key="index">
+              <td>{{index}}</td>
+              <td>{{item.name}}</td>
+              <td>{{item.certificate}}</td>
+              <td>{{item.idcard}}</td>
+              <td>{{item.group}}</td>
+              <td>{{item.birth}}</td>
+              <td>
+                <el-button type="primary" @click="importInfo(index)">导入</el-button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
       </span>
     </el-dialog>
-        <div class="step-btn-group">
+    <div class="step-btn-group">
       <el-button type="primary" @click="prevStep()">上一步</el-button>
       <el-button type="primary" @click="nextStep()">下一步</el-button>
     </div>
@@ -579,25 +61,54 @@
 </template>
 
 <script>
+import step3Person from './step-3-person'
 export default {
   name: 'Step3',
   components: {
-
+    step3Person
   },
   props: {
 
   },
   data () {
     return {
+      content: '<p>hello world</p>',
+
+
       dialogVisible: false, //导入常用联系人弹框
-      activeName: 'third',
-      activeNames: ['1'],
+      activeName: 'first',
+      personActive: [0],
+      duelActive: [0],
+      collectiveActive: [0],
       // 个人报项信息数组
       personalProjects: [
         {
           name: '张小明',
           certificate: '', // 证件类型
-          IDNumber: '440671199725145421',
+          idcard: '440671199725145421',
+          birth: '1997-02-12',
+          sex: '男',
+          group: '',
+          selectProjectObj: [
+            {
+              type: 0, // 类别  0 ：拳术  1：器械
+              category: 1, // 类型 0 ：规定  1：传统
+              label: '' // 选项名
+            },
+            {
+              type: 0, // 类别  0 ：拳术  1：器械
+              category: 0, // 类型 0 ：规定  1：传统
+              label: '' // 选项名
+            }
+          ],
+          setProjectObj: [
+            '', ''
+          ]
+        },
+        {
+          name: '张小明',
+          certificate: '', // 证件类型
+          idcard: '440671199725145421',
           birth: '1997-02-12',
           sex: '男',
           group: '',
@@ -619,33 +130,34 @@ export default {
         }
       ],
       // 个人报项项目列表
-      projectOptions: [{
-        value: '1', // 选项值
-        label: '个人项目1', // 选项名
-        type: 0, // 选项类别
-        category: 1 // 选项类型
-      }, {
-        value: '选项2',
-        label: '个人项目2',
-        type: 0,
-        category: 1
-      }, {
-        value: '选项3',
-        label: '个人项目2',
-        type: 1,
-        category: 1
-      }, {
-        value: '选项4',
-        label: '个人项目4',
-        type: 1,
-        category: 0
-      },
-      {
-        value: '选项5',
-        label: '个人项目4',
-        type: 0,
-        category: 0
-      }],
+      projectOptions: [
+        {
+          value: '1', // 选项值
+          label: '个人项目1', // 选项名
+          type: 0, // 选项类别
+          category: 1 // 选项类型
+        }, {
+          value: '选项2',
+          label: '个人项目2',
+          type: 0,
+          category: 1
+        }, {
+          value: '选项3',
+          label: '个人项目2',
+          type: 1,
+          category: 1
+        }, {
+          value: '选项4',
+          label: '个人项目4',
+          type: 1,
+          category: 0
+        },
+        {
+          value: '选项5',
+          label: '个人项目4',
+          type: 0,
+          category: 0
+        }],
 
       // 对练项目报项列表
       duelExercisesObj: [
@@ -658,7 +170,7 @@ export default {
             {
               name: '张小明',
               certificate: '', // 证件类型
-              IDNumber: '440671199725145421',
+              idcard: '440671199725145421',
               birth: '1997-02-12',
               sex: '男',
               group: ''
@@ -666,7 +178,7 @@ export default {
             {
               name: '张小明',
               certificate: '', // 证件类型
-              IDNumber: '440671199725145421',
+              idcard: '440671199725145421',
               birth: '1997-02-12',
               sex: '男',
               group: ''
@@ -675,33 +187,34 @@ export default {
         }
       ],
       // 对练项目可选列表
-      duelOptions: [{
-        value: '1', // 选项值
-        label: '对练项目1', // 选项名
-        type: 0, // 选项类别
-        category: 1 // 选项类型
-      }, {
-        value: '选项2',
-        label: '对练项目2',
-        type: 0,
-        category: 1
-      }, {
-        value: '选项3',
-        label: '对练项目3',
-        type: 1,
-        category: 1
-      }, {
-        value: '选项4',
-        label: '对练项目4',
-        type: 1,
-        category: 0
-      },
-      {
-        value: '选项5',
-        label: '对练项目5',
-        type: 0,
-        category: 0
-      }],
+      duelOptions: [
+        {
+          value: '1', // 选项值
+          label: '对练项目1', // 选项名
+          type: 0, // 选项类别
+          category: 1 // 选项类型
+        }, {
+          value: '选项2',
+          label: '对练项目2',
+          type: 0,
+          category: 1
+        }, {
+          value: '选项3',
+          label: '对练项目3',
+          type: 1,
+          category: 1
+        }, {
+          value: '选项4',
+          label: '对练项目4',
+          type: 1,
+          category: 0
+        },
+        {
+          value: '选项5',
+          label: '对练项目5',
+          type: 0,
+          category: 0
+        }],
       // 集体项目报项列表
       groupExercisesObj: [
         {
@@ -726,7 +239,7 @@ export default {
             {
               name: '张小明',
               certificate: '', // 证件类型
-              IDNumber: '440671199725145421',
+              idcard: '440671199725145421',
               birth: '1997-02-12',
               sex: '男',
               group: ''
@@ -736,33 +249,34 @@ export default {
       ],
 
       // 对练项目可选列表
-      groupExceciseOptions: [{
-        value: '1', // 选项值
-        label: '团体项目1', // 选项名
-        type: 0, // 选项类别
-        category: 1 // 选项类型
-      }, {
-        value: '选项2',
-        label: '团体项目2',
-        type: 0,
-        category: 1
-      }, {
-        value: '选项3',
-        label: '团体项目3',
-        type: 1,
-        category: 1
-      }, {
-        value: '选项4',
-        label: '团体项目4',
-        type: 1,
-        category: 0
-      },
-      {
-        value: '选项5',
-        label: '团体项目5',
-        type: 0,
-        category: 0
-      }],
+      groupExceciseOptions: [
+        {
+          value: '1', // 选项值
+          label: '团体项目1', // 选项名
+          type: 0, // 选项类别
+          category: 1 // 选项类型
+        }, {
+          value: '选项2',
+          label: '团体项目2',
+          type: 0,
+          category: 1
+        }, {
+          value: '选项3',
+          label: '团体项目3',
+          type: 1,
+          category: 1
+        }, {
+          value: '选项4',
+          label: '团体项目4',
+          type: 1,
+          category: 0
+        },
+        {
+          value: '选项5',
+          label: '团体项目5',
+          type: 0,
+          category: 0
+        }],
       rules: {
         name: [
           { required: true, message: '请输入报名人姓名', trigger: 'blur' }
@@ -770,7 +284,7 @@ export default {
         certificate: [
           { required: true, message: '请选择证件类型', trigger: 'blur' }
         ],
-        IDNumber: [
+        idcard: [
           { required: true, message: '请输入证件号码', trigger: 'blur' }
         ],
         birth: [
@@ -785,11 +299,49 @@ export default {
         projectName: [
           { required: true, message: '请选择报名项目', trigger: 'blur' }
         ]
-      }
+      },
+
+      // 拳术项目选项 0:传统项目，1：规定项目
+      boxingOptions: [
+        { title: '规定陈式太极拳', type: 1 },
+        { title: '规定杨式太极拳', type: 1 },
+        { title: '规定吴式太极拳', type: 1 },
+        { title: '规定武式太极拳', type: 1 },
+        { title: '规定孙式太极拳', type: 1 },
+        { title: '42式太极拳', type: 1 },
+        { title: '24式太极拳', type: 1 },
+        { title: '太极八法五步', type: 1 },
+        { title: '传统陈式太极拳', type: 0 },
+        { title: '传统杨式太极拳', type: 0 },
+        { title: '传统吴式太极拳', type: 0 },
+        { title: '传统孙式太极拳', type: 0 },
+        { title: '传统武式太极拳', type: 0 },
+        { title: '其他传统太极拳', type: 0 }
+      ],
+      // 器械项目选项 0:传统项目，1：规定项目
+      instrumentOptions: [
+        { title: '42式太极剑', type: 1 },
+        { title: '32式太极剑', type: 1 },
+        { title: '传统陈式太极器械', type: 0 },
+        { title: '传统杨式太极器械', type: 0 },
+        { title: '传统吴式太极器械', type: 0 },
+        { title: '传统孙式太极器械', type: 0 },
+        { title: '传统武式太极器械', type: 0 },
+        { title: '其他传统太极器械', type: 0 }
+      ]
     }
   },
   computed: {
-
+    editor () {
+      return this.$refs.myQuillEditor.quill;
+    },
+    personalTitle () {
+      let title = ''
+      this.personalProjects.forEach((item, index) => {
+        title += index > 0 ? ` ${index + 1}.${item.name};` : `${index + 1}.${item.name};`
+      })
+      return title
+    }
   },
   watch: {
 
@@ -801,6 +353,27 @@ export default {
 
   },
   methods: {
+
+    // onEditorReady (editor) { // 准备编辑器
+    //   console.log('准备编辑器')
+    // },
+    // onEditorBlur () {// 失去焦点事件
+
+    //   console.log('失去焦点事件')
+    // },
+    // onEditorFocus () {// 获得焦点事件
+
+    //   console.log('获得焦点事件')
+    // },
+    // onEditorChange () {// 内容改变事件
+
+    //   console.log('内容改变事件')
+    // },
+    // saveHtml (event) {
+    //   alert(this.content);
+    // },
+
+
     selectOption1 (val) {
       console.log(val)
       // if(val.type)
@@ -828,7 +401,7 @@ export default {
       let info = {
         name: '张小明',
         certificate: '', // 证件类型
-        IDNumber: '440671199725145421',
+        idcard: '440671199725145421',
         birth: '1997-02-12',
         sex: '男',
         group: '',
@@ -885,7 +458,7 @@ export default {
           {
             name: '张小明',
             certificate: '', // 证件类型
-            IDNumber: '440671199725145421',
+            idcard: '440671199725145421',
             birth: '1997-02-12',
             sex: '男',
             group: ''
@@ -893,7 +466,7 @@ export default {
           {
             name: '张小明',
             certificate: '', // 证件类型
-            IDNumber: '440671199725145421',
+            idcard: '440671199725145421',
             birth: '1997-02-12',
             sex: '男',
             group: ''
@@ -908,7 +481,7 @@ export default {
       {
         name: '',
         certificate: '', // 证件类型
-        IDNumber: '',
+        idcard: '',
         birth: '',
         sex: '',
         group: ''
@@ -956,7 +529,7 @@ export default {
           {
             name: '张小明',
             certificate: '', // 证件类型
-            IDNumber: '440671199725145421',
+            idcard: '440671199725145421',
             birth: '1997-02-12',
             sex: '男',
             group: ''
@@ -988,7 +561,7 @@ export default {
         .then(_ => {
           done();
         })
-        .catch(_ => {});
+        .catch(_ => { });
     },
     handleClick (tab, event) {
       console.log(tab, event)
@@ -1057,5 +630,14 @@ export default {
 .personal-info-btn {
   display: flex;
   justify-content: flex-end;
+}
+
+.step-3__row {
+}
+.step-3__col {
+  float: left;
+  + .step-3__col {
+    margin-left: 10px;
+  }
 }
 </style>

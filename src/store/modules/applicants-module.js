@@ -1,13 +1,14 @@
 export default {
   state: {
     applicantList: [{
-      name: '111',
+      name: 'l',
       certificate: '111', // 证件类型
-      IDNumber: '111',
+      idcard: '111',
       birth: '111',
       sex: '111',
       readonly: true
-    }
+    }],
+    applicants: [
     ]
   },
   mutations: {
@@ -16,6 +17,10 @@ export default {
     },
     removeApplicant: (state, index) => {
       state.applicantList.slpice(index);
+    },
+    SET_APPLICANTS: (state, val) => {
+      console.log('SET_APPLICANTS', val)
+      state.applicants = val;
     }
   },
   actions: {},

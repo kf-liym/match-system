@@ -1,108 +1,69 @@
 <template>
-    <div class="common">
+  <div class="common">
+    <div class="container-1200">
       <el-alert class="alert" title="注意事项" type="warning" show-icon :closable="false" />
       <ul class="description">
-        <li>1、出质前盖坐着的著作权是否授权及授权情况说明：若未授权他人使用，填写“否”；若有授权情况，请在授权情况说明栏中填写著作权授权许可（包括专有）</li>
-        <li>2、出质前盖坐着的著作权是否授权及授权情况说明：若未授权他人使用，填写“否”；若有授权情况，请在授权情况说明栏中填写著作权授权许可（包括专有）</li>
+        <li>1、出质前盖坐着的著作权是否授权及授权情况说明：若未授权他人使用，填写“否”；若有授权情况，请在授权情况说明栏中填写著作权授权许可（包括专有和非专有）他人使用的有关情。</li>
+        <li>2、软件为升级版本的，应在申请表软件基本信息栏中的软件作品说明中，选择“修改”并填写修改说明，前期版本已登记的应填写原登记号并提交原证件复印件。</li>
       </ul>
       <div class="common-info">
-        <el-form ref="form" :model="{applicantList}" label-width="0px">
-          <table
-            class="common-info-table"
-            border="1"
-            cellspacing="0"
-            cellpadding="10"
-            align="center"
-          >
-            <thead>
-              <tr>
-                <th width="150">序号</th>
-                <th width="250">姓名</th>
-                <th width="200">证件类型</th>
-                <th width="300">证件号码</th>
-                <th width="150">性别</th>
-                <th width="250">出生日期</th>
-                <th width="300">操作</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item,index) in applicantList" :key="index">
-                <td>{{index}}</td>
-                <td>
-                  <el-form-item :prop="`applicantList[${index}].name`" >
-                    <el-input v-model="item.name" :readonly="item.readonly" ></el-input>
-                  </el-form-item>
-                </td>
-                <td>
-                  <el-form-item :prop="`applicantList[${index}].certificate`" >
-                    <el-input v-model="item.certificate" :readonly="item.readonly"></el-input>
-                  </el-form-item>
-                </td>
-                <td>
-                  <el-form-item :prop="`applicantList[${index}].IDNumber`" >
-                    <el-input v-model="item.IDNumber" :readonly="item.readonly"></el-input>
-                  </el-form-item>
-                </td>
-                    <td>
-                  <el-form-item :prop="`applicantList[${index}].sex`" >
-                    <el-input v-model="item.sex" :readonly="item.readonly"></el-input>
-                  </el-form-item>
-                </td>
-                <td>
-                  <el-form-item :prop="`applicantList[${index}].birth`" >
-                    <el-input v-model="item.birth" :readonly="item.readonly"></el-input>
-                  </el-form-item>
-                </td>
-                <td>
-                  <el-button type="primary" @click="save(index)">保存</el-button> <el-button type="primary" @click="deleteInfo(index)">删除</el-button></td>
-              </tr>
-            </tbody>
-          </table>
-        </el-form>
+        <el-table class="common-table" :data="applicantList" stripe border>
+          <el-table-column type="index" label="序号" width="80">
+          </el-table-column>
+          <el-table-column prop="name" label="姓名" width="100">
+          </el-table-column>
+          <el-table-column prop="certificate" label="证件类型" width="100">
+          </el-table-column>
+          <el-table-column prop="idcard" label="证件号码" min-width="200">
+          </el-table-column>
+          <el-table-column prop="sex" label="性别" width="80">
+          </el-table-column>
+          <el-table-column prop="birth" label="出生日期" width="100">
+          </el-table-column>
+          <el-table-column prop="size" label="纪念服尺寸" width="100">
+          </el-table-column>
+          <el-table-column align="center" label="操作" width="130">
+            <template slot-scope="scope">
+              <el-button type="primary" icon="el-icon-edit" circle @click="handleEdit(scope.row)"></el-button>
+              <el-button type="danger" icon="el-icon-delete" circle @click="handleDelete(scope.row.id)"></el-button>
+            </template>
+          </el-table-column>
+        </el-table>
 
         <div class="add-btn">
-          <el-button type="primary" @click="addInfo">新增常用报名人信息</el-button>
+          <el-button type="primary" @click="handleAdd">新增常用报名人信息</el-button>
         </div>
       </div>
     </div>
+    <edit ref="edit" @confirm="getList"></edit>
+  </div>
 
 </template>
 
 <script>
-
+import edit from './edit'
 export default {
   name: 'setCommonInfo',
+  components: {
+    edit
+  },
   props: {
 
   },
   data () {
     return {
-      applicantList: [{
-        name: '',
-        certificate: '', // 证件类型
-        IDNumber: '',
-        birth: '',
-        sex: '',
-        readonly: false
-      }
+      applicantList: [
+        {
+          id: '001',
+          name: '王小虎',
+          certificate: '身份证', // 证件类型
+          idcard: '444444444444444444',
+          birth: '2020-02-03',
+          sex: '男',
+          size: '大码'
+        }
       ]
-      // rules: {
-      //   name: [
-      //     { required: true, message: '请输入报名人姓名', trigger: 'blur' }
-      //   ],
-      //   certificate: [
-      //     { required: true, message: '请选择证件类型', trigger: 'blur' }
-      //   ],
-      //   IDNumber: [
-      //     { required: true, message: '请输入证件号码', trigger: 'blur' }
-      //   ],
-      //   birth: [
-      //     { required: true, message: '请输入出生年月', trigger: 'blur' }
-      //   ],
-      //   sex: [
-      //     { required: true, message: '请输入性别', trigger: 'blur' }
-      //   ]
-      // }
+
     };
   },
   computed: {
@@ -118,45 +79,49 @@ export default {
 
   },
   methods: {
-    //保存常用人信息
-    save (index) {
-      console.log('保存信息')
-      if (this.applicantList[index].readonly === false) {
-        this.applicantList[index].readonly = true
-        this.$store.commit('setApplicantListArray', this.applicantList[index])
-        console.log(this.applicantList[index])
-        console.log(this.$store.state)
-
-      }
+    // 常用人信息编辑
+    handleEdit (info) {
+      this.$refs.edit.show(info)
     },
-    deleteInfo (index) {
-      console.log('删除信息')
-      this.applicantList.splice(index, 1)
-      this.$store.commit('removeApplicant', index)
+    // 删除
+    handleDelete (id) {
+      this.$confirm('是否删除该信息？', '系统消息', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      }).then(() => {
+        console.log('删除')
+      }).catch(() => {
+        console.log('取消删除')
+      });
 
     },
-    addInfo () {
-      let info = {
-        name: '',
-        certificate: '', // 证件类型
-        IDNumber: '',
-        birth: '',
-        sex: '',
-        readonly: false
-      }
-      this.applicantList.push(info)
-      console.log(this.applicantList)
+    // 添加常用报名人信息
+    handleAdd () {
+      this.$refs.edit.show()
+    },
+    // 获取常用人信息
+    getList () {
+      console.log('获取常用人信息')
     }
   }
+
 
 };
 </script>
 
 <style scoped lang="scss">
 .common {
-  padding: 15px 30px 0;
+  padding: 20px 30px;
+  // max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
 }
-
+.common-table {
+  width: 100%;
+  // border: 1px solid #333;
+  border-bottom: 0;
+  margin: 30px 0 50px;
+}
 .description {
   margin-top: 10px;
 }
@@ -169,14 +134,12 @@ export default {
   td {
     padding: 10px 5px;
 
-    .el-form-item{
+    .el-form-item {
       margin-bottom: 0px;
     }
-   .el-input{
-    border:none;
-   }
-
-
+    .el-input {
+      border: none;
+    }
   }
 }
 .add-btn {
