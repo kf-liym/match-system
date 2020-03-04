@@ -3,7 +3,7 @@
  * @Author: liym
  * @Date: 2020-02-14 16:40:41
  * @Last Modified by: liym
- * @Last Modified time: 2020-02-16 17:28:56
+ * @Last Modified time: 2020-02-20 21:55:29
  */
 
 <template>
@@ -37,7 +37,12 @@
 export default {
   name: 'commonApplicants',
   props: {
-
+    list: {
+      type: Array,
+      default () {
+        return []
+      }
+    }
   },
   data () {
     return {
@@ -47,9 +52,9 @@ export default {
     };
   },
   computed: {
-    list () {
-      return this.$store.state.applicants.applicants
-    }
+    // list () {
+    //   return this.$store.state.applicants.applicants
+    // }
   },
   created () {
 

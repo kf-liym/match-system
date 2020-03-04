@@ -1,6 +1,6 @@
 <template>
   <div class="home-wrap">
-    <el-steps class="step" :active="active">
+    <el-steps class="step" :active="active" align-center>
       <el-step
         v-for="(item, index) in step"
         :key="index"
@@ -14,7 +14,6 @@
       <li>2、软件为升级版本的，应在申请表软件基本信息栏中的软件作品说明中，选择“修改”并填写修改说明，前期版本已登记的应填写原登记号并提交原证件复印件。</li>
     </ul>
     <router-view class="home-container" />
-    <!-- <component v-model="info" :is="componentId" @stepChange="setStep" /> -->
   </div>
 </template>
 
@@ -30,22 +29,32 @@ export default {
     return {
       step: [
         {
-          title: '上传责任书'
+          title: '常用报名人设置',
+          path: '/home/common-info'
         },
         {
-          title: '填写基本信息'
+          title: '填写基本信息',
+          path: '/home/basic-information'
         },
         {
-          title: '填写报项信息'
+          title: '填写报项信息',
+          path: '/home/item-information'
         },
         {
-          title: '报项汇总'
+          title: '报项汇总',
+          path: '/home/item-summary'
         },
         {
-          title: '上传汇款证明'
+          title: '上传责任书',
+          path: '/home/upload-responsibility'
         },
         {
-          title: '提交并等待审核'
+          title: '上传汇款证明',
+          path: '/home/upload-prove'
+        },
+        {
+          title: '提交并等待审核',
+          path: '/home/submit-review'
         }
       ],
       info: {
@@ -201,7 +210,7 @@ export default {
       if (res.data.status !== '未提交') {
         this.active = 5
         if (parseInt(this.$route.name.substr(-1)) !== 6) {
-          this.$router.push('/home/step6')
+          this.$router.push(this.step[this.active].path)
         }
       }
     }).catch(err => {
@@ -213,7 +222,7 @@ export default {
       if (this.active === index || this.status !== '未提交') {return}
       // if (this.info.status !== 0) { return }
       this.active = index
-      this.$router.push(`/home/step${index + 1}`)
+      this.$router.push(this.step[index].path)
     },
     setStep (index) {
       this.active = index

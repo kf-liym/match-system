@@ -10,12 +10,12 @@ const routes = [{
   children: [
     // 登录
     {
-      path: '/signin',
+      path: 'signin',
       name: 'signin',
       component: () => import('@/views/sign/signin.vue')
     },
     {
-      path: '/signup',
+      path: 'signup',
       name: 'signup',
       component: () => import('@/views/sign/signup.vue')
     },
@@ -23,42 +23,44 @@ const routes = [{
     {
       path: 'home',
       name: 'home',
-      redirect: '/home/step3',
+      redirect: '/home/common-info',
       component: () => import('@/views/home/index.vue'),
-      children: [
-        {
-          path: 'step1',
-          name: 'step1',
-          component: () => import('@/views/home/step1/index.vue')
-        }, {
-          path: 'step2',
-          name: 'step2',
-          component: () => import('@/views/home/step2/index.vue')
-        }, {
-          path: 'step3',
-          name: 'step3',
-          component: () => import('@/views/home/step3/index.vue')
-        }, {
-          path: 'step4',
-          name: 'step4',
-          component: () => import('@/views/home/step4/index.vue')
-        }, {
-          path: 'step5',
-          name: 'step5',
-          component: () => import('@/views/home/step5/index.vue')
-        }, {
-          path: 'step6',
-          name: 'step6',
-          component: () => import('@/views/home/step6/index.vue')
-        }
-      ]
-    },
-    // 常用报名人
-    {
-      path: 'commonInfo',
-      name: 'commonInfo',
-      component: () => import('@/views/common-info/index.vue')
+      children: [{
+        path: 'common-info',
+        name: 'common-info',
+        component: () => import('@/views/common-info/index.vue')
+      }, {
+        path: 'upload-responsibility',
+        name: 'uploadResponsibility',
+        component: () => import('@/views/home/step1/index.vue')
+      }, {
+        path: 'basic-information',
+        name: 'basicInformation',
+        component: () => import('@/views/home/step2/index.vue')
+      }, {
+        path: 'item-information',
+        name: 'itemInformation',
+        component: () => import('@/views/home/step3/index.vue')
+      }, {
+        path: 'item-summary',
+        name: 'itemSummary',
+        component: () => import('@/views/home/step4/index.vue')
+      }, {
+        path: 'upload-prove',
+        name: 'uploadProve',
+        component: () => import('@/views/home/step5/index.vue')
+      }, {
+        path: 'submit-review',
+        name: 'submitReview',
+        component: () => import('@/views/home/step6/index.vue')
+      }]
     }
+    // 常用报名人
+    // {
+    //   path: 'commonInfo',
+    //   name: 'commonInfo',
+    //   component: () => import('@/views/common-info/index.vue')
+    // }
   ]
 },
 {
@@ -81,7 +83,7 @@ const routes = [{
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  // mode: 'history',
   base: process.env.BASE_URL,
   routes
 })

@@ -8,8 +8,7 @@ export default {
       sex: '111',
       readonly: true
     }],
-    applicants: [
-    ]
+    applicants: []
   },
   mutations: {
     setApplicantListArray: (state, applicantList) => {
@@ -19,7 +18,6 @@ export default {
       state.applicantList.slpice(index);
     },
     SET_APPLICANTS: (state, val) => {
-      console.log('SET_APPLICANTS', val)
       state.applicants = val;
     }
   },

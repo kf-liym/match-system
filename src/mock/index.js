@@ -32,7 +32,7 @@ Mock.mock('/api/team/info', 'post', (options) => {
 // 获取报项列表
 Mock.mock('/api/project/info', 'get', (options) => {
   return {
-    status: '已审核',
+    status: '未提交',
     responsibility: [],
     team: {
       teamName: '队伍名称', // 队伍名称
@@ -237,6 +237,8 @@ Mock.mock('/api/project/info', 'get', (options) => {
       }]
   }
 })
+
+
 // 个人报项-添加
 Mock.mock('/api/person/add', 'post', (options) => {
   return {
@@ -256,9 +258,136 @@ Mock.mock('/api/collective/add', 'post', (options) => {
     message: 'ok'
   }
 })
-// 获取表单状态
-// Mock.mock(RegExp('/api/project/status.*'), 'get', (options) => {
-//   return {
-//     status: '已审核'
-//   }
-// })
+// 获取常用人信息
+Mock.mock(RegExp('/api/applicants/list.*'), 'get', (options) => {
+  return [
+    {
+      id: '001',
+      name: '王小虎1',
+      certificate: '身份证', // 证件类型
+      idcard: '4444444444444444441',
+      birth: '2020-02-03',
+      sex: '男',
+      size: '大码'
+    }, {
+      id: '001',
+      name: '王小虎2',
+      certificate: '身份证', // 证件类型
+      idcard: '4444444444444444442',
+      birth: '2020-02-03',
+      sex: '男',
+      size: '大码'
+    }, {
+      id: '001',
+      name: '王小虎3',
+      certificate: '身份证', // 证件类型
+      idcard: '4444444444444444443',
+      birth: '2020-02-03',
+      sex: '男',
+      size: '大码'
+    }, {
+      id: '001',
+      name: '王小虎4',
+      certificate: '身份证', // 证件类型
+      idcard: '4444444444444444444',
+      birth: '2020-02-03',
+      sex: '男',
+      size: '大码'
+    }, {
+      id: '001',
+      name: '王小虎5',
+      certificate: '身份证', // 证件类型
+      idcard: '4444444444444444445',
+      birth: '2020-02-03',
+      sex: '男',
+      size: '大码'
+    }, {
+      id: '001',
+      name: '王小虎6',
+      certificate: '身份证', // 证件类型
+      idcard: '4444444444444444446',
+      birth: '2020-02-03',
+      sex: '男',
+      size: '大码'
+    }, {
+      id: '001',
+      name: '王小虎7',
+      certificate: '身份证', // 证件类型
+      idcard: '4444444444444444447',
+      birth: '2020-02-03',
+      sex: '男',
+      size: '大码'
+    }, {
+      id: '001',
+      name: '王小虎8',
+      certificate: '身份证', // 证件类型
+      idcard: '4444444444444444448',
+      birth: '2020-02-03',
+      sex: '男',
+      size: '大码'
+    }, {
+      id: '001',
+      name: '王小虎9',
+      certificate: '身份证', // 证件类型
+      idcard: '4444444444444444449',
+      birth: '2020-02-03',
+      sex: '男',
+      size: '大码'
+    }, {
+      id: '001',
+      name: '王小虎10',
+      certificate: '身份证', // 证件类型
+      idcard: '44444444444444444410',
+      birth: '2020-02-03',
+      sex: '男',
+      size: '大码'
+    }, {
+      id: '001',
+      name: '王小虎11',
+      certificate: '身份证', // 证件类型
+      idcard: '44444444444444444411',
+      birth: '2020-02-03',
+      sex: '男',
+      size: '大码'
+    }, {
+      id: '0011',
+      name: '王小虎12',
+      certificate: '身份证', // 证件类型
+      idcard: '44444444444444444412',
+      birth: '2020-02-03',
+      sex: '男',
+      size: '大码'
+    }, {
+      id: '001',
+      name: '王小虎13',
+      certificate: '身份证', // 证件类型
+      idcard: '44444444444444444413',
+      birth: '2020-02-03',
+      sex: '男',
+      size: '大码'
+    }, {
+      id: '001',
+      name: '王小虎14',
+      certificate: '身份证', // 证件类型
+      idcard: '44444444444444444414',
+      birth: '2020-02-03',
+      sex: '男',
+      size: '大码'
+    }, {
+      id: '001',
+      name: '王小虎15',
+      certificate: '身份证', // 证件类型
+      idcard: '44444444444444444415',
+      birth: '2020-02-03',
+      sex: '男',
+      size: '大码'
+    }
+  ]
+})
+
+// 常用人信息-添加
+Mock.mock('/api/applicants/add', 'post', (options) => {
+  return {
+    message: 'ok'
+  }
+})

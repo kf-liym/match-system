@@ -5,9 +5,8 @@
       <el-button type="text" @click="backHome()">首页</el-button>
     </div>
     <div class="header-item">
-      <el-button type="text" @click="showCommonInfo()"
-        >常用报名人设置</el-button
-      >
+      <el-button type="text" @click="showCommonInfo()">查看比赛通知</el-button>
+      <el-button type="text" @click="showCommonInfo()">下载责任书</el-button>
     </div>
     <div class="username">{{ username }}</div>
   </div>

@@ -146,3 +146,25 @@ export function getStatus (data) {
     params: data
   })
 }
+/**
+ * 获取常用人信息列表
+ */
+export function getApplicants (data) {
+  return request({
+    url: '/api/applicants/list',
+    method: 'get',
+    params: data
+  })
+}
+/**
+ * 常用人信息 - 添加
+ */
+export function applicantsAdd (data) {
+  return request({
+    url: '/api/applicants/add',
+    method: 'post',
+    data
+  })
+}
+
+

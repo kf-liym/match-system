@@ -1,5 +1,5 @@
 <template>
-  <div class="step3-wrap">
+  <div class="step3-wrap" v-loading="loading">
     <el-tabs v-model="active" @tab-click="handleTabClick">
       <el-tab-pane label="个人项目" name="person">
         <person
@@ -36,13 +36,13 @@
       <el-button type="primary" @click="prevStep()">上一步</el-button>
       <el-button type="primary" @click="nextStep()">下一步</el-button>
     </div>
-    <common-applicants ref="commonApplicants" @confirm="applicantsConfirm"></common-applicants>
+    <common-applicants :list="applicants" ref="commonApplicants" @confirm="applicantsConfirm"></common-applicants>
   </div>
 </template>
 
 <script>
 
-import { getProject } from '@/api'
+import { getApplicants } from '@/api'
 import commonApplicants from '../components/common-applicants'
 import Person from './components/person'
 import Duel from './components/duel'
@@ -54,7 +54,9 @@ export default {
   },
   data () {
     return {
-      active: 'person'
+      active: 'person',
+      loading: true,
+      applicants: []
     };
   },
   computed: {
@@ -84,21 +86,10 @@ export default {
     }
   },
   created () {
-
+    this.getApplicants()
   },
   mounted () {
-    getProject().then(res => {
-      this.$store.commit('SET_STATUS', res.data.status)
-      this.$store.commit('SET_RESPONSIBILITY', res.data.responsibility)
-      this.$store.commit('SET_REMITTANCE', res.data.remittance)
-      this.$store.commit('SET_TEAM', res.data.team)
-      this.$store.commit('SET_PERSON', res.data.person)
-      this.$store.commit('SET_DULE', res.data.duel)
-      this.$store.commit('SET_COLLECTIVE', res.data.collective)
-      this.$router.push('/home/step1')
-    }).catch(err => {
-      console.log(err)
-    })
+
   },
   watch: {
 
@@ -113,6 +104,17 @@ export default {
     },
     handleTabClick () {
 
+    },
+    // 获取信息
+    getApplicants () {
+      this.loading = true
+      getApplicants().then(res => {
+        this.loading = false
+        this.applicants = res.data
+      }).catch(err => {
+        this.loading = false
+        console.log(err)
+      })
     },
 
     prevStep () {

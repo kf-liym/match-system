@@ -1,13 +1,13 @@
 <template>
-  <div class="common">
+  <div class="common" v-loading="loading">
     <div class="container-1200">
-      <el-alert class="alert" title="注意事项" type="warning" show-icon :closable="false" />
+      <!-- <el-alert class="alert" title="注意事项" type="warning" show-icon :closable="false" />
       <ul class="description">
         <li>1、出质前盖坐着的著作权是否授权及授权情况说明：若未授权他人使用，填写“否”；若有授权情况，请在授权情况说明栏中填写著作权授权许可（包括专有和非专有）他人使用的有关情。</li>
         <li>2、软件为升级版本的，应在申请表软件基本信息栏中的软件作品说明中，选择“修改”并填写修改说明，前期版本已登记的应填写原登记号并提交原证件复印件。</li>
-      </ul>
+      </ul> -->
       <div class="common-info">
-        <el-table class="common-table" :data="applicantList" stripe border>
+        <el-table class="common-table" :data="applicantList" stripe border max-height="450px">
           <el-table-column type="index" label="序号" width="80">
           </el-table-column>
           <el-table-column prop="name" label="姓名" width="100">
@@ -35,12 +35,13 @@
         </div>
       </div>
     </div>
-    <edit ref="edit" @confirm="getList"></edit>
+    <edit ref="edit" @confirm="add"></edit>
   </div>
 
 </template>
 
 <script>
+import { getApplicants, applicantsAdd } from '@/api'
 import edit from './edit'
 export default {
   name: 'setCommonInfo',
@@ -52,28 +53,36 @@ export default {
   },
   data () {
     return {
-      applicantList: [
-        {
-          id: '001',
-          name: '王小虎',
-          certificate: '身份证', // 证件类型
-          idcard: '444444444444444444',
-          birth: '2020-02-03',
-          sex: '男',
-          size: '大码'
-        }
-      ]
+      // applicantList: [
+      //   {
+      //     id: '001',
+      //     name: '王小虎',
+      //     certificate: '身份证', // 证件类型
+      //     idcard: '444444444444444444',
+      //     birth: '2020-02-03',
+      //     sex: '男',
+      //     size: '大码'
+      //   }
+      // ]
+      loading: true
 
     };
   },
   computed: {
-
+    applicantList: {
+      get () {
+        return this.$store.state.applicants.applicants
+      },
+      set (val) {
+        this.$store.commit('SET_APPLICANTS', val)
+      }
+    }
   },
   created () {
 
   },
   mounted () {
-
+    this.getList()
   },
   watch: {
 
@@ -101,7 +110,26 @@ export default {
     },
     // 获取常用人信息
     getList () {
-      console.log('获取常用人信息')
+      this.loading = true
+      getApplicants().then(res => {
+        console.log(res)
+        this.$store.commit('SET_APPLICANTS', res.data)
+        this.loading = false
+      }).catch(err => {
+        this.loading = false
+        console.log(err)
+      })
+    },
+    add () {
+      this.loading = true
+      applicantsAdd().then(res => {
+        if (res.data.message === 'ok') {
+          this.getList()
+        }
+      }).catch(err => {
+        this.loading = false
+        console.log(err)
+      })
     }
   }
 
@@ -120,7 +148,7 @@ export default {
   width: 100%;
   // border: 1px solid #333;
   border-bottom: 0;
-  margin: 30px 0 50px;
+  margin: 0 0 50px;
 }
 .description {
   margin-top: 10px;
