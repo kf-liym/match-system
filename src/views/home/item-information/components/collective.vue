@@ -3,16 +3,17 @@
  * @Author: liym
  * @Date: 2020-02-14 17:57:29
  * @Last Modified by: liym
- * @Last Modified time: 2020-02-17 20:56:32
+ * @Last Modified time: 2020-03-09 01:12:28
  */
 
 <template>
-  <div class="step3-person">
+  <div class="step3-person" v-loading="loading">
     <div class="empty" v-if="list.length < 1">暂无数据，请新增集体报项</div>
-    <el-collapse v-else v-model="active">
+    <el-collapse v-else v-model="active" style="height: 400px; overflow-y: scroll;">
       <el-collapse-item :name="index" v-for="(item,index) in list" :key="index">
         <template slot="title">
-          {{index+1}}. {{item.contestants | contestant}}
+          <!-- {{index+1}}. {{item.contestants | contestant}} -->
+          {{index+1}}. {{item.item}}
           <div class="title-right">
             <el-button type="primary" size="mini" icon="el-icon-edit" @click.stop="edit(index)">编辑</el-button>
             <el-button type="danger" size="mini" icon="el-icon-delete" @click.stop="del(index)">删除</el-button>
@@ -40,57 +41,60 @@
         </div>
       </el-collapse-item>
     </el-collapse>
-    <div style="text-align:center; padding: 30px;" v-if="list.length < 2">
+    <div style="text-align:center; padding: 30px 0 0;" v-if="list.length < 2">
       <el-button type="primary" @click="handleAdd()">新增集体报项</el-button>
     </div>
 
     <collective-edit
       ref="edit"
       :collective-options="collectiveOptions"
-      @choose-user="handleChoose"
       @confirm="confirm"
+      @choose-user="handleChoose"
     ></collective-edit>
   </div>
 </template>
 
 <script>
 import { nameFormat } from '@/filters'
-import { collectiveDel, collectiveAdd } from '@/api'
+import { delCollective, putCollective, addCollective, getCollectives } from '@/api'
 import collectiveEdit from './collective-edit'
 export default {
   name: 'step3Collective',
   props: {
-    data: {
-      type: Array,
-      default () {
-        return []
-      }
-    }
+    // data: {
+    //   type: Array,
+    //   default () {
+    //     return []
+    //   }
+    // }
   },
   data () {
     return {
+      loading: false,
       active: [],
       // 集体项目选项 0：拳术    1：器械
-      collectiveOptions: [
-        { label: '集体太极八法五步', type: 0 },
-        { label: '集体太极拳术', type: 0 },
-        { label: '集体太极器械', type: 1 }
-      ]
+      // collectiveOptions: [
+      //   { label: '集体太极八法五步', type: 0 },
+      //   { label: '集体太极拳术', type: 0 },
+      //   { label: '集体太极器械', type: 1 }
+      // ]
+      collectiveOptions: ['集体太极八法五步', '集体太极拳术', '集体太极器械'],
+      list: []
     };
   },
   computed: {
-    list: {
-      get () {
-        return this.data
-      },
-      set (val) {
-        this.$emit('update:data', val)
-      }
-    },
+    // list: {
+    //   get () {
+    //     return this.data
+    //   },
+    //   set (val) {
+    //     this.$emit('update:data', val)
+    //   }
+    // },
     collective () {
       let arr = []
       this.list.forEach((item, index) => {
-        arr[index] = item.itemName ? `${item.itemType.label}（${item.itemName}）` : item.itemType.label
+        arr[index] = item.itemRoutine ? `${item.item}（${item.itemRoutine}）` : item.item
       })
       return arr
     },
@@ -109,7 +113,7 @@ export default {
 
   },
   created () {
-
+    this.getList()
   },
   mounted () {
   },
@@ -126,6 +130,19 @@ export default {
     }
   },
   methods: {
+    getList () {
+      this.loading = true
+      getCollectives().then(res => {
+        // console.log(res)
+        this.loading = false
+        this.$store.commit('SET_STATUS', res.data.status)
+        this.list = res.data.list
+        // this.applicants = res.data
+      }).catch(err => {
+        this.loading = false
+        console.log(err)
+      })
+    },
     handleChoose (index) {
       this.$emit('choose-user', 'collective', index)
     },
@@ -139,14 +156,14 @@ export default {
       this.$refs['edit'].applicantsConfirm(row, index)
     },
     // 删除
-    del (index) {
+    del (id) {
       this.$confirm('是否确定删除?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        collectiveDel(this.list[index].id).then(res => {
-          this.$delete(this.list, index)
+        delCollective(id).then(res => {
+          this.getList()
           this.$message({
             type: 'success',
             message: '删除成功!'
@@ -191,17 +208,18 @@ export default {
       let flag = false
       for (let i = 0; i < this.list.length; i++) {
         if (flag) { break }
-        if (index === -1) {
-          if (this.list[i].itemType.type === row.itemType.type) {
-            flag = true
-            break
-          }
-        } else if (index !== i) {
-          if (this.list[i].itemType.type === row.itemType.type) {
+        if (index === -1 || index !== i) {
+          if (this.list[i].itemType === row.itemType) {
             flag = true
             break
           }
         }
+        // else if () {
+        //   if (this.list[i].itemType === row.itemType) {
+        //     flag = true
+        //     break
+        //   }
+        // }
       }
       return flag
     },
@@ -219,21 +237,20 @@ export default {
           confirmButtonText: '确定',
           type: 'error'
         });
-      } else {
-        collectiveAdd(row).then(res => {
-          let list = JSON.parse(JSON.stringify(this.list))
-          if (index === -1) { // 新增
-            this.active.push(list.length)
-            list.push(row)
-          } else { // 修改
-            this.$set(list, index, row)
-          }
+      } else if (index === -1) {
+        addCollective(row).then(res => {
+          this.getList()
           this.$refs.edit.hide()
-          this.list = list
         }).catch(err => {
           console.log(err)
         })
-
+      } else {
+        putCollective(row.id, row).then(res => {
+          this.getList()
+          this.$refs.edit.hide()
+        }).catch(err => {
+          console.log(err)
+        })
       }
     }
 
@@ -247,8 +264,8 @@ export default {
 
 <style scoped lang="scss">
 .empty {
-  height: 300px;
-  line-height: 300px;
+  height: 400px;
+  line-height: 400px;
   text-align: center;
 }
 .title-right {

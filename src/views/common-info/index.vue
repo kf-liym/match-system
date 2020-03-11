@@ -1,31 +1,24 @@
 <template>
   <div class="common" v-loading="loading">
     <div class="container-1200">
-      <!-- <el-alert class="alert" title="注意事项" type="warning" show-icon :closable="false" />
-      <ul class="description">
-        <li>1、出质前盖坐着的著作权是否授权及授权情况说明：若未授权他人使用，填写“否”；若有授权情况，请在授权情况说明栏中填写著作权授权许可（包括专有和非专有）他人使用的有关情。</li>
-        <li>2、软件为升级版本的，应在申请表软件基本信息栏中的软件作品说明中，选择“修改”并填写修改说明，前期版本已登记的应填写原登记号并提交原证件复印件。</li>
-      </ul> -->
       <div class="common-info">
-        <el-table class="common-table" :data="applicantList" stripe border max-height="450px">
-          <el-table-column type="index" label="序号" width="80">
-          </el-table-column>
-          <el-table-column prop="name" label="姓名" width="100">
-          </el-table-column>
-          <el-table-column prop="certificate" label="证件类型" width="100">
-          </el-table-column>
-          <el-table-column prop="idcard" label="证件号码" min-width="200">
-          </el-table-column>
-          <el-table-column prop="sex" label="性别" width="80">
-          </el-table-column>
-          <el-table-column prop="birth" label="出生日期" width="100">
-          </el-table-column>
-          <el-table-column prop="size" label="纪念服尺寸" width="100">
-          </el-table-column>
+        <el-table class="common-table" :data="list" stripe border max-height="400px">
+          <el-table-column type="index" label="序号" width="80"></el-table-column>
+          <el-table-column prop="name" label="姓名" width="100"></el-table-column>
+          <el-table-column prop="certificate" label="证件类型" width="100"></el-table-column>
+          <el-table-column prop="idcard" label="证件号码" min-width="200"></el-table-column>
+          <el-table-column prop="sex" label="性别" width="80"></el-table-column>
+          <el-table-column prop="birth" label="出生日期" width="100"></el-table-column>
+          <el-table-column prop="size" label="纪念服尺寸" width="100"></el-table-column>
           <el-table-column align="center" label="操作" width="130">
             <template slot-scope="scope">
               <el-button type="primary" icon="el-icon-edit" circle @click="handleEdit(scope.row)"></el-button>
-              <el-button type="danger" icon="el-icon-delete" circle @click="handleDelete(scope.row.id)"></el-button>
+              <el-button
+                type="danger"
+                icon="el-icon-delete"
+                circle
+                @click="handleDelete(scope.row.id)"
+              ></el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -33,15 +26,19 @@
         <div class="add-btn">
           <el-button type="primary" @click="handleAdd">新增常用报名人信息</el-button>
         </div>
+
+        <div class="step-btn-group">
+          <!-- <el-button type="primary" @click="prevStep()">上一步</el-button> -->
+          <el-button type="primary" @click="nextStep()">下一步</el-button>
+        </div>
       </div>
     </div>
-    <edit ref="edit" @confirm="add"></edit>
+    <edit ref="edit" @getList="getList"></edit>
   </div>
-
 </template>
 
 <script>
-import { getApplicants, applicantsAdd } from '@/api'
+import { getMembers, delMember } from '@/api'
 import edit from './edit'
 export default {
   name: 'setCommonInfo',
@@ -53,30 +50,12 @@ export default {
   },
   data () {
     return {
-      // applicantList: [
-      //   {
-      //     id: '001',
-      //     name: '王小虎',
-      //     certificate: '身份证', // 证件类型
-      //     idcard: '444444444444444444',
-      //     birth: '2020-02-03',
-      //     sex: '男',
-      //     size: '大码'
-      //   }
-      // ]
+      list: [],
       loading: true
 
     };
   },
   computed: {
-    applicantList: {
-      get () {
-        return this.$store.state.applicants.applicants
-      },
-      set (val) {
-        this.$store.commit('SET_APPLICANTS', val)
-      }
-    }
   },
   created () {
 
@@ -94,11 +73,29 @@ export default {
     },
     // 删除
     handleDelete (id) {
-      this.$confirm('是否删除该信息？', '系统消息', {
+      const _this = this
+      _this.$confirm('是否删除该信息？', '系统消息', {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(() => {
-        console.log('删除')
+        _this.loading = true
+        delMember(id).then(res => {
+          _this.loading = false
+          if (res.data.code === 200) {
+            _this.$message({
+              message: '删除成功',
+              type: 'success'
+            });
+            _this.visible = false
+            _this.$emit('getList')
+          } else {
+            _this.$message.error(res.data.message || '删除失败');
+          }
+        }).catch(err => {
+          _this.loading = false
+          _this.$message.error(err || '删除失败');
+        })
+
       }).catch(() => {
         console.log('取消删除')
       });
@@ -111,25 +108,19 @@ export default {
     // 获取常用人信息
     getList () {
       this.loading = true
-      getApplicants().then(res => {
-        console.log(res)
-        this.$store.commit('SET_APPLICANTS', res.data)
+      getMembers({ userId: this.$store.state.user.id }).then(res => {
+        this.list = res.data.list
+        this.$store.commit('SET_STATUS', res.data.status)
+        this.$store.commit('SET_MEMBERS', res.data.list)
         this.loading = false
       }).catch(err => {
         this.loading = false
         console.log(err)
       })
     },
-    add () {
-      this.loading = true
-      applicantsAdd().then(res => {
-        if (res.data.message === 'ok') {
-          this.getList()
-        }
-      }).catch(err => {
-        this.loading = false
-        console.log(err)
-      })
+    nextStep () {
+      console.log(this.$route)
+      this.$store.dispatch('STEP_NEXT', { router: this.$router, route: this.$route })
     }
   }
 

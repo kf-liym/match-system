@@ -29,6 +29,9 @@
 </template>
 
 <script>
+import {
+  signup
+} from '@/api'
 export default {
   name: 'signup',
   data () {
@@ -57,7 +60,7 @@ export default {
           { required: true, message: '请输入密码', trigger: 'blur' }
         ],
         repassword: [
-          { validator: validatePass2, message: '请再次输入密码', trigger: 'blur' }
+          { validator: validatePass2, trigger: 'blur' }
         ],
         email: [
           { required: true, message: '请输入邮箱', trigger: 'blur' }
@@ -75,7 +78,32 @@ export default {
       this.$refs.register.validate((valid) => {
         if (valid) {
           // eslint-disable-next-line no-alert
-          alert('submit!')
+          signup({
+            username: this.dataForm.username,
+            password: this.dataForm.password,
+            email: this.dataForm.email
+          }).then(res => {
+            if (res.data.code === 200) {
+              this.$alert('注册成功，点击确定跳转至登录界面。', '系统消息', {
+                confirmButtonText: '确定',
+                callback: action => {
+                  if (action === 'confirm') {
+                    this.$router.push('/signin')
+                  }
+                }
+              });
+            } else {
+              this.$alert(res.data.message, '系统消息', {
+                confirmButtonText: '确定',
+                type: 'error'
+              });
+            }
+          }).catch(err => {
+            this.$alert(err, '系统消息', {
+              confirmButtonText: '确定',
+              type: 'error'
+            });
+          })
         } else {
           console.log('error submit!!')
           return false

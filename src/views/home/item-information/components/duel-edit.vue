@@ -3,13 +3,13 @@
  * @Author: liym
  * @Date: 2020-02-14 16:40:41
  * @Last Modified by: liym
- * @Last Modified time: 2020-02-17 21:02:01
+ * @Last Modified time: 2020-03-09 01:02:57
  */
 
 <template>
   <el-dialog
     class="common-applicants__choose"
-    :title="title[state]+'对练报项'"
+    :title="title[type]+'对练报项'"
     :before-close="handleClose"
     :visible.sync="visible"
     width="580px"
@@ -17,21 +17,21 @@
     :close-on-press-escape="false"
   >
     <el-form class="form-wrap" ref="formEdit" :hide-required-asterisk="true" :model="edit" :rules="rules" label-width="140px">
-      <el-form-item prop="itemType">
+      <el-form-item prop="item">
         <template slot="label">
           <span style="color: #F56C6C; margin-right: 4px;">*</span>
           项目类型：
         </template>
-        <el-select v-model="edit.itemType" placeholder="请选择报名项目" clearable value-key="label" style="width: 100%">
-          <el-option v-for="(item,index)  in duelOptions" :key="index" :label="item.label" :value="item"></el-option>
+        <el-select v-model="edit.item" placeholder="请选择报名项目" clearable  style="width: 100%">
+          <el-option v-for="(item,index)  in duelOptions" :key="index" :value="item"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item prop="itemName">
+      <el-form-item prop="itemRoutine">
         <template slot="label">
           <span style="color: #F56C6C;  margin-right: 4px;">*</span>
           项目名称：
         </template>
-        <el-input style="width: 100%;" v-model="edit.itemName" placeholder="请补充项目名称" />
+        <el-input style="width: 100%;" v-model="edit.itemRoutine" placeholder="请补充项目名称" />
       </el-form-item>
       <el-form-item prop="0" :rules="rules.contestants">
         <template slot="label">
@@ -68,7 +68,8 @@
     </el-form>
 
     <div class="form-footer">
-      <el-button type="primary" @click="handleConfirm('formEdit')">{{state === 'add' ? '保存' : '修改'}}</el-button>
+      <el-button type="primary" @click="handleAdd('formEdit')" v-if="type === 'add'">保存</el-button>
+      <el-button type="primary" @click="handleUpdate('formEdit')" v-else>修改</el-button>
       <el-button @click="handleCancel('formEdit')">取消</el-button>
     </div>
   </el-dialog>
@@ -89,29 +90,31 @@ export default {
   data () {
     return {
       visible: false,
-      state: 'add',
+      type: 'add',
       title: {
         add: '新增',
         edit: '编辑'
       },
       template: {
         contestants: [],
+        item: '',
         itemType: '',
-        itemName: ''
+        itemRoutine: ''
       },
       edit: {
         contestants: [],
+        item: '',
         itemType: '',
-        itemName: ''
+        itemRoutine: ''
       },
       rules: {
         contestants: [
           { validator: this.validateContestants, trigger: 'change' }
         ],
-        itemType: [
+        item: [
           { required: true, message: '请选择项目类型', trigger: 'change' }
         ],
-        itemName: [
+        itemRoutine: [
           { required: true, message: '请填写项目名称', trigger: 'blur' }
         ]
       },
@@ -138,7 +141,7 @@ export default {
   },
   methods: {
     show (type, index, data) {
-      this.state = type
+      this.type = type
       this.index = index
       if (data) {
         this.edit = JSON.parse(JSON.stringify(data))
@@ -164,7 +167,6 @@ export default {
       this.$emit('choose-user', index)
     },
     applicantsConfirm (row, index) {
-      console.log('applicantsConfirm', row, index)
       let age = new Date().getFullYear() - new Date(row.birth).getFullYear()
       let group = ''
       if (age < 18) {
@@ -172,23 +174,10 @@ export default {
       } else {
         group = '成年组'
       }
-      // this.edit = {
-      //   ...this.edit,
-      //   ...row,
-      //   group
-      // }
       this.$set(this.edit.contestants, index, {
         ...row,
         group
       })
-    },
-    // 项目选择验证
-    validateProject (rule, value, callback) {
-      if (value.boxing.label || value.instrument.label) {
-        callback()
-      } else {
-        callback(new Error('拳术、器械项目至少选填一项。'))
-      }
     },
     validateContestants (rule, value, callback) {
       let end = parseInt(rule.fullField)
@@ -219,20 +208,24 @@ export default {
       })
     },
 
+
+    handleAdd (form) {
+      this.$refs[form].validate((valid) => {
+        if (valid) {
+          this.$emit('confirm', this.index, JSON.parse(JSON.stringify(this.edit)))
+        }
+      })
+    },
+    handleUpdate (form) {
+      this.$refs[form].validate((valid) => {
+        if (valid) {
+          this.$emit('confirm', this.index, JSON.parse(JSON.stringify(this.edit)))
+        }
+      })
+    },
+
     handleCancel () {
       this.visible = false
-    },
-    handleBoxingChange (val) {
-      if (val.type === 1) {
-        this.edit.project.boxingRoutine = ''
-      }
-      this.$refs['formEdit'].validateField(['project', 'project.boxingRoutine'])
-    },
-    handleInstrumentChange (val) {
-      if (val.type === 1) {
-        this.edit.project.instrumentRoutine = ''
-      }
-      this.$refs['formEdit'].validateField(['project', 'project.instrumentRoutine'])
     }
 
   },

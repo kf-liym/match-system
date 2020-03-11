@@ -1,52 +1,67 @@
 <template>
   <el-dialog title="查看信息" :visible.sync="visibles" width="80%" :before-close="handleClose" class="check-wrap">
+    <!-- {{value}} -->
     <div class="body">
       <ul class="report-team-info">
         <li>责任书：{{ value.responsibility.length > 0 ? '' : '无' }}</li>
       </ul>
       <div class="image-preview" v-if="value.responsibility">
-        <el-image v-for="(item, index) in value.responsibility" :key="index" style="width: 100px; height: 100px; margin-right: 10px;" :src="item" :preview-src-list="value.responsibility" fit="cover ">
+        <el-image v-for="(item, index) in responsibility" :key="index" style="width: 100px; height: 100px; margin-right: 10px;" :src="item" :preview-src-list="responsibility" fit="cover ">
         </el-image>
       </div>
 
       <ul class="report-team-info">
-        <li>汇款证明：{{ value.remittance.length > 0 ? '' : '无' }}</li>
+        <li>汇款证明：{{ value.prove.length > 0 ? '' : '无' }}</li>
       </ul>
       <div class="image-preview">
-        <el-image  v-for="(item, index) in value.remittance" :key="index" style="width: 100px; height: 100px; margin-right: 10px;" :src="item" :preview-src-list="value.remittance" fit="cover">
+        <el-image  v-for="(item, index) in prove" :key="index" style="width: 100px; height: 100px; margin-right: 10px;" :src="item" :preview-src-list="prove" fit="cover">
         </el-image>
       </div>
       <ul class="report-team-info">
-        <li>队伍名称：{{value.teamName}}</li>
-        <li>领队：{{value.leaderName}}</li>
-        <li>联系电话：{{value.tel}}</li>
-        <li>教练：{{value.coachName}}</li>
+        <li>队伍名称：{{value.team.teamName}}</li>
+        <li>领队：{{value.team.leaderName}}</li>
+        <li>联系电话：{{value.team.tel}}</li>
+        <li>教练：{{value.team.coachName}}</li>
       </ul>
       <div class="report-item">
         <div class="report-item__header">个人项目</div>
-        <el-table class="report-item__body" :data="person" border fit style="width: 100%;">
+        <el-table
+          class="report-item__body"
+          :data="person"
+          max-height="400px"
+          border
+          fit
+          style="width: 100%;"
+        >
           <el-table-column type="index" label="序号" width="50"></el-table-column>
           <el-table-column prop="name" label="姓名" width="100"></el-table-column>
           <el-table-column prop="idcard" label="证件号码" width="180"></el-table-column>
           <el-table-column prop="birth" label="出生日期" width="110"></el-table-column>
           <el-table-column prop="sex" label="性别" width="60"></el-table-column>
           <el-table-column prop="group" label="组别" width="115"></el-table-column>
-          <el-table-column prop="item" label="项目名称" min-width="280"></el-table-column>
+          <el-table-column prop="itemName" label="项目名称" min-width="280"></el-table-column>
           <el-table-column prop="cost" label="费用"></el-table-column>
         </el-table>
         <div class="cost-box">合计：{{personalCost}} 元</div>
       </div>
 
-      <div class="report-item">
+       <div class="report-item">
         <div class="report-item__header">对练项目</div>
-        <el-table class="report-item__body" :data="duel" border fit style="width: 100%;">
+        <el-table
+          class="report-item__body"
+          :data="duel"
+          max-height="400px"
+          border
+          fit
+          style="width: 100%;"
+        >
           <el-table-column prop="index" label="序号" width="50"></el-table-column>
           <el-table-column prop="name" label="姓名" width="100"></el-table-column>
           <el-table-column prop="idcard" label="证件号码" width="180"></el-table-column>
           <el-table-column prop="birth" label="出生日期" width="110"></el-table-column>
           <el-table-column prop="sex" label="性别" width="60"></el-table-column>
           <el-table-column prop="group" label="组别" width="80"></el-table-column>
-          <el-table-column prop="item" label="项目名称" min-width="280"></el-table-column>
+          <el-table-column prop="itemName" label="项目名称" min-width="280"></el-table-column>
           <el-table-column prop="cost" label="费用"></el-table-column>
         </el-table>
         <div class="cost-box">合计：{{duelCost}} 元</div>
@@ -54,14 +69,21 @@
 
       <div class="report-item">
         <div class="report-item__header">集体项目</div>
-        <el-table class="report-item__body" :data="collective" border fit style="width: 100%;">
+        <el-table
+          class="report-item__body"
+          :data="collective"
+          max-height="400px"
+          border
+          fit
+          style="width: 100%;"
+        >
           <el-table-column prop="index" label="序号" width="50"></el-table-column>
           <el-table-column prop="name" label="姓名" width="100"></el-table-column>
           <el-table-column prop="idcard" label="证件号码" width="180"></el-table-column>
           <el-table-column prop="birth" label="出生日期" width="110"></el-table-column>
           <el-table-column prop="sex" label="性别" width="60"></el-table-column>
           <el-table-column prop="group" label="组别" width="110"></el-table-column>
-          <el-table-column prop="item" label="项目名称" min-width="280"></el-table-column>
+          <el-table-column prop="itemName" label="项目名称" min-width="280"></el-table-column>
         </el-table>
         <div class="cost-box">合计：{{collectiveCost}} 元</div>
       </div>
@@ -82,6 +104,7 @@
 </template>
 
 <script>
+import { teamPass } from '@/api'
 export default {
   name: 'checkDialog',
   props: {
@@ -97,6 +120,7 @@ export default {
   },
   data () {
     return {
+
       // visible: false,
       cover: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2844401865,2654823704&fm=26&gp=0.jpg',
       cover1: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1305353222,2352820043&fm=26&gp=0.jpg',
@@ -107,6 +131,20 @@ export default {
     }
   },
   computed: {
+    responsibility () {
+      let arr = []
+      this.value.responsibility.forEach(item => {
+        arr.push(item.url)
+      })
+      return arr
+    },
+    prove () {
+      let arr = []
+      this.value.prove.forEach(item => {
+        arr.push(item.url)
+      })
+      return arr
+    },
     visibles: {
       get () {
         return this.visible
@@ -115,36 +153,36 @@ export default {
         this.$emit('update:visible', val)
       }
     },
-    responsibility: {
-      get () {
-        return this.value.responsibility
-      },
-      set (val) {
-        this.$store.commit('SET_RESPONSIBILITY', val)
-      }
-    },
-    remittance: {
-      get () {
-        return this.value.remittance
-      },
-      set (val) {
-        this.$store.commit('SET_REMITTANCE', val)
-      }
-    },
+    // responsibility: {
+    //   get () {
+    //     return this.value.responsibility
+    //   },
+    //   set (val) {
+    //     this.$store.commit('SET_RESPONSIBILITY', val)
+    //   }
+    // },
+    // remittance: {
+    //   get () {
+    //     return this.value.remittance
+    //   },
+    //   set (val) {
+    //     this.$store.commit('SET_REMITTANCE', val)
+    //   }
+    // },
     person () {
       let arr = []
       this.value.person.forEach(item => {
-        if (item.project.boxing && item.project.boxing.label) {
+        if (item.boxing) {
           arr.push({
             ...item,
-            item: `${item.project.boxing.label}${item.project.boxingRoutine ? '-' : ''}${item.project.boxingRoutine}`,
+            itemName: `${item.boxing}${item.boxingRoutine ? '-' : ''}${item.boxingRoutine}`,
             cost: 50
           })
         }
-        if (item.project.instrument && item.project.instrument.label) {
+        if (item.instrument) {
           arr.push({
             ...item,
-            item: `${item.project.instrument.label}${item.project.instrumentRoutine ? '-' : ''}${item.project.instrumentRoutine}`,
+            itemName: `${item.instrument}${item.instrumentRoutine ? '-' : ''}${item.instrumentRoutine}`,
             cost: 50
           })
         }
@@ -152,17 +190,15 @@ export default {
       return arr
     },
     duel () {
-      // return this.$store.state.project.duel
       let arr = []
-      // console.log(this.$store.state.project.duel)
       this.value.duel.forEach((item, index) => {
         item.contestants.forEach((contestant, contestantsIndex) => {
           arr.push({
             index: `${index + 1}-${contestantsIndex + 1}`,
             ...contestant,
             itemType: item.itemType,
-            itemName: item.itemName,
-            item: `${item.itemType.label}${item.itemName ? '-' : ''}${item.itemName}`,
+            itemRoutine: item.itemRoutine,
+            itemName: `${item.item}${item.itemRoutine ? '-' : ''}${item.itemRoutine}`,
             cost: 50
           })
         })
@@ -174,13 +210,12 @@ export default {
       let arr = []
       this.value.collective.forEach((item, index) => {
         item.contestants.forEach((contestant, contestantsIndex) => {
-          // console.log(contestant)
           arr.push({
             index: `${index + 1}-${contestantsIndex + 1}`,
             ...contestant,
             itemType: item.itemType,
-            itemName: item.itemName,
-            item: `${item.itemType.label}${item.itemName ? '-' : ''}${item.itemName}`,
+            itemRoutine: item.itemRoutine,
+            itemName: `${item.item}${item.itemRoutine ? '-' : ''}${item.itemRoutine}`,
             cost: 50
           })
         })
@@ -239,11 +274,18 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(() => {
-        this.visibles = false
-        // this.$message({
-        //   type: 'success',
-        //   message: '删除成功!'
-        // })
+        teamPass(this.value.id).then(res => {
+          if (res.data.code === 200) {
+            this.$emit('get-list')
+            this.$message({
+              type: 'success',
+              message: '已成功打回该申请!'
+            })
+            this.visibles = false
+          }
+        }).catch(err => {
+          console.log(err)
+        })
       }).catch(() => {
         // this.$message({
         //   type: 'info',

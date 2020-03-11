@@ -1,11 +1,20 @@
+<!--
+ * @Desc: 描述
+ * @Date: 2020-02-14 22:24:20
+ * @LastEditTime: 2020-03-11 01:09:00
+ -->
 <template>
   <div class="step-1">
     <el-upload
-      action="https://jsonplaceholder.typicode.com/posts/"
+      action="api/upload/responsibility"
       list-type="picture-card"
+      :data= '{ token: $store.state.user.token }'
       :on-preview="handlePictureCardPreview"
       :on-remove="handleRemove"
+      :on-error="handleError"
+      :on-success="handleSuccess"
       class="upload-wrap"
+      :file-list="fileList"
     >
       <i class="el-icon-plus" />
     </el-upload>
@@ -20,6 +29,7 @@
 </template>
 
 <script>
+import { getProve } from '@/api'
 export default {
   name: 'Step1',
   components: {
@@ -31,7 +41,8 @@ export default {
   data () {
     return {
       dialogImageUrl: '',
-      dialogVisible: false
+      dialogVisible: false,
+      fileList: []
     }
   },
   computed: {
@@ -41,7 +52,14 @@ export default {
 
   },
   created () {
-
+    getProve().then(res => {
+      this.fileList = res.data.list
+    }).catch(err => {
+      this.$message({
+        type: 'error',
+        message: err
+      });
+    })
   },
   mounted () {
 
@@ -49,18 +67,26 @@ export default {
   methods: {
     handleRemove (file, fileList) {
       console.log(file, fileList)
+
+    },
+    handleError (err, file, fileList) {
+      this.$message({
+        type: 'error',
+        message: err
+      });
+    },
+    handleSuccess (response, file, fileList) {
+      console.log(response, file, fileList)
     },
     handlePictureCardPreview (file) {
       this.dialogImageUrl = file.url
       this.dialogVisible = true
     },
     prevStep () {
-      this.$store.commit('SET_STEP', 3)
-      this.$router.push('/home/step4')
+      this.$store.dispatch('STEP_PREV', { router: this.$router, route: this.$route })
     },
     nextStep () {
-      this.$store.commit('SET_STEP', 5)
-      this.$router.push('/home/step6')
+      this.$store.dispatch('STEP_NEXT', { router: this.$router, route: this.$route })
     }
   }
 }

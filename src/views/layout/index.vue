@@ -1,6 +1,7 @@
 <template>
   <div class="app-wrap">
     <app-header class="app-header" />
+    <!-- {{$store.state}} -->
     <router-view class="app-container" />
   </div>
 </template>
@@ -35,6 +36,6 @@ export default {
   // flex: 1;
   width: 100%;
   height: 100%;
-  overflow: scroll;
+  overflow: auto;
 }
 </style>

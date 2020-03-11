@@ -3,13 +3,13 @@
  * @Author: liym
  * @Date: 2020-02-14 16:40:41
  * @Last Modified by: liym
- * @Last Modified time: 2020-02-16 19:09:22
+ * @Last Modified time: 2020-03-09 01:02:56
  */
 
 <template>
   <el-dialog
     class="common-applicants__choose"
-    :title="title[state]+'个人报项'"
+    :title="title[type]+'个人报项'"
     :before-close="handleClose"
     :visible.sync="visible"
     width="580px"
@@ -34,14 +34,13 @@
           <i class="el-icon-user"></i>
         </div>
       </el-form-item>
-      <el-form-item prop="project">
+      <el-form-item prop="boxing">
         <template slot="label">
           <!-- <span style="color: #F56C6C; margin-right: 4px;">*</span> -->
           拳术项目名称：
         </template>
         <el-select
-          v-model="edit.project.boxing"
-          value-key="label"
+          v-model="edit.boxing"
           placeholder="请选择报名项目"
           clearable
           style="width: 100%"
@@ -50,15 +49,14 @@
           <el-option
             v-for="(boxingItem,boxingIndex)  in boxingOptions"
             :key="boxingIndex"
-            :label="boxingItem.label"
             :value="boxingItem"
           ></el-option>
         </el-select>
       </el-form-item>
       <el-form-item
-        prop="project.boxingRoutine"
+        prop="boxingRoutine"
         :rules="rules.boxingRoutine"
-        v-if="edit.project.boxing.type === 0"
+        v-if="edit.boxingType === 0"
       >
         <template slot="label">
           <span style="color: #F56C6C;  margin-right: 4px;">*</span>
@@ -66,18 +64,17 @@
         </template>
         <el-input
           style="width: 100%;"
-          v-model="edit.project.boxingRoutine"
+          v-model="edit.boxingRoutine"
           placeholder="请补充拳术套路名称"
         />
       </el-form-item>
-      <el-form-item prop="project">
+      <el-form-item prop="instrument">
         <template slot="label">
           <!-- <span style="color: #F56C6C; margin-right: 4px;">*</span> -->
           器械项目名称：
         </template>
         <el-select
-          v-model="edit.project.instrument"
-          value-key="label"
+          v-model="edit.instrument"
           clearable
           placeholder="请选择报名项目"
           style="width: 100%;"
@@ -86,15 +83,14 @@
           <el-option
             v-for="(instrumentItem, instrumentIndex) in instrumentOptions"
             :key="instrumentIndex"
-            :label="instrumentItem.label"
             :value="instrumentItem"
           ></el-option>
         </el-select>
       </el-form-item>
       <el-form-item
-        prop="project.instrumentRoutine"
+        prop="instrumentRoutine"
         :rules="rules.instrumentRoutine"
-        v-if="edit.project.instrument.type === 0"
+        v-if="edit.instrumentType === 0"
       >
         <template slot="label">
           <span style="color: #F56C6C; margin-right: 4px;">*</span>
@@ -102,14 +98,15 @@
         </template>
         <el-input
           style="width: 100%;"
-          v-model="edit.project.instrumentRoutine"
+          v-model="edit.instrumentRoutine"
           placeholder="请补充器械套路名称"
         />
       </el-form-item>
     </el-form>
 
     <div class="form-footer">
-      <el-button type="primary" @click="handleConfirm('formEdit')">{{state === 'add' ? '保存' : '修改'}}</el-button>
+      <el-button type="primary" @click="handleAdd('formEdit')" v-if="type === 'add'">保存</el-button>
+      <el-button type="primary" @click="handleUpdate('formEdit')" v-else>修改</el-button>
       <el-button @click="handleCancel('formEdit')">取消</el-button>
     </div>
   </el-dialog>
@@ -120,12 +117,14 @@ export default {
   name: 'personEdit',
   props: {
     boxingOptions: {},
-    instrumentOptions: {}
+    boxingTradition: {},
+    instrumentOptions: {},
+    instrumentTradition: {}
   },
   data () {
     return {
       visible: false,
-      state: 'add',
+      type: 'add',
       title: {
         add: '新增',
         edit: '编辑'
@@ -139,18 +138,21 @@ export default {
         sex: '',
         size: '',
         group: '',
-        project: {
-          boxing: '', // 拳术项目
-          boxingRoutine: '', // 拳术套路名称
-          instrument: '', // 器械项目
-          instrumentRoutine: '' // 器械套路名称
-        }
+        boxing: '',
+        boxingType: '',
+        boxingRoutine: '',
+        instrument: '',
+        instrumentType: '',
+        instrumentRoutine: ''
       },
       rules: {
         name: [
           { required: true, message: '请选择报项人', trigger: 'change' }
         ],
-        project: [
+        boxing: [
+          { validator: this.validateProject, trigger: 'change' }
+        ],
+        instrument: [
           { validator: this.validateProject, trigger: 'change' }
         ],
         boxingRoutine: [
@@ -179,7 +181,7 @@ export default {
   },
   methods: {
     show (type, index, data) {
-      this.state = type
+      this.type = type
       this.index = index
       if (data) {
         this.edit = JSON.parse(JSON.stringify(data))
@@ -193,12 +195,12 @@ export default {
           sex: '',
           size: '',
           group: '',
-          project: {
-            boxing: '', // 拳术项目
-            boxingRoutine: '', // 拳术套路名称
-            instrument: '', // 器械项目
-            instrumentRoutine: '' // 器械套路名称
-          }
+          boxing: '',
+          boxingType: '',
+          boxingRoutine: '',
+          instrument: '',
+          instrumentType: '',
+          instrumentRoutine: ''
         }
       }
 
@@ -245,19 +247,23 @@ export default {
 
     },
     validateProject (rule, value, callback) {
-      if (value.boxing.label || value.instrument.label) {
+      if (this.edit.boxing || this.edit.instrument) {
         callback()
       } else {
         callback(new Error('拳术、器械项目至少选填一项。'))
       }
     },
-
-    handleConfirm (form) {
+    handleAdd (form) {
       this.$refs[form].validate((valid) => {
         if (valid) {
           this.$emit('confirm', this.index, JSON.parse(JSON.stringify(this.edit)))
-        } else {
-          return false
+        }
+      })
+    },
+    handleUpdate (form) {
+      this.$refs[form].validate((valid) => {
+        if (valid) {
+          this.$emit('confirm', this.index, JSON.parse(JSON.stringify(this.edit)))
         }
       })
     },
@@ -266,16 +272,24 @@ export default {
       this.visible = false
     },
     handleBoxingChange (val) {
-      if (val.type === 1) {
-        this.edit.project.boxingRoutine = ''
+      const flag = this.boxingTradition.indexOf(val) === -1
+      if (flag) {
+        this.edit.boxingRoutine = ''
+        this.edit.boxingType = 1
+      } else {
+        this.edit.boxingType = 0
       }
-      this.$refs['formEdit'].validateField(['project', 'project.boxingRoutine'])
+      this.$refs['formEdit'].validateField(['boxing', 'boxingRoutine'])
     },
     handleInstrumentChange (val) {
-      if (val.type === 1) {
-        this.edit.project.instrumentRoutine = ''
+      const flag = this.instrumentTradition.indexOf(val) === -1
+      if (flag) {
+        this.edit.instrumentRoutine = ''
+        this.edit.instrumentType = 1
+      } else {
+        this.edit.instrumentType = 0
       }
-      this.$refs['formEdit'].validateField(['project', 'project.instrumentRoutine'])
+      this.$refs['formEdit'].validateField(['instrument', 'instrumentRoutine'])
     }
 
   },

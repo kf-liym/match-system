@@ -3,13 +3,13 @@
  * @Author: liym
  * @Date: 2020-02-14 16:40:41
  * @Last Modified by: liym
- * @Last Modified time: 2020-02-16 23:31:56
+ * @Last Modified time: 2020-03-09 00:45:56
  */
 
 <template>
   <el-dialog
     class="common-applicants__choose"
-    :title="title[state]+'集体报项'"
+    :title="title[type]+'集体报项'"
     :before-close="handleClose"
     :visible.sync="visible"
     width="580px"
@@ -30,26 +30,26 @@
           项目类型：
         </template>
         <el-select
-          v-model="edit.itemType"
+          v-model="edit.item"
           value-key="label"
           placeholder="请选择报名项目"
           clearable
+          @change="handleItemChange"
           style="width: 100%"
         >
           <el-option
             v-for="(item,index)  in collectiveOptions"
             :key="index"
-            :label="item.label"
             :value="item"
           ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item prop="itemName">
+      <el-form-item prop="itemRoutine">
         <template slot="label">
           <span style="color: #F56C6C;  margin-right: 4px;">*</span>
           项目名称：
         </template>
-        <el-input style="width: 100%;" v-model="edit.itemName" placeholder="请补充项目名称" />
+        <el-input style="width: 100%;" v-model="edit.itemRoutine" placeholder="请补充项目名称" />
       </el-form-item>
       <el-form-item
         label="姓名："
@@ -82,7 +82,8 @@
       <el-button type="success" @click="addUser">添加报项人</el-button>
     </div>
     <div class="form-footer">
-      <el-button type="primary" @click="handleConfirm('formEdit')">{{state === 'add' ? '保存' : '修改'}}</el-button>
+      <el-button type="primary" @click="handleConfirm('formEdit')" v-if="type === 'add'">保存</el-button>
+      <el-button type="primary" @click="handleConfirm('formEdit')" v-else>修改</el-button>
       <el-button @click="handleCancel('formEdit')">取消</el-button>
     </div>
   </el-dialog>
@@ -103,7 +104,7 @@ export default {
   data () {
     return {
       visible: false,
-      state: 'add',
+      type: 'add',
       title: {
         add: '新增',
         edit: '编辑'
@@ -155,7 +156,7 @@ export default {
   },
   methods: {
     show (type, index, data) {
-      this.state = type
+      this.type = type
       this.index = index
       if (data) {
         this.edit = JSON.parse(JSON.stringify(data))
@@ -181,7 +182,6 @@ export default {
       this.$emit('choose-user', index)
     },
     applicantsConfirm (row, index) {
-      console.log('applicantsConfirm', row, index)
       let age = new Date().getFullYear() - new Date(row.birth).getFullYear()
       let group = ''
       if (age < 18) {
@@ -245,18 +245,6 @@ export default {
     handleCancel () {
       this.visible = false
     },
-    handleBoxingChange (val) {
-      if (val.type === 1) {
-        this.edit.project.boxingRoutine = ''
-      }
-      this.$refs['formEdit'].validateField(['project', 'project.boxingRoutine'])
-    },
-    handleInstrumentChange (val) {
-      if (val.type === 1) {
-        this.edit.project.instrumentRoutine = ''
-      }
-      this.$refs['formEdit'].validateField(['project', 'project.instrumentRoutine'])
-    },
     // 添加报项人
     addUser () {
       this.$set(this.edit.contestants, this.contestantsLen, {})
@@ -264,7 +252,15 @@ export default {
     // 添加报项人
     addDel (index) {
       this.$delete(this.edit.contestants, index)
+    },
+    handleItemChange (val) {
+      if (val === '集体太极器械') {
+        this.edit.itemType = 1
+      } else {
+        this.edit.itemType = 0
+      }
     }
+
 
   },
   components: {

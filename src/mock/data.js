@@ -2,9 +2,10 @@ const Mock = require('mockjs')
 // 登录
 export const signin = {
   // 登录成功
-  message: 'ok',
-  // 是否管理员
-  is_admin: true
+  code: 200,
+  token: '2222222222',
+  // 权限  0-用户 1-管理员
+  authority: 0
 }
 
 // 登出

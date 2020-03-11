@@ -32,29 +32,61 @@ const routes = [{
       }, {
         path: 'upload-responsibility',
         name: 'uploadResponsibility',
-        component: () => import('@/views/home/step1/index.vue')
+        component: () => import('@/views/home/upload-responsibility/index.vue')
       }, {
         path: 'basic-information',
         name: 'basicInformation',
-        component: () => import('@/views/home/step2/index.vue')
+        component: () => import('@/views/home/basic-information/index.vue')
       }, {
         path: 'item-information',
         name: 'itemInformation',
-        component: () => import('@/views/home/step3/index.vue')
+        component: () => import('@/views/home/item-information/index.vue')
       }, {
         path: 'item-summary',
         name: 'itemSummary',
-        component: () => import('@/views/home/step4/index.vue')
+        component: () => import('@/views/home/item-summary/index.vue')
       }, {
         path: 'upload-prove',
         name: 'uploadProve',
-        component: () => import('@/views/home/step5/index.vue')
+        component: () => import('@/views/home/upload-prove/index.vue')
       }, {
         path: 'submit-review',
         name: 'submitReview',
-        component: () => import('@/views/home/step6/index.vue')
+        component: () => import('@/views/home/submit-review/index.vue')
       }]
     }
+    // 修改
+    // {
+    //   path: 'update',
+    //   name: 'update',
+    //   redirect: '/update/common-info',
+    //   component: () => import('@/views/update/index.vue'),
+    //   children: [{
+    //     path: 'common-info',
+    //     name: 'common-info',
+    //     component: () => import('@/views/common-info/index.vue')
+    //   }, {
+    //     path: 'upload-responsibility',
+    //     name: 'uploadResponsibility',
+    //     component: () => import('@/views/home/upload-responsibility/index.vue')
+    //   }, {
+    //     path: 'basic-information',
+    //     name: 'basicInformation',
+    //     component: () => import('@/views/home/basic-information/index.vue')
+    //   }, {
+    //     path: 'item-information',
+    //     name: 'itemInformation',
+    //     component: () => import('@/views/home/item-information/index.vue')
+    //   }, {
+    //     path: 'item-summary',
+    //     name: 'itemSummary',
+    //     component: () => import('@/views/home/item-summary/index.vue')
+    //   }, {
+    //     path: 'upload-prove',
+    //     name: 'uploadProve',
+    //     component: () => import('@/views/home/upload-prove/index.vue')
+    //   }]
+    // }
     // 常用报名人
     // {
     //   path: 'commonInfo',

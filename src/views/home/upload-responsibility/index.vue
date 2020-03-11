@@ -1,10 +1,13 @@
 <template>
   <div class="step-1">
     <el-upload
-      action="https://jsonplaceholder.typicode.com/posts/"
+      action="api/upload/responsibility"
       list-type="picture-card"
+      :data= '{ token: $store.state.user.token }'
       :on-preview="handlePictureCardPreview"
       :on-remove="handleRemove"
+      :on-error="handleError"
+      :on-success="handleSuccess"
       class="upload-wrap"
       :file-list="fileList"
     >
@@ -17,6 +20,7 @@
       <!-- <el-button type="primary">
         上一步
       </el-button>-->
+      <el-button type="primary" @click="prevStep()">上一步</el-button>
       <el-button type="primary" @click="nextStep()">下一步</el-button>
     </div>
   </div>
@@ -25,6 +29,7 @@
 <script>
 // import tinymce from 'tinymce/tinymce'
 // import Editor from '@tinymce/tinymce-vue'
+import { getResponsibility } from '@/api'
 export default {
   name: 'Step1',
   components: {
@@ -38,10 +43,7 @@ export default {
     return {
       dialogImageUrl: '',
       dialogVisible: false,
-      fileList: [
-        { name: 'ddd.jpg', url: 'https://img-blog.csdnimg.cn/20190918140012416.png' },
-        { name: 'eee.jpg', url: 'https://img-blog.csdnimg.cn/2019092715111047.png' }
-      ]
+      fileList: []
     }
   },
   computed: {
@@ -51,7 +53,14 @@ export default {
 
   },
   created () {
-
+    getResponsibility().then(res => {
+      this.fileList = res.data.list
+    }).catch(err => {
+      this.$message({
+        type: 'error',
+        message: err
+      });
+    })
   },
   mounted () {
 
@@ -60,13 +69,24 @@ export default {
     handleRemove (file, fileList) {
       console.log(file, fileList)
     },
+    handleError (err, file, fileList) {
+      this.$message({
+        type: 'error',
+        message: err
+      });
+    },
+    handleSuccess (response, file, fileList) {
+      console.log(response, file, fileList)
+    },
     handlePictureCardPreview (file) {
       this.dialogImageUrl = file.url
       this.dialogVisible = true
     },
+    prevStep () {
+      this.$store.dispatch('STEP_PREV', { router: this.$router, route: this.$route })
+    },
     nextStep () {
-      this.$store.commit('SET_STEP', 1)
-      this.$router.push('/home/step2')
+      this.$store.dispatch('STEP_NEXT', { router: this.$router, route: this.$route })
     }
 
   }

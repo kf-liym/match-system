@@ -18,14 +18,13 @@
           <el-button>注册</el-button>
         </router-link>
 
-        <el-button class="login-button" type="primary" v-on:click="login">登录</el-button>
+        <el-button class="login-button" type="primary" v-on:click="handleLogin">登录</el-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { signin } from '@/api'
 export default {
   name: 'signin',
   data () {
@@ -59,20 +58,17 @@ export default {
 
   },
   methods: {
-    login () {
+    handleLogin () {
       this.$refs.login.validate((valid) => {
         if (valid) {
-          signin(this.dataForm).then(res => {
-            if (res.data.message === 'ok') {
-              if (res.data.is_admin) {
-                this.$router.push('/admin')
-              } else {
-                this.$router.push('/home')
-              }
+          this.$store.dispatch('LOGIN_BY_USERNAME', this.dataForm).then((res) => {
+            if (res.authority === 1) {
+              this.$router.push('/admin')
+            } else {
+              this.$router.push('/home')
             }
-
-          }).catch(err => {
-            console.log(err)
+          }).catch(error => {
+            this.$message.error(error);
           })
         } else {
           console.log('error submit!!')

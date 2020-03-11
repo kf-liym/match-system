@@ -1,17 +1,17 @@
 <template>
-  <div class="step-2-wrap">
-    <el-form class="step-2" ref="form" :model="teamInfo" :rules="rules" label-width="80px">
+  <div class="step-2-wrap" v-loading="loading">
+    <el-form class="step-2" ref="form" :model="team" :rules="rules" label-width="80px">
       <el-form-item label="队伍名称">
-        <el-input v-model="teamInfo.teamName" />
+        <el-input v-model="team.teamName" />
       </el-form-item>
       <el-form-item label="领队姓名">
-        <el-input v-model="teamInfo.leaderName" />
+        <el-input v-model="team.leaderName" />
       </el-form-item>
       <el-form-item label="联系电话">
-        <el-input v-model="teamInfo.tel" />
+        <el-input v-model="team.tel" />
       </el-form-item>
       <el-form-item label="教练姓名">
-        <el-input v-model="teamInfo.coachName" />
+        <el-input v-model="team.coachName" />
       </el-form-item>
     </el-form>
     <div class="step-btn-group">
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { teamInfo } from '@/api'
+import { saveTeam, getTeam } from '@/api'
 export default {
   name: 'Step2',
   components: {
@@ -33,7 +33,8 @@ export default {
   },
   data () {
     return {
-      teamInfo: {
+      loading: true,
+      team: {
         teamName: '', // 队伍名称
         leaderName: '', // 领队姓名
         tel: '', // 联系电话
@@ -62,36 +63,40 @@ export default {
 
   },
   created () {
-
+    this.getTeam()
   },
-  mounted () {
-    this.teamInfo = JSON.parse(JSON.stringify(this.$store.state.project.team))
-  },
+  mounted () { },
   methods: {
+    getTeam () {
+      this.loading = true
+      getTeam().then(res => {
+        if (res.data.team) {
+          this.$store.commit('SET_STATUS', res.data.status)
+          this.team = res.data.team
+        }
+        this.loading = false
+      }).catch(err => {
+        this.loading = false
+        console.log(err)
+      })
+    },
     prevStep () {
-      teamInfo(this.teamInfo).then(res => {
-        if (res.data.message === 'ok') {
-          this.$store.commit('SET_TEAM', this.teamInfo)
-          this.$store.commit('SET_STEP', 0)
-          this.$router.push('/home/step1')
+      saveTeam(this.team).then(res => {
+        if (res.data.code === 200) {
+          this.$store.dispatch('STEP_PREV', { router: this.$router, route: this.$route })
         }
       }).catch(err => {
         console.log(err)
       })
-
     },
     nextStep () {
-      teamInfo(this.teamInfo).then(res => {
-        if (res.data.message === 'ok') {
-          this.$store.commit('SET_TEAM', this.teamInfo)
-          this.$store.commit('SET_STEP', 2)
-          this.$router.push('/home/step3')
+      saveTeam(this.team).then(res => {
+        if (res.data.code === 200) {
+          this.$store.dispatch('STEP_NEXT', { router: this.$router, route: this.$route })
         }
-
       }).catch(err => {
         console.log(err)
       })
-
     }
   }
 }

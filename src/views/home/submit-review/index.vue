@@ -1,15 +1,15 @@
 <template>
   <div class="step-6">
-    <div class="unsubmitted" v-if="status === '未提交'">
+    <div class="unsubmitted" v-if="status === 0">
       <el-button style="width: 200px;" type="primary" @click="handleConfirm">提交</el-button>
     </div>
-    <div class="pending" v-else-if="status === '已提交' || status === '未审核'">
+    <div class="pending" v-else-if="status === 1">
       <div class="title">
         <i class="pending-success el-icon-success"></i>提交成功
       </div>
       <div class="info">管理员审核中，请耐心等待。</div>
     </div>
-    <div class="pass" v-else-if="status === '已审核'">
+    <div class="pass" v-else-if="status === 2">
       <div class="title">你已经通过审核</div>
       <div style="text-align: center; margin-bottom: 30px;">
         <el-button type="primary">下载汇总表</el-button>
@@ -19,15 +19,27 @@
         <li>责任书：{{ responsibility.length > 0 ? '' : '无' }}</li>
       </ul>
       <div class="image-preview" v-if="responsibility">
-        <el-image v-for="(item, index) in responsibility" :key="index" style="width: 100px; height: 100px; margin-right: 10px;" :src="item" :preview-src-list="responsibility" fit="cover ">
-        </el-image>
+        <el-image
+          v-for="(item, index) in responsibility"
+          :key="index"
+          style="width: 100px; height: 100px; margin-right: 10px;"
+          :src="item.url"
+          :preview-src-list="responsibility"
+          fit="cover "
+        ></el-image>
       </div>
       <ul class="report-team-info">
-        <li>汇款证明：{{ remittance.length > 0 ? '' : '无' }}</li>
+        <li>汇款证明：{{ prove.length > 0 ? '' : '无' }}</li>
       </ul>
       <div class="image-preview">
-        <el-image  v-for="(item, index) in remittance" :key="index" style="width: 100px; height: 100px; margin-right: 10px;" :src="item" :preview-src-list="remittance" fit="cover">
-        </el-image>
+        <el-image
+          v-for="(item, index) in prove"
+          :key="index"
+          style="width: 100px; height: 100px; margin-right: 10px;"
+          :src="item.url"
+          :preview-src-list="prove"
+          fit="cover"
+        ></el-image>
       </div>
       <ul class="report-team-info">
         <li>队伍名称：{{team.teamName}}</li>
@@ -38,14 +50,21 @@
 
       <div class="report-item">
         <div class="report-item__header">个人项目</div>
-        <el-table class="report-item__body" :data="person" border fit style="width: 100%;">
+        <el-table
+          class="report-item__body"
+          :data="person"
+          max-height="400px"
+          border
+          fit
+          style="width: 100%;"
+        >
           <el-table-column type="index" label="序号" width="50"></el-table-column>
           <el-table-column prop="name" label="姓名" width="100"></el-table-column>
           <el-table-column prop="idcard" label="证件号码" width="180"></el-table-column>
           <el-table-column prop="birth" label="出生日期" width="110"></el-table-column>
           <el-table-column prop="sex" label="性别" width="60"></el-table-column>
           <el-table-column prop="group" label="组别" width="115"></el-table-column>
-          <el-table-column prop="item" label="项目名称" min-width="280"></el-table-column>
+          <el-table-column prop="itemName" label="项目名称" min-width="280"></el-table-column>
           <el-table-column prop="cost" label="费用"></el-table-column>
         </el-table>
         <div class="cost-box">合计：{{personalCost}} 元</div>
@@ -53,14 +72,21 @@
 
       <div class="report-item">
         <div class="report-item__header">对练项目</div>
-        <el-table class="report-item__body" :data="duel" border fit style="width: 100%;">
+        <el-table
+          class="report-item__body"
+          :data="duel"
+          max-height="400px"
+          border
+          fit
+          style="width: 100%;"
+        >
           <el-table-column prop="index" label="序号" width="50"></el-table-column>
           <el-table-column prop="name" label="姓名" width="100"></el-table-column>
           <el-table-column prop="idcard" label="证件号码" width="180"></el-table-column>
           <el-table-column prop="birth" label="出生日期" width="110"></el-table-column>
           <el-table-column prop="sex" label="性别" width="60"></el-table-column>
           <el-table-column prop="group" label="组别" width="80"></el-table-column>
-          <el-table-column prop="item" label="项目名称" min-width="280"></el-table-column>
+          <el-table-column prop="itemName" label="项目名称" min-width="280"></el-table-column>
           <el-table-column prop="cost" label="费用"></el-table-column>
         </el-table>
         <div class="cost-box">合计：{{duelCost}} 元</div>
@@ -68,14 +94,21 @@
 
       <div class="report-item">
         <div class="report-item__header">集体项目</div>
-        <el-table class="report-item__body" :data="collective" border fit style="width: 100%;">
+        <el-table
+          class="report-item__body"
+          :data="collective"
+          max-height="400px"
+          border
+          fit
+          style="width: 100%;"
+        >
           <el-table-column prop="index" label="序号" width="50"></el-table-column>
           <el-table-column prop="name" label="姓名" width="100"></el-table-column>
           <el-table-column prop="idcard" label="证件号码" width="180"></el-table-column>
           <el-table-column prop="birth" label="出生日期" width="110"></el-table-column>
           <el-table-column prop="sex" label="性别" width="60"></el-table-column>
           <el-table-column prop="group" label="组别" width="110"></el-table-column>
-          <el-table-column prop="item" label="项目名称" min-width="280"></el-table-column>
+          <el-table-column prop="itemName" label="项目名称" min-width="280"></el-table-column>
         </el-table>
         <div class="cost-box">合计：{{collectiveCost}} 元</div>
       </div>
@@ -93,7 +126,7 @@
 </template>
 
 <script>
-import { getProject } from '@/api'
+import { getAll, formSubmit } from '@/api'
 export default {
   name: 'Step6',
   components: {
@@ -106,6 +139,13 @@ export default {
   },
   data () {
     return {
+      team: {},
+      personT: [],
+      duelT: [],
+      collectiveT: [],
+      responsibility: [],
+      prove: []
+
 
     }
   },
@@ -118,44 +158,44 @@ export default {
         this.$store.commit('SET_STATUS', val)
       }
     },
-    team: {
-      get () {
-        return this.$store.state.project.team
-      },
-      set (val) {
-        this.$store.commit('SET_TEAM', val)
-      }
-    },
-    responsibility: {
-      get () {
-        return this.$store.state.project.responsibility
-      },
-      set (val) {
-        this.$store.commit('SET_RESPONSIBILITY', val)
-      }
-    },
-    remittance: {
-      get () {
-        return this.$store.state.project.remittance
-      },
-      set (val) {
-        this.$store.commit('SET_REMITTANCE', val)
-      }
-    },
+    // team: {
+    //   get () {
+    //     return this.$store.state.project.team
+    //   },
+    //   set (val) {
+    //     this.$store.commit('SET_TEAM', val)
+    //   }
+    // },
+    // responsibility: {
+    //   get () {
+    //     return this.$store.state.project.responsibility
+    //   },
+    //   set (val) {
+    //     this.$store.commit('SET_RESPONSIBILITY', val)
+    //   }
+    // },
+    // remittance: {
+    //   get () {
+    //     return this.$store.state.project.remittance
+    //   },
+    //   set (val) {
+    //     this.$store.commit('SET_REMITTANCE', val)
+    //   }
+    // },
     person () {
       let arr = []
-      this.$store.state.project.person.forEach(item => {
-        if (item.project.boxing && item.project.boxing.label) {
+      this.personT.forEach(item => {
+        if (item.boxing) {
           arr.push({
             ...item,
-            item: `${item.project.boxing.label}${item.project.boxingRoutine ? '-' : ''}${item.project.boxingRoutine}`,
+            itemName: `${item.boxing}${item.boxingRoutine ? '-' : ''}${item.boxingRoutine}`,
             cost: 50
           })
         }
-        if (item.project.instrument && item.project.instrument.label) {
+        if (item.instrument) {
           arr.push({
             ...item,
-            item: `${item.project.instrument.label}${item.project.instrumentRoutine ? '-' : ''}${item.project.instrumentRoutine}`,
+            itemName: `${item.instrument}${item.instrumentRoutine ? '-' : ''}${item.instrumentRoutine}`,
             cost: 50
           })
         }
@@ -165,15 +205,14 @@ export default {
     duel () {
       // return this.$store.state.project.duel
       let arr = []
-      // console.log(this.$store.state.project.duel)
-      this.$store.state.project.duel.forEach((item, index) => {
+      this.duelT.forEach((item, index) => {
         item.contestants.forEach((contestant, contestantsIndex) => {
           arr.push({
             index: `${index + 1}-${contestantsIndex + 1}`,
             ...contestant,
             itemType: item.itemType,
-            itemName: item.itemName,
-            item: `${item.itemType.label}${item.itemName ? '-' : ''}${item.itemName}`,
+            itemRoutine: item.itemRoutine,
+            itemName: `${item.item}${item.itemRoutine ? '-' : ''}${item.itemRoutine}`,
             cost: 50
           })
         })
@@ -183,15 +222,14 @@ export default {
     collective () {
       // return this.$store.state.project.collective
       let arr = []
-      this.$store.state.project.collective.forEach((item, index) => {
+      this.collectiveT.forEach((item, index) => {
         item.contestants.forEach((contestant, contestantsIndex) => {
-          // console.log(contestant)
           arr.push({
             index: `${index + 1}-${contestantsIndex + 1}`,
             ...contestant,
             itemType: item.itemType,
-            itemName: item.itemName,
-            item: `${item.itemType.label}${item.itemName ? '-' : ''}${item.itemName}`,
+            itemRoutine: item.itemRoutine,
+            itemName: `${item.item}${item.itemRoutine ? '-' : ''}${item.itemRoutine}`,
             cost: 50
           })
         })
@@ -201,21 +239,21 @@ export default {
     personalCost () {
       let cost = 0
       this.person.forEach(element => {
-        cost += element.cost
+        cost += 50
       })
       return cost
     },
     duelCost () {
       let cost = 0
       this.duel.forEach(element => {
-        cost += element.cost
+        cost += 50
       })
       return cost
     },
     collectiveCost () {
       let cost = 0
       this.collective.forEach(element => {
-        cost += element.cost
+        cost += 50
       })
       return cost
     },
@@ -236,15 +274,15 @@ export default {
 
   },
   created () {
-    getProject().then(res => {
-      console.log(res.data)
+    getAll().then(res => {
+      console.log(res)
       this.$store.commit('SET_STATUS', res.data.status)
-      this.$store.commit('SET_RESPONSIBILITY', res.data.responsibility)
-      this.$store.commit('SET_REMITTANCE', res.data.remittance)
-      this.$store.commit('SET_TEAM', res.data.team)
-      this.$store.commit('SET_PERSON', res.data.person)
-      this.$store.commit('SET_DULE', res.data.duel)
-      this.$store.commit('SET_COLLECTIVE', res.data.collective)
+      this.team = res.data.team
+      this.personT = res.data.person
+      this.duelT = res.data.duel
+      this.collectiveT = res.data.collective
+      this.responsibility = res.data.responsibility
+      this.prove = res.data.prove
     }).catch(err => {
       console.log(err)
     })
@@ -254,7 +292,16 @@ export default {
   },
   methods: {
     handleConfirm () {
-      this.status = '已提交'
+      formSubmit().then(res => {
+        if (res.data.code === 200) {
+          this.$store.commit('SET_STATUS', res.data.status)
+        }
+      }).catch(err => {
+        this.$message({
+          type: 'error',
+          message: err
+        });
+      })
     }
   }
 }

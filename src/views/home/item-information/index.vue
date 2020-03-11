@@ -1,11 +1,10 @@
 <template>
-  <div class="step3-wrap" v-loading="loading">
+  <div class="step3-wrap">
     <el-tabs v-model="active" @tab-click="handleTabClick">
       <el-tab-pane label="个人项目" name="person">
         <person
           class="match-item"
           ref="person"
-          :data.sync="person"
           @choose-user="handleChoose"
         ></person>
         <!-- <div class="add-personal-info" @click="addPersonalInfo()">新增个人报项</div> -->
@@ -14,7 +13,6 @@
         <duel
           class="match-item"
           ref="duel"
-          :data.sync="duel"
           @choose-user="handleChoose"></duel>
         <!-- <step3-duel class="match-item"></step3-duel> -->
         <!-- <div class="add-personal-info" @click="addDuelObj()">新增对练报项</div> -->
@@ -24,7 +22,6 @@
         <collective
           class="match-item"
           ref="collective"
-          :data.sync="collective"
           @choose-user="handleChoose"></collective>
         <!-- <step3-collective class="match-item"></step3-collective> -->
 
@@ -32,17 +29,17 @@
       </el-tab-pane>
     </el-tabs>
 
-    <div class="step-btn-group">
+    <div class="step-btn-group" >
       <el-button type="primary" @click="prevStep()">上一步</el-button>
       <el-button type="primary" @click="nextStep()">下一步</el-button>
     </div>
-    <common-applicants :list="applicants" ref="commonApplicants" @confirm="applicantsConfirm"></common-applicants>
+    <common-applicants ref="commonApplicants" @confirm="applicantsConfirm"></common-applicants>
   </div>
 </template>
 
 <script>
 
-import { getApplicants } from '@/api'
+// import { getItems } from '@/api'
 import commonApplicants from '../components/common-applicants'
 import Person from './components/person'
 import Duel from './components/duel'
@@ -55,38 +52,12 @@ export default {
   data () {
     return {
       active: 'person',
-      loading: true,
-      applicants: []
+      loading: true
     };
   },
   computed: {
-    person: {
-      get () {
-        return this.$store.state.project.person
-      },
-      set (val) {
-        this.$store.commit('SET_PERSON', val)
-      }
-    },
-    duel: {
-      get () {
-        return this.$store.state.project.duel
-      },
-      set (val) {
-        this.$store.commit('SET_DULE', val)
-      }
-    },
-    collective: {
-      get () {
-        return this.$store.state.project.collective
-      },
-      set (val) {
-        this.$store.commit('SET_COLLECTIVE', val)
-      }
-    }
   },
   created () {
-    this.getApplicants()
   },
   mounted () {
 
@@ -99,31 +70,17 @@ export default {
       this.$refs.commonApplicants.show(type, index)
     },
     applicantsConfirm (type, row, index) {
-      console.log(type, row, index)
       this.$refs[type].applicantsConfirm(row, index)
     },
     handleTabClick () {
 
     },
-    // 获取信息
-    getApplicants () {
-      this.loading = true
-      getApplicants().then(res => {
-        this.loading = false
-        this.applicants = res.data
-      }).catch(err => {
-        this.loading = false
-        console.log(err)
-      })
-    },
 
     prevStep () {
-      this.$store.commit('SET_STEP', 1)
-      this.$router.push('/home/step2')
+      this.$store.dispatch('STEP_PREV', { router: this.$router, route: this.$route })
     },
     nextStep () {
-      this.$store.commit('SET_STEP', 3)
-      this.$router.push('/home/step4')
+      this.$store.dispatch('STEP_NEXT', { router: this.$router, route: this.$route })
     }
   },
   components: {

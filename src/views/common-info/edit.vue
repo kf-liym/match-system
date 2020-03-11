@@ -8,7 +8,7 @@
     :close-on-click-modal="false"
     :close-on-press-escape="false"
   >
-    <el-form ref="form" :model="form" label-width="100px" size="small" :rules="rules">
+    <el-form ref="form" v-loading="loading" :model="form" label-width="100px" size="small" :rules="rules">
       <el-form-item label="姓名" prop="name">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
@@ -49,7 +49,8 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">提交</el-button>
+        <el-button type="primary" @click="handleUpdate" v-if="type === 'edit'">修改</el-button>
+        <el-button type="primary" @click="handleAdd" v-else>提交</el-button>
         <el-button @click="visible = false">取消</el-button>
       </el-form-item>
     </el-form>
@@ -57,6 +58,7 @@
 </template>
 
 <script>
+import { addMember, putMember } from '@/api'
 export default {
   props: {
 
@@ -81,6 +83,7 @@ export default {
       }
     }
     return {
+      loading: false,
       visible: false,
       type: 'add',
       info: {
@@ -165,13 +168,76 @@ export default {
 
     },
     // 提交
-    onSubmit () {
+    handleAdd () {
       let _this = this
+      _this.loading = true
+      _this.form.userId = this.$store.state.user.id
       _this.$refs.form.validate((validate) => {
         if (validate) {
-          console.log('提交!');
           // 提交/修改完成
-          _this.$emit('confirm')
+          addMember(_this.form).then(res => {
+            _this.loading = false
+            if (res.data.code === 200) {
+              _this.$alert('添加成功', '标题名称', {
+                confirmButtonText: '确定',
+                callback: action => {
+                  _this.visible = false
+                  _this.$emit('getList')
+                }
+              });
+            } else {
+              _this.$alert(res.data.message || '添加失败', '系统提示', {
+                confirmButtonText: '确定',
+                callback: action => {
+
+                }
+              });
+            }
+          }).catch(err => {
+            _this.loading = false
+            _this.$alert(err, '系统提示', {
+              confirmButtonText: '确定',
+              callback: action => {
+
+              }
+            });
+          })
+        }
+      })
+    },
+    // 修改
+    handleUpdate () {
+      let _this = this
+      _this.loading = true
+      _this.$refs.form.validate((validate) => {
+        if (validate) {
+          putMember(_this.form.id, _this.form).then(res => {
+            _this.loading = false
+            if (res.data.code === 200) {
+              _this.$alert('修改成功', '系统消息', {
+                confirmButtonText: '确定',
+                callback: action => {
+                  _this.visible = false
+                  _this.$emit('getList')
+                }
+              });
+            } else {
+              _this.$alert('修改失败', '系统消息', {
+                confirmButtonText: '确定',
+                callback: action => {
+
+                }
+              });
+            }
+          }).catch(err => {
+            _this.loading = false
+            _this.$alert(err, '系统消息', {
+              confirmButtonText: '确定',
+              callback: action => {
+
+              }
+            });
+          })
         }
       })
     },

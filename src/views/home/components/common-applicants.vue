@@ -3,7 +3,7 @@
  * @Author: liym
  * @Date: 2020-02-14 16:40:41
  * @Last Modified by: liym
- * @Last Modified time: 2020-02-20 21:55:29
+ * @Last Modified time: 2020-03-09 00:43:15
  */
 
 <template>
@@ -16,7 +16,7 @@
     :close-on-click-modal="false"
     :close-on-press-escape="false"
   >
-    <el-table class="common-table" :data="list" stripe border height="400px">
+    <el-table class="common-table" :data="list" v-loading="loading" stripe border height="400px">
       <el-table-column type="index" label="序号" width="50"></el-table-column>
       <el-table-column prop="name" label="姓名" width="80"></el-table-column>
       <el-table-column prop="certificate" label="证件类型" width="100"></el-table-column>
@@ -34,30 +34,25 @@
 </template>
 
 <script>
+import { getMembers } from '@/api'
 export default {
   name: 'commonApplicants',
-  props: {
-    list: {
-      type: Array,
-      default () {
-        return []
-      }
-    }
-  },
+  props: {},
   data () {
     return {
+      loading: true,
       visible: false,
       type: '',
       index: -1
     };
   },
   computed: {
-    // list () {
-    //   return this.$store.state.applicants.applicants
-    // }
+    list () {
+      return this.$store.state.project.members
+    }
   },
   created () {
-
+    this.getList()
   },
   mounted () {
 
@@ -67,7 +62,7 @@ export default {
   },
   methods: {
     show (type, index) {
-      console.log(type, index)
+      console.log(index)
       this.visible = true
       this.index = index
       this.type = type
@@ -83,6 +78,20 @@ export default {
       // console.log('row', row)
       this.$emit('confirm', this.type, row, this.index)
       this.visible = false
+    },
+    // 获取常用人信息
+    getList () {
+      this.loading = true
+      getMembers({ userId: this.$store.state.user.id }).then(res => {
+        console.log(res.data)
+        // this.list = res.data.list
+        // this.$store.commit('SET_STATUS', res.data.status)
+        this.$store.commit('SET_MEMBERS', res.data.list)
+        this.loading = false
+      }).catch(err => {
+        this.loading = false
+        console.log(err)
+      })
     }
 
   },

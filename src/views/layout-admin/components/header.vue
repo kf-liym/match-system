@@ -1,7 +1,10 @@
 <template>
   <div class="appHeader">
     <div class="header-item">新兴县太极拳精英大赛报名系统</div>
-    <div class="username">{{ username }}</div>
+    <div class="username">
+      {{ $store.state.user.username }}
+      <span @click="logout" style="font-weight: normal; font-size: 14px; margin-left: 15px; cursor: pointer;">注销</span>
+    </div>
   </div>
 </template>
 
@@ -11,14 +14,21 @@ export default {
   props: {},
   data () {
     return {
-      username: ''
     }
   },
   computed: {},
   watch: {},
   created () { },
   mounted () { },
-  methods: {}
+  methods: {
+    logout () {
+      this.$store.dispatch('LogOut').then((res) => {
+        this.$router.push('/signin')
+      }).catch(error => {
+        this.$message.error(error);
+      })
+    }
+  }
 }
 </script>
 

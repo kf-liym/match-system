@@ -1,3 +1,8 @@
+<!--
+ * @Desc: 描述
+ * @Date: 2020-01-10 22:52:17
+ * @LastEditTime: 2020-03-11 01:40:05
+ -->
 <template>
   <div class="admin-index">
     <table class="admin-index-table" border="1" cellspacing="0" cellspadding= "10">
@@ -37,8 +42,8 @@ export default {
   },
   computed: {},
   created () {
-    let id = '用户id'
-    getAllCount(id).then(res => {
+    getAllCount().then(res => {
+      console.log(res)
       this.info = res.data
     }).catch(err => {
       console.log(err)

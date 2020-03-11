@@ -1,22 +1,22 @@
 <template>
   <div class="step-4">
     <ul class="report-team-info">
-      <li>队伍名称：{{$store.state.project.team.teamName}}</li>
-      <li>领队：{{$store.state.project.team.leaderName}}</li>
-      <li>联系电话：{{$store.state.project.team.tel}}</li>
-      <li>教练：{{$store.state.project.team.coachName}}</li>
+      <li>队伍名称：{{team.teamName}}</li>
+      <li>领队：{{team.leaderName}}</li>
+      <li>联系电话：{{team.tel}}</li>
+      <li>教练：{{team.coachName}}</li>
     </ul>
 
     <div class="report-item">
       <div class="report-item__header">个人项目</div>
-      <el-table class="report-item__body" :data="person" border fit style="width: 100%;">
+      <el-table class="report-item__body" :data="person" max-height="400px" border fit style="width: 100%;">
         <el-table-column type="index" label="序号" width="50"></el-table-column>
         <el-table-column prop="name" label="姓名" width="100"></el-table-column>
         <el-table-column prop="idcard" label="证件号码" width="180"></el-table-column>
         <el-table-column prop="birth" label="出生日期" width="110"></el-table-column>
         <el-table-column prop="sex" label="性别" width="60"></el-table-column>
         <el-table-column prop="group" label="组别" width="115"></el-table-column>
-        <el-table-column prop="item" label="项目名称" min-width="280"></el-table-column>
+        <el-table-column prop="itemName" label="项目名称" min-width="280"></el-table-column>
         <el-table-column prop="cost" label="费用"></el-table-column>
       </el-table>
       <div class="cost-box">合计：{{personalCost}} 元</div>
@@ -24,14 +24,14 @@
 
     <div class="report-item">
       <div class="report-item__header">对练项目</div>
-      <el-table class="report-item__body" :data="duel" border fit style="width: 100%;">
+      <el-table class="report-item__body" :data="duel" max-height="400px" border fit style="width: 100%;">
         <el-table-column prop="index" label="序号" width="50"></el-table-column>
         <el-table-column prop="name" label="姓名" width="100"></el-table-column>
         <el-table-column prop="idcard" label="证件号码" width="180"></el-table-column>
         <el-table-column prop="birth" label="出生日期" width="110"></el-table-column>
         <el-table-column prop="sex" label="性别" width="60"></el-table-column>
         <el-table-column prop="group" label="组别" width="80"></el-table-column>
-        <el-table-column prop="item" label="项目名称" min-width="280"></el-table-column>
+        <el-table-column prop="itemName" label="项目名称" min-width="280"></el-table-column>
         <el-table-column prop="cost" label="费用"></el-table-column>
       </el-table>
       <div class="cost-box">合计：{{duelCost}} 元</div>
@@ -39,14 +39,14 @@
 
     <div class="report-item">
       <div class="report-item__header">集体项目</div>
-      <el-table class="report-item__body" :data="collective" border fit style="width: 100%;">
+      <el-table class="report-item__body" :data="collective" max-height="400px" border fit style="width: 100%;">
         <el-table-column prop="index" label="序号" width="50"></el-table-column>
         <el-table-column prop="name" label="姓名" width="100"></el-table-column>
         <el-table-column prop="idcard" label="证件号码" width="180"></el-table-column>
         <el-table-column prop="birth" label="出生日期" width="110"></el-table-column>
         <el-table-column prop="sex" label="性别" width="60"></el-table-column>
         <el-table-column prop="group" label="组别" width="110"></el-table-column>
-        <el-table-column prop="item" label="项目名称" min-width="280"></el-table-column>
+        <el-table-column prop="itemName" label="项目名称" min-width="280"></el-table-column>
       </el-table>
       <div class="cost-box">合计：{{collectiveCost}} 元</div>
     </div>
@@ -68,43 +68,38 @@
 </template>
 
 <script>
-import { getProject } from '@/api'
+import { getAll } from '@/api'
 export default {
   name: 'Step4',
   components: {
 
   },
   props: {
-    value: {}
 
   },
   data () {
     return {
+      team: {},
+      personT: [],
+      duelT: [],
+      collectiveT: []
     }
   },
   computed: {
-    values: {
-      get () {
-        return this.value
-      },
-      set (val) {
-        this.$emit('input', val)
-      }
-    },
     person () {
       let arr = []
-      this.$store.state.project.person.forEach(item => {
-        if (item.project.boxing && item.project.boxing.label) {
+      this.personT.forEach(item => {
+        if (item.boxing) {
           arr.push({
             ...item,
-            item: `${item.project.boxing.label}${item.project.boxingRoutine ? '-' : ''}${item.project.boxingRoutine}`,
+            itemName: `${item.boxing}${item.boxingRoutine ? '-' : ''}${item.boxingRoutine}`,
             cost: 50
           })
         }
-        if (item.project.instrument && item.project.instrument.label) {
+        if (item.instrument) {
           arr.push({
             ...item,
-            item: `${item.project.instrument.label}${item.project.instrumentRoutine ? '-' : ''}${item.project.instrumentRoutine}`,
+            itemName: `${item.instrument}${item.instrumentRoutine ? '-' : ''}${item.instrumentRoutine}`,
             cost: 50
           })
         }
@@ -114,14 +109,14 @@ export default {
     duel () {
       // return this.$store.state.project.duel
       let arr = []
-      this.$store.state.project.duel.forEach((item, index) => {
+      this.duelT.forEach((item, index) => {
         item.contestants.forEach((contestant, contestantsIndex) => {
           arr.push({
             index: `${index + 1}-${contestantsIndex + 1}`,
             ...contestant,
             itemType: item.itemType,
-            itemName: item.itemName,
-            item: `${item.itemType.label}${item.itemName ? '-' : ''}${item.itemName}`,
+            itemRoutine: item.itemRoutine,
+            itemName: `${item.item}${item.itemRoutine ? '-' : ''}${item.itemRoutine}`,
             cost: 50
           })
         })
@@ -131,15 +126,14 @@ export default {
     collective () {
       // return this.$store.state.project.collective
       let arr = []
-      this.$store.state.project.collective.forEach((item, index) => {
+      this.collectiveT.forEach((item, index) => {
         item.contestants.forEach((contestant, contestantsIndex) => {
-          console.log(contestant)
           arr.push({
             index: `${index + 1}-${contestantsIndex + 1}`,
             ...contestant,
             itemType: item.itemType,
-            itemName: item.itemName,
-            item: `${item.itemType.label}${item.itemName ? '-' : ''}${item.itemName}`,
+            itemRoutine: item.itemRoutine,
+            itemName: `${item.item}${item.itemRoutine ? '-' : ''}${item.itemRoutine}`,
             cost: 50
           })
         })
@@ -184,29 +178,42 @@ export default {
 
   },
   created () {
-    getProject().then(res => {
+    getAll().then(res => {
       this.$store.commit('SET_STATUS', res.data.status)
-      this.$store.commit('SET_RESPONSIBILITY', res.data.responsibility)
-      this.$store.commit('SET_REMITTANCE', res.data.remittance)
-      this.$store.commit('SET_TEAM', res.data.team)
-      this.$store.commit('SET_PERSON', res.data.person)
-      this.$store.commit('SET_DULE', res.data.duel)
-      this.$store.commit('SET_COLLECTIVE', res.data.collective)
+      this.team = res.data.team
+      this.personT = res.data.person
+      this.duelT = res.data.duel
+      this.collectiveT = res.data.collective
+      // this.$store.commit('SET_RESPONSIBILITY', res.data.responsibility)
+      // this.$store.commit('SET_REMITTANCE', res.data.remittance)
+      // this.$store.commit('SET_TEAM', res.data.team)
+      // this.$store.commit('SET_PERSON', res.data.person)
+      // this.$store.commit('SET_DULE', res.data.duel)
+      // this.$store.commit('SET_COLLECTIVE', res.data.collective)
     }).catch(err => {
       console.log(err)
     })
+    // getProject().then(res => {
+    //   this.$store.commit('SET_STATUS', res.data.status)
+    //   this.$store.commit('SET_RESPONSIBILITY', res.data.responsibility)
+    //   this.$store.commit('SET_REMITTANCE', res.data.remittance)
+    //   this.$store.commit('SET_TEAM', res.data.team)
+    //   this.$store.commit('SET_PERSON', res.data.person)
+    //   this.$store.commit('SET_DULE', res.data.duel)
+    //   this.$store.commit('SET_COLLECTIVE', res.data.collective)
+    // }).catch(err => {
+    //   console.log(err)
+    // })
   },
   mounted () {
 
   },
   methods: {
     prevStep () {
-      this.$store.commit('SET_STEP', 2)
-      this.$router.push('/home/step3')
+      this.$store.dispatch('STEP_PREV', { router: this.$router, route: this.$route })
     },
     nextStep () {
-      this.$store.commit('SET_STEP', 4)
-      this.$router.push('/home/step5')
+      this.$store.dispatch('STEP_NEXT', { router: this.$router, route: this.$route })
     }
   }
 }

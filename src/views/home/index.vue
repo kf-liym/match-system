@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { getProject } from '@/api'
+// import { getProject } from '@/api'
 export default {
   components: {
   },
@@ -27,36 +27,6 @@ export default {
   },
   data () {
     return {
-      step: [
-        {
-          title: '常用报名人设置',
-          path: '/home/common-info'
-        },
-        {
-          title: '填写基本信息',
-          path: '/home/basic-information'
-        },
-        {
-          title: '填写报项信息',
-          path: '/home/item-information'
-        },
-        {
-          title: '报项汇总',
-          path: '/home/item-summary'
-        },
-        {
-          title: '上传责任书',
-          path: '/home/upload-responsibility'
-        },
-        {
-          title: '上传汇款证明',
-          path: '/home/upload-prove'
-        },
-        {
-          title: '提交并等待审核',
-          path: '/home/submit-review'
-        }
-      ],
       info: {
         status: '未提交',
 
@@ -170,9 +140,13 @@ export default {
     }
   },
   computed: {
-    // componentId () {
-    //   return this.stepComponent[this.active]
-    // }
+    step () {
+      if (this.$store.state.user.authority === 1) {
+        return this.$store.state.project.stepArr.slice(0, -1)
+      } else {
+        return this.$store.state.project.stepArr
+      }
+    },
     active: {
       get () {
         return this.$store.state.project.step
@@ -191,43 +165,44 @@ export default {
     }
   },
   watch: {
-
+    '$route.path' (val) {
+      this.active = this.getStepIndex(val)
+    }
   },
   created () {
-
+    this.active = this.getStepIndex(this.$route.path)
   },
   mounted () {
-    // this.active = parseInt(this.$route.name.substr(-1)) - 1
-    getProject().then(res => {
-      console.log(res.data)
-      this.$store.commit('SET_STATUS', res.data.status)
-      this.$store.commit('SET_RESPONSIBILITY', res.data.responsibility)
-      this.$store.commit('SET_REMITTANCE', res.data.remittance)
-      this.$store.commit('SET_TEAM', res.data.team)
-      this.$store.commit('SET_PERSON', res.data.person)
-      this.$store.commit('SET_DULE', res.data.duel)
-      this.$store.commit('SET_COLLECTIVE', res.data.collective)
-      if (res.data.status !== '未提交') {
-        this.active = 5
-        if (parseInt(this.$route.name.substr(-1)) !== 6) {
-          this.$router.push(this.step[this.active].path)
-        }
-      }
-    }).catch(err => {
-      console.log(err)
-    })
   },
   methods: {
     handleStep (index) {
-      if (this.active === index || this.status !== '未提交') {return}
+      if (this.active === index || (this.status !== 0 && this.$store.state.user.authority !== 1)) {return}
       // if (this.info.status !== 0) { return }
       this.active = index
-      this.$router.push(this.step[index].path)
+      this.$router.push({
+        path: this.step[index].path,
+        query: this.$route.query
+      })
     },
     setStep (index) {
       this.active = index
+    },
+    getStepIndex (val) {
+      let active = 0
+      this.$store.state.project.stepArr.forEach((element, index) => {
+        if (val === element.path) {
+          active = index
+        }
+      });
+      return active
     }
 
+  },
+  beforeDestroy () {
+    if (this.$store.state.user.authority === 1) {
+      this.$store.commit('SET_MEMBERS', [])
+      this.$store.commit('SET_AUTHOR', '')
+    }
   }
 }
 </script>
