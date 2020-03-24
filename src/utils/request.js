@@ -1,14 +1,15 @@
 /*
  * @Desc: 描述
  * @Date: 2020-01-11 22:02:21
- * @LastEditTime: 2020-03-10 23:44:56
+ * @LastEditTime: 2020-03-22 18:24:33
  */
 /**
  * Created by 麦锦超 on 2018/6/7.
  */
 import store from '@/store'
 import {
-  getToken
+  getToken,
+  getCookie
 } from '@/utils/auth'
 
 import axios from 'axios'
@@ -22,6 +23,7 @@ const service = axios.create({
 service.interceptors.request.use(config => {
   if (store.getters.token) {
     config.headers.common['X-Token'] = getToken();
+    config.headers.common['X-AccountType'] = getCookie('authority');
     // config.headers['X-Token'] = getToken(); // 让每个请求携带token--['X-Token']为自定义key 请根据实际情况自行修改
   }
   config.headers.common['X-Author'] = store.getters.author;

@@ -18,7 +18,7 @@
       <ul class="report-team-info">
         <li>责任书：{{ responsibility.length > 0 ? '' : '无' }}</li>
       </ul>
-      <div class="image-preview" v-if="responsibility">
+      <div class="image-preview" style="width: 100%; max-width: 1000px; margin: 0 auto;" v-if="responsibility">
         <el-image
           v-for="(item, index) in responsibility"
           :key="index"
@@ -31,7 +31,7 @@
       <ul class="report-team-info">
         <li>汇款证明：{{ prove.length > 0 ? '' : '无' }}</li>
       </ul>
-      <div class="image-preview">
+      <div class="image-preview"  style="width: 100%; max-width: 1000px; margin: 0 auto;" >
         <el-image
           v-for="(item, index) in prove"
           :key="index"
@@ -281,8 +281,25 @@ export default {
       this.personT = res.data.person
       this.duelT = res.data.duel
       this.collectiveT = res.data.collective
-      this.responsibility = res.data.responsibility
-      this.prove = res.data.prove
+      // this.responsibility = res.data.responsibility
+      // this.prove = res.data.prove
+      console.log(res.data)
+      let responsibility = res.data.responsibility.split(',')
+      let responsibilityarr = []
+      responsibility.forEach(item => {
+        responsibilityarr.push({
+          url: item
+        })
+      })
+      this.responsibility = responsibilityarr
+      let prove = res.data.responsibility.split(',')
+      let provearr = []
+      prove.forEach(item => {
+        provearr.push({
+          url: item
+        })
+      })
+      this.prove = provearr
     }).catch(err => {
       console.log(err)
     })
@@ -333,6 +350,12 @@ export default {
   }
 }
 
+.report-team-info {
+  margin-top: 15px;
+}
+.image-preview {
+  padding: 10px;
+}
 .pass {
   padding: 20px 0 30px;
   .title {

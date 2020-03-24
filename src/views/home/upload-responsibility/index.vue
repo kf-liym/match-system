@@ -1,14 +1,15 @@
 <template>
   <div class="step-1">
     <el-upload
-      action="api/upload/responsibility"
+      :action="$store.state.user.authority == 1 ? '/admin/upload/responsibility': '/api/upload/responsibility'"
       list-type="picture-card"
-      :data= '{ token: $store.state.user.token }'
+      :data= '{ uid: uid, token: $store.state.user.token }'
       :on-preview="handlePictureCardPreview"
       :on-remove="handleRemove"
       :on-error="handleError"
       :on-success="handleSuccess"
       class="upload-wrap"
+      :headers="myHeaders"
       :file-list="fileList"
     >
       <i class="el-icon-plus" />
@@ -29,6 +30,10 @@
 <script>
 // import tinymce from 'tinymce/tinymce'
 // import Editor from '@tinymce/tinymce-vue'
+import {
+  getToken,
+  getCookie
+} from '@/utils/auth'
 import { getResponsibility } from '@/api'
 export default {
   name: 'Step1',
@@ -47,14 +52,31 @@ export default {
     }
   },
   computed: {
-
+    myHeaders () {
+      return {
+        'X-AccountType': getToken(),
+        'X-Token': getCookie('authority'),
+        'X-Author': this.$store.getters.author
+      }
+    },
+    uid () {
+      return this.$store.state.user.authority === 1 ? this.$route.query.id || this.$store.state.user.id : this.$store.state.user.id
+    }
   },
   watch: {
 
   },
   created () {
     getResponsibility().then(res => {
-      this.fileList = res.data.list
+      // this.fileList = res.data.list
+      let data = res.data.list.split(',')
+      let file = []
+      data.forEach(item => {
+        file.push({
+          url: item
+        })
+      })
+      this.fileList = file
     }).catch(err => {
       this.$message({
         type: 'error',

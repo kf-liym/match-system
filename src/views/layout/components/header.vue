@@ -1,10 +1,15 @@
+<!--
+ * @Desc: 描述
+ * @Date: 2020-01-09 01:06:48
+ * @LastEditTime: 2020-03-25 00:06:01
+ -->
 <template>
   <div class="appHeader">
     <div class="header-item">新兴县太极拳精英大赛报名系统</div>
-    <div class="header-item" v-if="$store.state.user.username">
+    <div class="header-item" v-if="$store.state.user.username && $store.state.user.authority === 0">
       <el-button type="text" @click="backHome()">首页</el-button>
     </div>
-    <div class="header-item" v-if="$store.state.user.username">
+    <div class="header-item" v-if="$store.state.user.username && $store.state.user.authority === 0">
       <el-button type="text">查看比赛通知</el-button>
       <el-button type="text">下载责任书</el-button>
     </div>

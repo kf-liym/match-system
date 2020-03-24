@@ -184,26 +184,9 @@ export default {
       this.personT = res.data.person
       this.duelT = res.data.duel
       this.collectiveT = res.data.collective
-      // this.$store.commit('SET_RESPONSIBILITY', res.data.responsibility)
-      // this.$store.commit('SET_REMITTANCE', res.data.remittance)
-      // this.$store.commit('SET_TEAM', res.data.team)
-      // this.$store.commit('SET_PERSON', res.data.person)
-      // this.$store.commit('SET_DULE', res.data.duel)
-      // this.$store.commit('SET_COLLECTIVE', res.data.collective)
     }).catch(err => {
       console.log(err)
     })
-    // getProject().then(res => {
-    //   this.$store.commit('SET_STATUS', res.data.status)
-    //   this.$store.commit('SET_RESPONSIBILITY', res.data.responsibility)
-    //   this.$store.commit('SET_REMITTANCE', res.data.remittance)
-    //   this.$store.commit('SET_TEAM', res.data.team)
-    //   this.$store.commit('SET_PERSON', res.data.person)
-    //   this.$store.commit('SET_DULE', res.data.duel)
-    //   this.$store.commit('SET_COLLECTIVE', res.data.collective)
-    // }).catch(err => {
-    //   console.log(err)
-    // })
   },
   mounted () {
 

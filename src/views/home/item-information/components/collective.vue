@@ -162,7 +162,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        delCollective(id).then(res => {
+        delCollective(id, this.$store.state.user.authority === 0 ? 'user' : 'admin').then(res => {
           this.getList()
           this.$message({
             type: 'success',
@@ -238,14 +238,14 @@ export default {
           type: 'error'
         });
       } else if (index === -1) {
-        addCollective(row).then(res => {
+        addCollective(row, this.$store.state.user.authority === 0 ? 'user' : 'admin').then(res => {
           this.getList()
           this.$refs.edit.hide()
         }).catch(err => {
           console.log(err)
         })
       } else {
-        putCollective(row.id, row).then(res => {
+        putCollective(row.id, row, this.$store.state.user.authority === 0 ? 'user' : 'admin').then(res => {
           this.getList()
           this.$refs.edit.hide()
         }).catch(err => {

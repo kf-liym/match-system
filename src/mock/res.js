@@ -8,6 +8,7 @@ const axios = {
         return {
           // 登录成功
           code: 200,
+          id: '123',
           token: '2222222222',
           // 权限  0-用户 1-管理员
           authority: 1,
@@ -17,6 +18,7 @@ const axios = {
         return {
           // 登录成功
           code: 200,
+          id: '456',
           token: '2222222222',
           // 权限  0-用户 1-管理员
           authority: 0,
@@ -173,24 +175,8 @@ const axios = {
           'itemType|1': [0, 1],
           itemRoutine: '我是一个套路名称3'
         }],
-        responsibility: [
-          {
-            name: 'ddd.jpg',
-            url: 'https://img-blog.csdnimg.cn/20190918140012416.png'
-          }, {
-            name: 'eee.jpg',
-            url: 'https://img-blog.csdnimg.cn/2019092715111047.png'
-          }
-        ],
-        prove: [
-          {
-            name: 'ddd.jpg',
-            url: 'https://img-blog.csdnimg.cn/20190918140012416.png'
-          }, {
-            name: 'eee.jpg',
-            url: 'https://img-blog.csdnimg.cn/2019092715111047.png'
-          }
-        ]
+        responsibility: 'https://img-blog.csdnimg.cn/20190918140012416.png,https://img-blog.csdnimg.cn/2019092715111047.png',
+        prove: 'https://img-blog.csdnimg.cn/20190918140012416.png,https://img-blog.csdnimg.cn/2019092715111047.png'
       })
     },
     put: (options) => {},
@@ -325,13 +311,7 @@ const axios = {
   responsibility: {
     list: options => {
       return {
-        list: [{
-          name: 'ddd.jpg',
-          url: 'https://img-blog.csdnimg.cn/20190918140012416.png'
-        }, {
-          name: 'eee.jpg',
-          url: 'https://img-blog.csdnimg.cn/2019092715111047.png'
-        }]
+        list: 'https://img-blog.csdnimg.cn/20190918140012416.png,https://img-blog.csdnimg.cn/2019092715111047.png'
       }
     },
     post: (options) => {
@@ -352,13 +332,8 @@ const axios = {
   prove: {
     list: options => {
       return {
-        list: [{
-          name: 'ddd.jpg',
-          url: 'https://img-blog.csdnimg.cn/20190918140012416.png'
-        }, {
-          name: 'eee.jpg',
-          url: 'https://img-blog.csdnimg.cn/2019092715111047.png'
-        }]
+        list: 'https://img-blog.csdnimg.cn/20190918140012416.png,https://img-blog.csdnimg.cn/2019092715111047.png'
+        // list: ['https://img-blog.csdnimg.cn/20190918140012416.png', 'https://img-blog.csdnimg.cn/2019092715111047.png']
       }
     },
     post: (options) => {
@@ -407,85 +382,146 @@ const axios = {
     list: (options) => {
       return Mock.mock({
         count: 100,
+        'total_page': 1, //总页数
         'list|10-15': [{
-          id: 'ddd',
-          status: 0,
+          uid: '@id',
+          rid: '@id',
+          'status|1': [0, 1, 2],
           username: '用户名',
-          password: '密码',
-          team: {
-            teamName: '队伍名称',
-            leaderName: '李四',
-            tel: '13000000000',
-            coachName: '张三'
-          },
-          'person|3-10': [{
-            id: '@id',
-            name: '@cname',
-            'certificate|1': ['身份证', '护照', '港澳回乡证', '台湾回乡证', '出生证'], // 证件类型
-            idcard: '@id',
-            birth: '@date',
-            'sex|1': ['男', '女'],
-            'size|1': ['小码', '中码', '大码'],
-            'group|1': ['儿童组（A组）', '少年组（B组）', '青年组（C组）'],
-            'boxing|1': ['规定陈式太极拳', '规定杨式太极拳', '规定吴式太极拳', '规定武式太极拳', '规定孙式太极拳', '42 式太极拳', '24 式太极拳', '太极八法五步', '传统陈式太极拳', '传统杨式太极拳', '传统吴式太极拳', '传统式太极拳', '传统武式太极拳', '其他传统太极拳'],
-            'boxingType|1': [0, 1],
-            boxingRoutine: '我是一个套路名称1',
-            'instrument|1': ['42 式太极剑', '32 式太极剑', '传统陈式太极器械', '传统杨式太极器械', '传统吴式太极器械', '传统孙式太极器械', '传统武式太极器械', '其他传统太极器械'],
-            'instrumentType|1': [0, 1],
-            instrumentRoutine: '我是一个套路名称2'
-          }],
-          'duel|3-10': [{
-            'contestants|2': [{
-              id: '@id',
-              name: '@cname',
-              'certificate|1': ['身份证', '护照', '港澳回乡证', '台湾回乡证', '出生证'], // 证件类型
-              idcard: '@id',
-              birth: '@date',
-              'sex|1': ['男', '女'],
-              'size|1': ['小码', '中码', '大码'],
-              'group|1': ['少年组', '成年组']
-            }],
-            'item|1': ['双人太极拳对练', '双人太极器械对练'],
-            'itemType|1': [0, 1],
-            itemRoutine: '我是一个套路名称3'
-          }],
-          'collective': [{
-            'contestants|6': [{
-              id: '@id',
-              name: '@cname',
-              'certificate|1': ['身份证', '护照', '港澳回乡证', '台湾回乡证', '出生证'], // 证件类型
-              idcard: '@id',
-              birth: '@date',
-              'sex|1': ['男', '女'],
-              'size|1': ['小码', '中码', '大码'],
-              'group|1': ['少年组', '成年组']
-            }],
-            'item|1': ['集体太极八法五步', '集体太极拳术', '集体太极器械'],
-            'itemType|1': [0, 1],
-            itemRoutine: '我是一个套路名称3'
-          }],
-          responsibility: [{
-            name: 'ddd.jpg',
-            url: 'https://img-blog.csdnimg.cn/20190918140012416.png'
-          }, {
-            name: 'eee.jpg',
-            url: 'https://img-blog.csdnimg.cn/2019092715111047.png'
-          }],
-          prove: [{
-            name: 'ddd.jpg',
-            url: 'https://img-blog.csdnimg.cn/20190918140012416.png'
-          }, {
-            name: 'eee.jpg',
-            url: 'https://img-blog.csdnimg.cn/2019092715111047.png'
-          }]
+          teamName: '队伍名称',
+          leaderName: '李四',
+          tel: '13000000000',
+          count: 700
         }]
       })
+
+      // return Mock.mock({
+      //   count: 100,
+      //   'list|10-15': [{
+      //     id: 'ddd',
+      //     status: 0,
+      //     username: '用户名',
+      //     password: '密码',
+      //     team: {
+      //       teamName: '队伍名称',
+      //       leaderName: '李四',
+      //       tel: '13000000000',
+      //       coachName: '张三'
+      //     },
+      //     'person|3-10': [{
+      //       id: '@id',
+      //       name: '@cname',
+      //       'certificate|1': ['身份证', '护照', '港澳回乡证', '台湾回乡证', '出生证'], // 证件类型
+      //       idcard: '@id',
+      //       birth: '@date',
+      //       'sex|1': ['男', '女'],
+      //       'size|1': ['小码', '中码', '大码'],
+      //       'group|1': ['儿童组（A组）', '少年组（B组）', '青年组（C组）'],
+      //       'boxing|1': ['规定陈式太极拳', '规定杨式太极拳', '规定吴式太极拳', '规定武式太极拳', '规定孙式太极拳', '42 式太极拳', '24 式太极拳', '太极八法五步', '传统陈式太极拳', '传统杨式太极拳', '传统吴式太极拳', '传统式太极拳', '传统武式太极拳', '其他传统太极拳'],
+      //       'boxingType|1': [0, 1],
+      //       boxingRoutine: '我是一个套路名称1',
+      //       'instrument|1': ['42 式太极剑', '32 式太极剑', '传统陈式太极器械', '传统杨式太极器械', '传统吴式太极器械', '传统孙式太极器械', '传统武式太极器械', '其他传统太极器械'],
+      //       'instrumentType|1': [0, 1],
+      //       instrumentRoutine: '我是一个套路名称2'
+      //     }],
+      //     'duel|3-10': [{
+      //       'contestants|2': [{
+      //         id: '@id',
+      //         name: '@cname',
+      //         'certificate|1': ['身份证', '护照', '港澳回乡证', '台湾回乡证', '出生证'], // 证件类型
+      //         idcard: '@id',
+      //         birth: '@date',
+      //         'sex|1': ['男', '女'],
+      //         'size|1': ['小码', '中码', '大码'],
+      //         'group|1': ['少年组', '成年组']
+      //       }],
+      //       'item|1': ['双人太极拳对练', '双人太极器械对练'],
+      //       'itemType|1': [0, 1],
+      //       itemRoutine: '我是一个套路名称3'
+      //     }],
+      //     'collective': [{
+      //       'contestants|6': [{
+      //         id: '@id',
+      //         name: '@cname',
+      //         'certificate|1': ['身份证', '护照', '港澳回乡证', '台湾回乡证', '出生证'], // 证件类型
+      //         idcard: '@id',
+      //         birth: '@date',
+      //         'sex|1': ['男', '女'],
+      //         'size|1': ['小码', '中码', '大码'],
+      //         'group|1': ['少年组', '成年组']
+      //       }],
+      //       'item|1': ['集体太极八法五步', '集体太极拳术', '集体太极器械'],
+      //       'itemType|1': [0, 1],
+      //       itemRoutine: '我是一个套路名称3'
+      //     }],
+      //     responsibility: [{
+      //       name: 'ddd.jpg',
+      //       url: 'https://img-blog.csdnimg.cn/20190918140012416.png'
+      //     }, {
+      //       name: 'eee.jpg',
+      //       url: 'https://img-blog.csdnimg.cn/2019092715111047.png'
+      //     }],
+      //     prove: [{
+      //       name: 'ddd.jpg',
+      //       url: 'https://img-blog.csdnimg.cn/20190918140012416.png'
+      //     }, {
+      //       name: 'eee.jpg',
+      //       url: 'https://img-blog.csdnimg.cn/2019092715111047.png'
+      //     }]
+      //   }]
+      // })
     },
     reject: (options) => {
       return {
         code: 200,
         message: ''
       }
+    },
+    team: (options) => {
+      return {
+        'uid': 3, //用户id
+        'rid': 6, //项目id
+        'count': 700, //总费用（这里的需求改了，只需要显示所有项目的总费用）
+        'team': {
+          'teamName': 'RNG', //队伍名
+          'leaderName': '麦领队', //领队名
+          'tel': '15627236907', //手机号码
+          'coachName': '麦教练' //教练名
+        },
+        'responsibility': 'https://img-blog.csdnimg.cn/20190918140012416.png,https://img-blog.csdnimg.cn/2019092715111047.png', //责任书地址，逗号隔开
+        'prove': 'https://img-blog.csdnimg.cn/20190918140012416.png,https://img-blog.csdnimg.cn/2019092715111047.png', //汇款证明地址，逗号隔开
+        'person': [{
+          'id': 3,
+          'name': '帅气的小麦', //姓名（下同）
+          'certificate': '身份证', //证件类型（下同）
+          'idcard': '440599199999554411', //证件号（下同）
+          'birth': '1999-99-09', //生日（下同）
+          'sex': '男', //性别（下同）
+          'groupType': '少年组3', //组别（下同）
+          'item': '测试数据' //项目名称（下同）
+        }],
+        'duel': [{
+          'id': 7,
+          'name': '麦友铭',
+          'certificate': '港澳通行证',
+          'idcard': '440',
+          'birth': '1994-09-05',
+          'sex': '男',
+          'groupType': '少年组3',
+          'item': '测试数据'
+        }],
+        'collective': [{
+          'id': 9,
+          'name': '麦友铭',
+          'certificate': '港澳通行证',
+          'idcard': '440',
+          'birth': '1994-09-05',
+          'sex': '男',
+          'groupType': '老年组123',
+          'item': '测试数据'
+        }]
+      }
+
     },
     pass: (options) => {
       return {

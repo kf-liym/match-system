@@ -79,7 +79,7 @@ export default {
         cancelButtonText: '取消'
       }).then(() => {
         _this.loading = true
-        delMember(id).then(res => {
+        delMember(id, this.$store.state.user.authority === 0 ? 'user' : 'admin').then(res => {
           _this.loading = false
           if (res.data.code === 200) {
             _this.$message({

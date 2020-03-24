@@ -175,7 +175,7 @@ export default {
       _this.$refs.form.validate((validate) => {
         if (validate) {
           // 提交/修改完成
-          addMember(_this.form).then(res => {
+          addMember(_this.form, this.$store.state.user.authority === 0 ? 'user' : 'admin').then(res => {
             _this.loading = false
             if (res.data.code === 200) {
               _this.$alert('添加成功', '标题名称', {
@@ -211,7 +211,7 @@ export default {
       _this.loading = true
       _this.$refs.form.validate((validate) => {
         if (validate) {
-          putMember(_this.form.id, _this.form).then(res => {
+          putMember(_this.form.id, _this.form, this.$store.state.user.authority === 0 ? 'user' : 'admin').then(res => {
             _this.loading = false
             if (res.data.code === 200) {
               _this.$alert('修改成功', '系统消息', {

@@ -154,7 +154,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        delDuel(id).then(res => {
+        delDuel(id, this.$store.state.user.authority === 0 ? 'user' : 'admin').then(res => {
           this.getList()
           this.$message({
             type: 'success',
@@ -205,14 +205,14 @@ export default {
           type: 'error'
         });
       } else if (index === -1) {
-        addDuel(row).then(res => {
+        addDuel(row, this.$store.state.user.authority === 0 ? 'user' : 'admin').then(res => {
           this.getList()
           this.$refs.edit.hide()
         }).catch(err => {
           console.log(err)
         })
       } else {
-        putDuel(row.id, row).then(res => {
+        putDuel(row.id, row, this.$store.state.user.authority === 0 ? 'user' : 'admin').then(res => {
           this.getList()
           this.$refs.edit.hide()
         }).catch(err => {

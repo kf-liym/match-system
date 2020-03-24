@@ -81,7 +81,7 @@ export default {
       })
     },
     prevStep () {
-      saveTeam(this.team).then(res => {
+      saveTeam(this.team, this.$store.state.user.authority === 0 ? 'user' : 'admin').then(res => {
         if (res.data.code === 200) {
           this.$store.dispatch('STEP_PREV', { router: this.$router, route: this.$route })
         }
@@ -90,7 +90,7 @@ export default {
       })
     },
     nextStep () {
-      saveTeam(this.team).then(res => {
+      saveTeam(this.team, this.$store.state.user.authority === 0 ? 'user' : 'admin').then(res => {
         if (res.data.code === 200) {
           this.$store.dispatch('STEP_NEXT', { router: this.$router, route: this.$route })
         }

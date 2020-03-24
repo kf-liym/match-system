@@ -62,6 +62,7 @@ export default {
       this.$refs.login.validate((valid) => {
         if (valid) {
           this.$store.dispatch('LOGIN_BY_USERNAME', this.dataForm).then((res) => {
+            console.log(res)
             if (res.authority === 1) {
               this.$router.push('/admin')
             } else {

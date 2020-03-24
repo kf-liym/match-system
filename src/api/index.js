@@ -1,3 +1,8 @@
+/*
+ * @Desc: 描述
+ * @Date: 2020-01-11 22:13:10
+ * @LastEditTime: 2020-03-25 01:18:27
+ */
 import request from '@/utils/request'
 
 /**
@@ -44,9 +49,10 @@ export function getMembers (data) {
 }
 
 // 常用报名人-添加
-export function addMember (data) {
+export function addMember (data, $user = 'user') {
+  const $api = $user === 'user' ? '/api' : '/admin'
   return request({
-    url: '/api/member',
+    url: `${$api}/member`,
     method: 'post',
     data
   })
@@ -61,26 +67,29 @@ export function getMember (id) {
 }
 
 // 常用报名人-删除
-export function delMember (id) {
+export function delMember (id, $user = 'user') {
+  const $api = $user === 'user' ? '/api' : '/admin'
   return request({
-    url: `/api/member/${id}`,
+    url: `${$api}/member/${id}`,
     method: 'delete'
   })
 }
 
 // 常用报名人-修改
-export function putMember (id, data) {
+export function putMember (id, data, $user = 'user') {
+  const $api = $user === 'user' ? '/api' : '/admin'
   return request({
-    url: `/api/member/${id}`,
+    url: `${$api}/member/${id}`,
     method: 'put',
     data
   })
 }
 
 // 保存团队基本信息
-export function saveTeam (data) {
+export function saveTeam (data, $user = 'user') {
+  const $api = $user === 'user' ? '/api' : '/admin'
   return request({
-    url: '/api/team',
+    url: `${$api}/team`,
     method: 'post',
     data
   })
@@ -111,25 +120,28 @@ export function getPersons () {
   })
 }
 // 报项-个人-添加
-export function addPerson (data) {
+export function addPerson (data, $user = 'user') {
+  const $api = $user === 'user' ? '/api' : '/admin'
   return request({
-    url: '/api/person',
+    url: `${$api}/person`,
     method: 'post',
     data
   })
 }
 // 报项-对练-修改
-export function putPerson (id, data) {
+export function putPerson (id, data, $user = 'user') {
+  const $api = $user === 'user' ? '/api' : '/admin'
   return request({
-    url: `/api/person/${id}`,
+    url: `${$api}/person/${id}`,
     method: 'put',
     data
   })
 }
 // 报项-个人-删除
-export function delPerson (id) {
+export function delPerson (id, $user = 'user') {
+  const $api = $user === 'user' ? '/api' : '/admin'
   return request({
-    url: `/api/person/${id}`,
+    url: `${$api}/person/${id}`,
     method: 'delete'
   })
 }
@@ -142,68 +154,65 @@ export function getDuels () {
   })
 }
 // 报项-对练-添加
-export function addDuel (data) {
+export function addDuel (data, $user = 'user') {
+  const $api = $user === 'user' ? '/api' : '/admin'
   return request({
-    url: '/api/duel',
+    url: `${$api}/duel`,
     method: 'post',
     data
   })
 }
 // 报项-对练-修改
-export function putDuel (id, data) {
+export function putDuel (id, data, $user = 'user') {
+  const $api = $user === 'user' ? '/api' : '/admin'
   return request({
-    url: `/api/duel/${id}`,
+    url: `${$api}/duel/${id}`,
     method: 'put',
     data
   })
 }
 // 报项-对练-删除
-export function delDuel (id) {
+export function delDuel (id, $user = 'user') {
+  const $api = $user === 'user' ? '/api' : '/admin'
   return request({
-    url: `/api/duel/${id}`,
+    url: `${$api}/duel/${id}`,
     method: 'delete'
   })
 }
 
 // 报项-集体-获取列表
-export function getCollectives () {
+export function getCollectives ($user = 'user') {
   return request({
     url: '/api/collectives',
     method: 'get'
   })
 }
 // 报项-集体-添加
-export function addCollective (data) {
+export function addCollective (data, $user = 'user') {
+  const $api = $user === 'user' ? '/api' : '/admin'
   return request({
-    url: '/api/collective',
+    url: `${$api}/collective`,
     method: 'post',
     data
   })
 }
 // 报项-对练-修改
-export function putCollective (id, data) {
+export function putCollective (id, data, $user = 'user') {
+  const $api = $user === 'user' ? '/api' : '/admin'
   return request({
-    url: `/api/collective/${id}`,
+    url: `${$api}/collective/${id}`,
     method: 'put',
     data
   })
 }
 // 报项-集体-删除
-export function delCollective (id) {
+export function delCollective (id, $user = 'user') {
+  const $api = $user === 'user' ? '/api' : '/admin'
   return request({
-    url: `/api/collective/${id}`,
+    url: `${$api}/collective/${id}`,
     method: 'delete'
   })
 }
-
-// // 上传责任书
-// export function addResponsibility (data) {
-//   return request({
-//     url: 'api/upload/responsibility',
-//     method: 'post',
-//     data
-//   })
-// }
 
 // 获取责任书列表
 export function getResponsibility () {
@@ -235,30 +244,38 @@ export function formSubmit (data) {
  */
 export function getAllCount () {
   return request({
-    url: '/api/admin/count',
+    url: '/admin/count',
     method: 'get'
   })
 }
 
 export function getAllList (query) {
   return request({
-    url: '/api/admin/list',
+    url: '/admin/list',
     method: 'get',
     params: query
   })
 }
 
+export function getAdminTeam (query) {
+  return request({
+    url: '/admin/team',
+    method: 'get',
+    params: query
+  })
+}
+// 后台管理 - 打回
 export function teamReject (id, data) {
   return request({
-    url: `/api/admin/reject/${id}`,
+    url: `/admin/reject/${id}`,
     method: 'post',
     data
   })
 }
-
+// 后台管理 - 通过
 export function teamPass (id, data) {
   return request({
-    url: `/api/admin/pass/${id}`,
+    url: `/admin/pass/${id}`,
     method: 'post',
     data
   })

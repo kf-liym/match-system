@@ -1,19 +1,20 @@
 <!--
  * @Desc: 描述
  * @Date: 2020-02-14 22:24:20
- * @LastEditTime: 2020-03-11 01:09:00
+ * @LastEditTime: 2020-03-25 00:33:39
  -->
 <template>
   <div class="step-1">
     <el-upload
-      action="api/upload/responsibility"
+      :action="$store.state.user.authority == 1 ? '/admin/upload/prove': '/api/upload/prove'"
       list-type="picture-card"
-      :data= '{ token: $store.state.user.token }'
+      :data= '{ uid: uid, token: $store.state.user.token }'
       :on-preview="handlePictureCardPreview"
       :on-remove="handleRemove"
       :on-error="handleError"
       :on-success="handleSuccess"
       class="upload-wrap"
+      :headers="myHeaders"
       :file-list="fileList"
     >
       <i class="el-icon-plus" />
@@ -23,12 +24,16 @@
     </el-dialog>
     <div class="step-btn-group">
       <el-button type="primary" @click="prevStep()">上一步</el-button>
-      <el-button type="primary" @click="nextStep()">下一步</el-button>
+      <el-button type="primary" @click="nextStep()" v-if="$store.state.user.authority === 0">下一步</el-button>
     </div>
   </div>
 </template>
 
 <script>
+import {
+  getToken,
+  getCookie
+} from '@/utils/auth'
 import { getProve } from '@/api'
 export default {
   name: 'Step1',
@@ -46,14 +51,30 @@ export default {
     }
   },
   computed: {
-
+    myHeaders () {
+      return {
+        'X-AccountType': getToken(),
+        'X-Token': getCookie('authority'),
+        'X-Author': this.$store.getters.author
+      }
+    },
+    uid () {
+      return this.$store.state.user.authority === 1 ? this.$route.query.id || this.$store.state.user.id : this.$store.state.user.id
+    }
   },
   watch: {
 
   },
   created () {
     getProve().then(res => {
-      this.fileList = res.data.list
+      let data = res.data.list.split(',')
+      let file = []
+      data.forEach(item => {
+        file.push({
+          url: item
+        })
+      })
+      this.fileList = file
     }).catch(err => {
       this.$message({
         type: 'error',

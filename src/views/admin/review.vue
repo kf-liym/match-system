@@ -1,18 +1,12 @@
 <template>
   <div class="admin-review">
     <el-form :inline="true" size="small" class="admin-query" label-width="85px">
-      <el-form-item label="审核状态：">
-        <el-select v-model="query.reviewStatus" placeholder="审核状态">
+      <el-form-item label="状态：">
+        <el-select v-model="query.status" placeholder="状态">
           <el-option label="全部" value></el-option>
-          <el-option label="已审核" :value="2"></el-option>
-          <el-option label="未审核" :value="1"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="提交状态：">
-        <el-select v-model="query.comfirmStatus" placeholder="提交状态">
-          <el-option label="全部" value></el-option>
-          <el-option label="已提交" :value="3"></el-option>
-          <el-option label="未提交" :value="0"></el-option>
+          <el-option label="待审批" :value="0"></el-option>
+          <el-option label="审批通过" :value="1"></el-option>
+          <el-option label="未提交" :value="2"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -23,49 +17,41 @@
       <el-table-column type="index" label="序号" width="50"></el-table-column>
       <el-table-column label="队伍名称" min-width="150">
         <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ scope.row.team.teamName }}</span>
+          <span>{{ scope.row.teamName }}</span>
         </template>
       </el-table-column>
       <el-table-column label="领队姓名" width="100">
         <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ scope.row.team.leaderName }}</span>
+          <span>{{ scope.row.leaderName }}</span>
         </template>
       </el-table-column>
       <el-table-column label="联系电话" width="150">
         <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ scope.row.team.tel }}</span>
+          <span>{{ scope.row.tel }}</span>
         </template>
       </el-table-column>
       <el-table-column label="报名费用" width="80">
         <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ cost[scope.$index] }}</span>
+          <span>{{ scope.row.count }}</span>
         </template>
       </el-table-column>
       <el-table-column label="账号" width="150">
         <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ scope.row.username }}</span>
+          <span>{{ scope.row.username }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="密码" width="150">
+      <el-table-column label="状态" width="90">
         <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ scope.row.password }}</span>
+          <span v-if="scope.row.status === 0">待审批</span>
+          <span style="color: #67C23A" v-else-if="scope.row.status === 1">审批通过</span>
+          <span v-else>未提交</span>
         </template>
       </el-table-column>
-      <el-table-column prop="comfirmStatus" label="提交状态" width="80">
+      <el-table-column fixed="right" label="操作" width="250" align="center">
         <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ scope.row.status !== 0 ? '未提交': '已提交' }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="reviewStatus" label="审核状态" width="80">
-        <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ scope.row.status !== 2 ? '待审核': '已审核' }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column fixed="right" label="操作" width="150" align="center">
-        <template slot-scope="scope">
-          <el-button type="text" @click="handleCheck(scope.row)" size="small">查看</el-button>
-          <el-button type="text" @click="handleUpdate(scope.row)" size="small">修改</el-button>
-          <el-button type="text" @click="handleReject(scope.row)" size="small">打回</el-button>
+          <el-button type="primary" @click="handleCheck(scope.row.rid)" size="mini">查看</el-button>
+          <el-button type="success" @click="handleUpdate(scope.row)" size="mini">修改</el-button>
+          <el-button type="danger" :disabled="scope.row.status === 1" @click="handleReject(scope.row)" size="mini">打回</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -77,7 +63,7 @@
       :total="count"
       style="text-align: center; margin-top: 15px;"
     ></el-pagination>
-    <check-dialog v-if="checkVisible" @get-list="getList" :visible.sync="checkVisible" v-model="info"></check-dialog>
+    <check-dialog ref="check" @get-list="getList"></check-dialog>
   </div>
 </template>
 
@@ -89,10 +75,8 @@ export default {
   data () {
     return {
       info: null,
-      checkVisible: false,
       query: {
-        reviewStatus: '',
-        comfirmStatus: '',
+        status: '',
         page: 1,
         limit: 10
       },
@@ -101,23 +85,23 @@ export default {
     }
   },
   computed: {
-    cost () {
-      let costArr = []
-      this.teamList.forEach(item => {
-        let cost = 0
-        item.person.forEach(element => {
-          cost += 50
-        })
-        item.duel.forEach(element => {
-          cost += 50
-        })
-        item.collective.forEach(element => {
-          cost += 50
-        })
-        costArr.push(cost)
-      })
-      return costArr
-    }
+    // cost () {
+    //   let costArr = []
+    //   this.teamList.forEach(item => {
+    //     let cost = 0
+    //     item.person.forEach(element => {
+    //       cost += 50
+    //     })
+    //     item.duel.forEach(element => {
+    //       cost += 50
+    //     })
+    //     item.collective.forEach(element => {
+    //       cost += 50
+    //     })
+    //     costArr.push(cost)
+    //   })
+    //   return costArr
+    // }
   },
   created () {
     this.getList()
@@ -138,9 +122,10 @@ export default {
     onConfirm () {
       this.getList()
     },
-    handleCheck (row) {
-      this.info = row
-      this.checkVisible = true
+    handleCheck (id) {
+      // this.info = row
+      // this.checkVisible = true
+      this.$refs.check.show(id)
     },
     handleUpdate (row) {
       this.$router.push({ path: '/home/common-info', query: { id: row.id } })

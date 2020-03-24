@@ -1,7 +1,7 @@
 /*
  * @Desc: 描述
  * @Date: 2020-01-11 23:30:42
- * @LastEditTime: 2020-03-11 01:04:07
+ * @LastEditTime: 2020-03-24 23:46:15
  */
 import {
   signin,
@@ -26,7 +26,7 @@ const user = {
     username: getCookie('username'),
     // token
     token: getToken(),
-    // 权限
+    // 权限,用户类型 0-领队 1-管理员
     authority: parseInt(getCookie('authority'))
   },
   mutations: {
@@ -54,7 +54,7 @@ const user = {
         signin(userInfo).then(res => {
           if (res.data.code === 200) {
             setToken(res.data.token)
-            setCookie('id', userInfo.id)
+            setCookie('id', res.data.id)
             setCookie('username', userInfo.username)
             setCookie('authority', res.data.authority)
             commit('SET_ID', res.data.id)

@@ -190,7 +190,7 @@ export default {
         type: 'warning'
       }).then(() => {
 
-        delPerson(id).then(res => {
+        delPerson(id, this.$store.state.user.authority === 0 ? 'user' : 'admin').then(res => {
           this.getList()
           this.$message({
             type: 'success',
@@ -223,14 +223,14 @@ export default {
 
       if (check.length < 1) {
         if (index === -1) {
-          addPerson(row).then(res => {
+          addPerson(row, this.$store.state.user.authority === 0 ? 'user' : 'admin').then(res => {
             this.getList()
             this.$refs.edit.hide()
           }).catch(err => {
             console.log(err)
           })
         } else {
-          putPerson(row.id, row).then(res => {
+          putPerson(row.id, row, this.$store.state.user.authority === 0 ? 'user' : 'admin').then(res => {
             this.getList()
             this.$refs.edit.hide()
           }).catch(err => {
